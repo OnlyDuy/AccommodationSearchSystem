@@ -8,6 +8,9 @@ import { UsersComponent } from './users/users.component';
 import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
+import { DetailUserComponent } from './infor-user/detail-user/detail-user.component';
+import { EditUserComponent } from './infor-user/edit-user/edit-user.component';
+import { CreatePostComponent } from './post/create-post/create-post.component';
 
 @NgModule({
     imports: [
@@ -17,6 +20,12 @@ import { ChangePasswordComponent } from './users/change-password/change-password
                 component: AppComponent,
                 children: [
                     { path: 'home', component: HomeComponent,  canActivate: [AppRouteGuard] },
+
+                    {path: 'create-post', component: CreatePostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
+
+                    { path: 'detail-user', component: DetailUserComponent, data: { permission: 'Pages.Personal.Information' },  canActivate: [AppRouteGuard] },
+                    { path: 'edit-user', component: EditUserComponent, data: { permission: 'Pages.Personal.Information' }, canActivate: [AppRouteGuard] },
+
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },

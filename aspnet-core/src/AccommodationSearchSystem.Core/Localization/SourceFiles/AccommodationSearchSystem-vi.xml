@@ -117,6 +117,11 @@
     <text name="Clear">Làm mới</text>
     <text name="ResetPasswordStepOneInfo">1. Nhập mật khẩu quản trị viên của bạn</text>
     <text name="ResetPasswordStepTwoInfo">2. Sao chép mật khẩu ngẫu nhiên này để bạn có thể gửi cho người dùng</text>
-    <text name="UsersActivation">Users activation</text>
+    <text name="UsersActivation">Kích hoạt người dùng</text>
+	<text name="UnexpectedAuthenticateResult">Kết quả xác thực không mong đợi</text>
+	<text name="Posts">Quản lý bài đăng</text>
+	  <text name="PersonalInformation">Thông tin cá nhân</text>
+	  <text name="ManageAppointmentSchedules">Quản lý lịch hẹn</text>
+	  <text name="NewPost">Bài đăng mới</text>
   </texts>
 </localizationDictionary>

@@ -63,18 +63,19 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 'fas fa-users',
                 'Pages.Users'
             ),
-            new MenuItem(this.l('MultiLevelMenu'), '', 'fas fa-circle', '', [
-                new MenuItem(
-                        'Home',
-                        'https://aspnetboilerplate.com?ref=abptmpl',
-                        'far fa-circle'
-                    ),
-                new MenuItem(
-                        'Templates',
-                        'https://aspnetboilerplate.com/Templates?ref=abptmpl',
-                        'far fa-circle'
-                    ),
-            ])
+            new MenuItem("Thông tin cá nhân", "", "fas fa-circle", "Pages.Personal.Information", [
+                new MenuItem("Chi tiết tài khoản", "/app/detail-user", "far fa-circle", "Pages.Personal.Information" ),
+                new MenuItem("Chỉnh sửa thông tin", "/app/edit-user", "far fa-circle", "Pages.Personal.Information"),
+            ]),
+            new MenuItem("Quản lý bài đăng", "", "fas fa-circle", "Pages.Posts", [
+                new MenuItem("Tạo bài đăng", "/app/create-post", "far fa-circle", "Pages.Posts" ),
+                new MenuItem("Bài viết đã đăng", "", "far fa-circle"),
+                new MenuItem("Bài đăng mới nhất", "", "far fa-circle"),
+            ]),
+            new MenuItem("Quản lý lịch hẹn", "", "fas fa-circle", "Pages.Manage.Appointment.Schedules", [
+                new MenuItem("Lịch hẹn thành công", "", "far fa-circle"),
+                new MenuItem("Lịch hẹn chờ xác nhận", "", "far fa-circle"),
+            ]),
         ];
     }
 

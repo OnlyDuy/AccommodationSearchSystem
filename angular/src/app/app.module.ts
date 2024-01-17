@@ -38,9 +38,11 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
+import { InforUserComponent } from './infor-user/infor-user.component';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
-  declarations: [
+  declarations: [		
     AppComponent,
     HomeComponent,
     AboutComponent,
@@ -67,8 +69,10 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
     SidebarComponent,
     SidebarLogoComponent,
     SidebarUserPanelComponent,
-    SidebarMenuComponent
-  ],
+    SidebarMenuComponent,
+      InforUserComponent,
+      PostComponent
+   ],
   imports: [
     CommonModule,
     FormsModule,

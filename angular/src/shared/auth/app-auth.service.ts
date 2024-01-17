@@ -29,7 +29,7 @@ export class AppAuthService {
     logout(reload?: boolean): void {
         abp.auth.clearToken();
         abp.utils.deleteCookie(AppConsts.authorization.encryptedAuthTokenName);
-        
+
         if (reload !== false) {
             location.href = AppConsts.appBaseUrl;
         }
@@ -66,7 +66,7 @@ export class AppAuthService {
         } else {
             // Unexpected result!
 
-            this._logService.warn('Unexpected authenticateResult!');
+            this._logService.warn('Kết quả xác thực không mong đợi!');
             this._router.navigate(['account/login']);
         }
     }

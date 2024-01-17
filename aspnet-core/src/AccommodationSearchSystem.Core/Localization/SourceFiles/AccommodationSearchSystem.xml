@@ -118,5 +118,10 @@
     <text name="ResetPasswordStepOneInfo">1. Enter your administrator password</text>
     <text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>
     <text name="UsersActivation">Users activation</text>
+	<text name="UnexpectedAuthenticateResult">Unexpected authenticate Result</text>
+	<text name="Posts">Posts</text>
+	  <text name="PersonalInformation">Personal information</text>
+	  <text name="ManageAppointmentSchedules">Manage appointment schedules</text>
+	  <text name="NewPost">New Post</text>
   </texts>
 </localizationDictionary>
