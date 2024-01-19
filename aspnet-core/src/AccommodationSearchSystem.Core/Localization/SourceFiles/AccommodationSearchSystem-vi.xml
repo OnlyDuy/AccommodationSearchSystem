@@ -27,6 +27,7 @@
 	<text name="Name" value="Tên" />
 	<text name="Surname" value="Họ" />
     <text name="EmailAddress" value="Địa chỉ Email" />
+	  <text name="PhoneNumber" value="Số điện thoại" />
 	<text name="Tenants" value="Người thuê nhà" />
 	<text name="SavedSuccessfully" value="Đã lưu thành công" />
 	<text name="CreateNewTenant" value="Tạo người thuê mới" />
@@ -123,5 +124,8 @@
 	  <text name="PersonalInformation">Thông tin cá nhân</text>
 	  <text name="ManageAppointmentSchedules">Quản lý lịch hẹn</text>
 	  <text name="NewPost">Bài đăng mới</text>
+  	  <text name="Host">Chủ nhà</text>
+	  <text name="Admin">Quản trị viên</text>
+	  <text name="Renter">Người thuê nhà</text>
   </texts>
 </localizationDictionary>

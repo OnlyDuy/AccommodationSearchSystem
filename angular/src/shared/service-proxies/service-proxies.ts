@@ -206,6 +206,166 @@ export class ConfigurationServiceProxy {
 }
 
 @Injectable()
+export class ManagePostsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createOrEdit(body: CreateOrEditIPostDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/CreateOrEdit";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateOrEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateOrEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param roomPrice (optional) 
+     * @param address (optional) 
+     * @param square (optional) 
+     * @param roomStatus (optional) 
+     * @param priceCategory (optional) 
+     * @param wifi (optional) 
+     * @param parking (optional) 
+     * @param conditioner (optional) 
+     * @param id (optional) 
+     * @return Success
+     */
+    getAll(roomPrice: number | undefined, address: string | undefined, square: number | undefined, roomStatus: boolean | undefined, priceCategory: string | undefined, wifi: boolean | undefined, parking: boolean | undefined, conditioner: boolean | undefined, id: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAll?";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
+        if (address === null)
+            throw new Error("The parameter 'address' cannot be null.");
+        else if (address !== undefined)
+            url_ += "Address=" + encodeURIComponent("" + address) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (roomStatus === null)
+            throw new Error("The parameter 'roomStatus' cannot be null.");
+        else if (roomStatus !== undefined)
+            url_ += "RoomStatus=" + encodeURIComponent("" + roomStatus) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (wifi === null)
+            throw new Error("The parameter 'wifi' cannot be null.");
+        else if (wifi !== undefined)
+            url_ += "Wifi=" + encodeURIComponent("" + wifi) + "&";
+        if (parking === null)
+            throw new Error("The parameter 'parking' cannot be null.");
+        else if (parking !== undefined)
+            url_ += "Parking=" + encodeURIComponent("" + parking) + "&";
+        if (conditioner === null)
+            throw new Error("The parameter 'conditioner' cannot be null.");
+        else if (conditioner !== undefined)
+            url_ += "Conditioner=" + encodeURIComponent("" + conditioner) + "&";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForViewDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForViewDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<GetPostForViewDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForViewDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
+    }
+}
+
+@Injectable()
 export class RoleServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -2140,6 +2300,105 @@ export interface IChangeUserLanguageDto {
     languageName: string;
 }
 
+export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
+    id: number | undefined;
+    postId: number | undefined;
+    tenantId: number | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    photo: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    area: string | undefined;
+    square: number;
+    roomStatus: boolean;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+
+    constructor(data?: ICreateOrEditIPostDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.postId = _data["postId"];
+            this.tenantId = _data["tenantId"];
+            this.title = _data["title"];
+            this.contentPost = _data["contentPost"];
+            this.photo = _data["photo"];
+            this.roomPrice = _data["roomPrice"];
+            this.address = _data["address"];
+            this.area = _data["area"];
+            this.square = _data["square"];
+            this.roomStatus = _data["roomStatus"];
+            this.priceCategory = _data["priceCategory"];
+            this.wifi = _data["wifi"];
+            this.parking = _data["parking"];
+            this.conditioner = _data["conditioner"];
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditIPostDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditIPostDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["postId"] = this.postId;
+        data["tenantId"] = this.tenantId;
+        data["title"] = this.title;
+        data["contentPost"] = this.contentPost;
+        data["photo"] = this.photo;
+        data["roomPrice"] = this.roomPrice;
+        data["address"] = this.address;
+        data["area"] = this.area;
+        data["square"] = this.square;
+        data["roomStatus"] = this.roomStatus;
+        data["priceCategory"] = this.priceCategory;
+        data["wifi"] = this.wifi;
+        data["parking"] = this.parking;
+        data["conditioner"] = this.conditioner;
+        return data;
+    }
+
+    clone(): CreateOrEditIPostDto {
+        const json = this.toJSON();
+        let result = new CreateOrEditIPostDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateOrEditIPostDto {
+    id: number | undefined;
+    postId: number | undefined;
+    tenantId: number | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    photo: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    area: string | undefined;
+    square: number;
+    roomStatus: boolean;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+}
+
 export class CreateRoleDto implements ICreateRoleDto {
     name: string;
     displayName: string;
@@ -2212,6 +2471,7 @@ export class CreateTenantDto implements ICreateTenantDto {
     name: string;
     adminEmailAddress: string;
     connectionString: string | undefined;
+    phoneNumber: string;
     isActive: boolean;
 
     constructor(data?: ICreateTenantDto) {
@@ -2229,6 +2489,7 @@ export class CreateTenantDto implements ICreateTenantDto {
             this.name = _data["name"];
             this.adminEmailAddress = _data["adminEmailAddress"];
             this.connectionString = _data["connectionString"];
+            this.phoneNumber = _data["phoneNumber"];
             this.isActive = _data["isActive"];
         }
     }
@@ -2246,6 +2507,7 @@ export class CreateTenantDto implements ICreateTenantDto {
         data["name"] = this.name;
         data["adminEmailAddress"] = this.adminEmailAddress;
         data["connectionString"] = this.connectionString;
+        data["phoneNumber"] = this.phoneNumber;
         data["isActive"] = this.isActive;
         return data;
     }
@@ -2263,6 +2525,7 @@ export interface ICreateTenantDto {
     name: string;
     adminEmailAddress: string;
     connectionString: string | undefined;
+    phoneNumber: string;
     isActive: boolean;
 }
 
@@ -2271,6 +2534,7 @@ export class CreateUserDto implements ICreateUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string;
     isActive: boolean;
     roleNames: string[] | undefined;
     password: string;
@@ -2290,6 +2554,7 @@ export class CreateUserDto implements ICreateUserDto {
             this.name = _data["name"];
             this.surname = _data["surname"];
             this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
             this.isActive = _data["isActive"];
             if (Array.isArray(_data["roleNames"])) {
                 this.roleNames = [] as any;
@@ -2313,6 +2578,7 @@ export class CreateUserDto implements ICreateUserDto {
         data["name"] = this.name;
         data["surname"] = this.surname;
         data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
         data["isActive"] = this.isActive;
         if (Array.isArray(this.roleNames)) {
             data["roleNames"] = [];
@@ -2336,6 +2602,7 @@ export interface ICreateUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string;
     isActive: boolean;
     roleNames: string[] | undefined;
     password: string;
@@ -2594,6 +2861,172 @@ export interface IGetCurrentLoginInformationsOutput {
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
+}
+
+export class GetPostForViewDto implements IGetPostForViewDto {
+    id: number | undefined;
+    postId: number | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
+    name: string | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    photo: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    area: string | undefined;
+    square: number;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+    roomStatus: boolean;
+    isDeleted: boolean;
+
+    constructor(data?: IGetPostForViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.postId = _data["postId"];
+            this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.name = _data["name"];
+            this.title = _data["title"];
+            this.contentPost = _data["contentPost"];
+            this.photo = _data["photo"];
+            this.roomPrice = _data["roomPrice"];
+            this.address = _data["address"];
+            this.area = _data["area"];
+            this.square = _data["square"];
+            this.priceCategory = _data["priceCategory"];
+            this.wifi = _data["wifi"];
+            this.parking = _data["parking"];
+            this.conditioner = _data["conditioner"];
+            this.roomStatus = _data["roomStatus"];
+            this.isDeleted = _data["isDeleted"];
+        }
+    }
+
+    static fromJS(data: any): GetPostForViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostForViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["postId"] = this.postId;
+        data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
+        data["name"] = this.name;
+        data["title"] = this.title;
+        data["contentPost"] = this.contentPost;
+        data["photo"] = this.photo;
+        data["roomPrice"] = this.roomPrice;
+        data["address"] = this.address;
+        data["area"] = this.area;
+        data["square"] = this.square;
+        data["priceCategory"] = this.priceCategory;
+        data["wifi"] = this.wifi;
+        data["parking"] = this.parking;
+        data["conditioner"] = this.conditioner;
+        data["roomStatus"] = this.roomStatus;
+        data["isDeleted"] = this.isDeleted;
+        return data;
+    }
+
+    clone(): GetPostForViewDto {
+        const json = this.toJSON();
+        let result = new GetPostForViewDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPostForViewDto {
+    id: number | undefined;
+    postId: number | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
+    name: string | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    photo: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    area: string | undefined;
+    square: number;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+    roomStatus: boolean;
+    isDeleted: boolean;
+}
+
+export class GetPostForViewDtoPagedResultDto implements IGetPostForViewDtoPagedResultDto {
+    items: GetPostForViewDto[] | undefined;
+    totalCount: number;
+
+    constructor(data?: IGetPostForViewDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(GetPostForViewDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): GetPostForViewDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostForViewDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+
+    clone(): GetPostForViewDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new GetPostForViewDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPostForViewDtoPagedResultDto {
+    items: GetPostForViewDto[] | undefined;
+    totalCount: number;
 }
 
 export class GetRoleForEditOutput implements IGetRoleForEditOutput {
@@ -3582,6 +4015,7 @@ export class UserDto implements IUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string;
     isActive: boolean;
     fullName: string | undefined;
     lastLoginTime: moment.Moment | undefined;
@@ -3604,6 +4038,7 @@ export class UserDto implements IUserDto {
             this.name = _data["name"];
             this.surname = _data["surname"];
             this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
             this.isActive = _data["isActive"];
             this.fullName = _data["fullName"];
             this.lastLoginTime = _data["lastLoginTime"] ? moment(_data["lastLoginTime"].toString()) : <any>undefined;
@@ -3630,6 +4065,7 @@ export class UserDto implements IUserDto {
         data["name"] = this.name;
         data["surname"] = this.surname;
         data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
         data["isActive"] = this.isActive;
         data["fullName"] = this.fullName;
         data["lastLoginTime"] = this.lastLoginTime ? this.lastLoginTime.toISOString() : <any>undefined;
@@ -3656,6 +4092,7 @@ export interface IUserDto {
     name: string;
     surname: string;
     emailAddress: string;
+    phoneNumber: string;
     isActive: boolean;
     fullName: string | undefined;
     lastLoginTime: moment.Moment | undefined;

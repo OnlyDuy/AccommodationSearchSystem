@@ -130,6 +130,28 @@
           </div>
         </div>
         <div class="form-group row required">
+          <label class="col-md-3 col-form-label" for="phoneNumber">
+            {{ "PhoneNumber" | localize }}
+          </label>
+          <div class="col-md-9">
+            <input
+              class="form-control"
+              name="phoneNumber"
+              id="phoneNumber"
+              required
+              maxlength="11"
+              pattern="^0\d{9}$"
+              [(ngModel)]="user.phoneNumber"
+              #phoneNumberModel="ngModel"
+              #phoneNumberEl
+            />
+            <abp-validation-summary
+              [control]="phoneNumberModel"
+              [controlEl]="phoneNumberEl"
+            ></abp-validation-summary>
+          </div>
+        </div>
+        <div class="form-group row required">
           <label class="col-md-3 col-form-label" for="emailAddress">
             {{ "EmailAddress" | localize }}
           </label>

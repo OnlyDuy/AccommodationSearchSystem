@@ -27,6 +27,10 @@ namespace AccommodationSearchSystem.Users.Dto
         [StringLength(AbpUserBase.MaxEmailAddressLength)]
         public string EmailAddress { get; set; }
 
+        [Required]
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "Invalid phone number format")]
+        public string PhoneNumber { get; set; }
+
         public bool IsActive { get; set; }
 
         public string FullName { get; set; }

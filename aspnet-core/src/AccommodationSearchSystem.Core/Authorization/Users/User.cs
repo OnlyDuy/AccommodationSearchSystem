@@ -14,11 +14,12 @@ namespace AccommodationSearchSystem.Authorization.Users
             return Guid.NewGuid().ToString("N").Truncate(16);
         }
 
-        public static User CreateTenantAdminUser(int tenantId, string emailAddress)
+        public static User CreateTenantAdminUser(int tenantId, string emailAddress, string phone)
         {
             var user = new User
             {
                 TenantId = tenantId,
+                PhoneNumber = phone,
                 UserName = AdminUserName,
                 Name = AdminUserName,
                 Surname = AdminUserName,

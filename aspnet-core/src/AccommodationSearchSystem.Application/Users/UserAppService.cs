@@ -61,6 +61,7 @@ namespace AccommodationSearchSystem.Users
 
             user.TenantId = AbpSession.TenantId;
             user.IsEmailConfirmed = true;
+            //user.PhoneNumber = input.PhoneNumber;
 
             await _userManager.InitializeOptionsAsync(AbpSession.TenantId);
 

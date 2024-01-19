@@ -24,6 +24,10 @@ namespace AccommodationSearchSystem.MultiTenancy.Dto
         [StringLength(AbpTenantBase.MaxConnectionStringLength)]
         public string ConnectionString { get; set; }
 
+        [Required]
+        [RegularExpression(@"^0\d{9}$", ErrorMessage = "Invalid phone number format")]
+        public string PhoneNumber { get; set; }
+
         public bool IsActive {get; set;}
     }
 }
