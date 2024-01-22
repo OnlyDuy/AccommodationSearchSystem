@@ -40,6 +40,17 @@ export class AppSessionService {
         return this.tenant ? this.tenant.id : null;
     }
 
+    getShownLoginId(): number {
+        const id = this._user.id;
+        if (!this._abpMultiTenancyService.isEnabled) {
+            return id;
+        }
+        return id;
+
+        // return parseInt((this._tenant ? this._tenant.id : '.') + '\\' + id);
+    }
+
+
     getShownLoginName(): string {
         const userName = this._user.userName;
         if (!this._abpMultiTenancyService.isEnabled) {
@@ -47,6 +58,33 @@ export class AppSessionService {
         }
 
         return (this._tenant ? this._tenant.tenancyName : '.') + '\\' + userName;
+    }
+
+    getShownLoginSurname(): string {
+        const surname = this._user.surname;
+        if (!this._abpMultiTenancyService.isEnabled) {
+            return surname;
+        }
+
+        return (this._tenant ? this._tenant.tenancyName : '.') + '\\' + surname;
+    }
+
+    getShownLoginEmail(): string {
+        const emailAddress = this._user.emailAddress;
+        if (!this._abpMultiTenancyService.isEnabled) {
+            return emailAddress;
+        }
+
+        return (this._tenant ? this._tenant.tenancyName : '.') + '\\' + emailAddress;
+    }
+
+    getShownLoginPhoneNumber(): string {
+        const phoneNumber = this._user.phoneNumber;
+        if (!this._abpMultiTenancyService.isEnabled) {
+            return phoneNumber;
+        }
+
+        return (this._tenant ? this._tenant.tenancyName : '.') + '\\' + phoneNumber;
     }
 
     init(): Promise<boolean> {

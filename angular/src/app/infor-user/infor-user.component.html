@@ -1,3 +1,52 @@
-<p>
-  infor-user works!
-</p>
+<div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>{{ "PersonalInformation" | localize }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <!-- <div class="card-header">
+                    <div class="row"></div>
+                </div> -->
+                <div class="card-body">
+                    <section class="container my-4">
+                        <div *ngFor="let user of items" class="user-item mb-4 p-4 bg-light rounded shadow">
+                            <div class="contact-info row">
+                                <div class="col-md-6 mb-3">
+                                    <p><strong>Họ tên:</strong> {{ user.fullName }}</p>
+                                    <p><strong>Email:</strong> {{ user.emailAddress }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Điện thoại:</strong> {{ user.phoneNumber }}</p>
+                                </div>
+                            </div>
+                            <div class="user-actions text-center mt-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-sm bg-secondary mx-2" (click)="editUser(user)">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    {{ "Edit" | localize }} </button>
+                                <button type="button" class="btn btn-sm bg-primary" (click)="resetPassword(user)">
+                                    <i class="fas fa-lock"></i>
+                                    {{ "ResetPassword" | localize }} </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <div class="card-footer table-card-footer bg-light border-top">
+                    <div class="row">
+                        <div class="col-sm-4 col-12 text-sm-left text-center">
+                            <button class="btn btn-secondary" (click)="refresh()">
+                                <i class="fas fa-redo-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

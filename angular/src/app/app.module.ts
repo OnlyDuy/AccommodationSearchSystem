@@ -28,6 +28,12 @@ import { CreateUserDialogComponent } from '@app/users/create-user/create-user-di
 import { EditUserDialogComponent } from '@app/users/edit-user/edit-user-dialog.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { ResetPasswordDialogComponent } from './users/reset-password/reset-password.component';
+// infor user
+import { InforUserComponent } from './infor-user/infor-user.component';
+import { EditInforUserComponent } from './infor-user/edit-infor-user/edit-infor-user.component';
+import { DetailUserComponent} from "./infor-user/detail-user/detail-user.component";
+import {ResetPasswordInforComponent} from "./infor-user/reset-password-infor/reset-password-infor.component";
+
 // layout
 import { HeaderComponent } from './layout/header.component';
 import { HeaderLeftNavbarComponent } from './layout/header-left-navbar.component';
@@ -38,11 +44,10 @@ import { SidebarComponent } from './layout/sidebar.component';
 import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
-import { InforUserComponent } from './infor-user/infor-user.component';
 import { PostComponent } from './post/post.component';
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     HomeComponent,
     AboutComponent,
@@ -60,6 +65,11 @@ import { PostComponent } from './post/post.component';
     EditUserDialogComponent,
     ChangePasswordComponent,
     ResetPasswordDialogComponent,
+    // infor user
+    InforUserComponent,
+    ResetPasswordInforComponent,
+    DetailUserComponent,
+    EditInforUserComponent,
     // layout
     HeaderComponent,
     HeaderLeftNavbarComponent,
@@ -70,7 +80,6 @@ import { PostComponent } from './post/post.component';
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
-      InforUserComponent,
       PostComponent
    ],
   imports: [

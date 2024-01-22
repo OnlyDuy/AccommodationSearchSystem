@@ -63,9 +63,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 'fas fa-users',
                 'Pages.Users'
             ),
-            new MenuItem("Thông tin cá nhân", "", "fas fa-circle", "Pages.Personal.Information", [
-                new MenuItem("Chi tiết tài khoản", "/app/detail-user", "far fa-circle", "Pages.Personal.Information" ),
-                new MenuItem("Chỉnh sửa thông tin", "/app/edit-user", "far fa-circle", "Pages.Personal.Information"),
+            new MenuItem("Thông tin cá nhân", "/app/infor-user", "fas fa-circle", "Pages.Personal.Information", [
             ]),
             new MenuItem("Quản lý bài đăng", "", "fas fa-circle", "Pages.Posts", [
                 new MenuItem("Tạo bài đăng", "/app/create-post", "far fa-circle", "Pages.Posts" ),
