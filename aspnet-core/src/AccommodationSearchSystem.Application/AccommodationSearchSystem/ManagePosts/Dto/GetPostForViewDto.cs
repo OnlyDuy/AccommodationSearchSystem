@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services.Dto;
+using Abp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
 {
-    public class GetPostForViewDto : EntityDto<long?>
+    public class GetPostForViewDto : Entity<long?>
     {
-        public int? PostId { get; set; }
-        public string EmailAddress { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Name { get; set; }
+        public int? TenantId { get; set; }
         public string Title { get; set; }
         public string ContentPost { get; set; }
         public string Photo { get; set; }

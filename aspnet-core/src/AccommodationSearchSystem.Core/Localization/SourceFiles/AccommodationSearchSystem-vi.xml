@@ -127,5 +127,20 @@
   	  <text name="Host">Chủ nhà</text>
 	  <text name="Admin">Quản trị viên</text>
 	  <text name="Renter">Người thuê nhà</text>
+	
+
+	  <text name="EditPosts">Chỉnh sửa bài đăng</text>
+	  <text name="PostsDetails">Chi tiết bài đăng</text>
+	  <text name="Title">Tiêu đề</text>
+	  <text name="ContentPost">Nội dung bài đăng</text>
+	  <text name="RoomPrice">Giá phòng</text>
+	  <text name="Address">Địa chỉ</text>
+	  <text name="PriceCategory">Loại phòng</text>
+	  <text name="RoomStatus">Trạng thái phòng</text>
+	  <text name="CreateNewPost" value="Tạo bài đăng mới" />
+	  <text name="Photo" value="Ảnh phòng" />
+	  <text name="Square" value="Diện tích" />
+	  
+
   </texts>
 </localizationDictionary>

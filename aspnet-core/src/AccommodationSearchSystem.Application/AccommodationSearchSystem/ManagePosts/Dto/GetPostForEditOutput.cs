@@ -1,5 +1,4 @@
-﻿using Abp.Application.Services.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
 {
-    public class GetPostInputDto : PagedAndSortedResultRequestDto
+    public class GetPostForEditOutput
     {
-        public string filterText { get; set; }
+        public CreateOrEditIPostDto CreateOrEditPost { get; set; }
+        public CreateOrEditIPostDto CreateOrEditAcom { get; set; }
+
     }
 }

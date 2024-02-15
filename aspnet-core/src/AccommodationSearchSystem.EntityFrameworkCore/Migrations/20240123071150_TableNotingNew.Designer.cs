@@ -4,6 +4,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    partial class AccommodationSearchSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240123071150_TableNotingNew")]
+    partial class TableNotingNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1625,7 +1627,7 @@ namespace AccommodationSearchSystem.Migrations
                     b.Property<decimal>("Square")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("TenantId")
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Wifi")
@@ -1677,7 +1679,7 @@ namespace AccommodationSearchSystem.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TenantId")
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -1726,7 +1728,7 @@ namespace AccommodationSearchSystem.Migrations
                     b.Property<string>("NotiDatingName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TenantId")
+                    b.Property<int>("TenantId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdateAt")

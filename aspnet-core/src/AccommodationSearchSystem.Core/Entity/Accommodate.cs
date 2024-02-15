@@ -13,9 +13,7 @@ namespace AccommodationSearchSystem.Entity
     [Table("Accommodate")]
     public class Accommodate : FullAuditedEntity<long>, IEntity<long>
     {
-        [Required]
-        public int AccommodateId { get; set; }
-        public int TenantId { get; set; }
+        public int? TenantId { get; set; }
         public int PostId { get; set; }
         public decimal RoomPrice { get; set; } // Giá phòng
         [StringLength(4000)]

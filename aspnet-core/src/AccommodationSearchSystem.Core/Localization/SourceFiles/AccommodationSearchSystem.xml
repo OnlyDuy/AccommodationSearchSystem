@@ -127,5 +127,16 @@
 	  <text name="Host">Host</text>
 	  <text name="Admin">Admin</text>
 	  <text name="Renter">Renter</text>
+
+	  <text name="Title">Title</text>
+	  <text name="ContentPost">Content Post</text>
+	  <text name="RoomPrice">Room Price</text>
+	  <text name="Address">Address</text>
+	  <text name="PriceCategory">Price Category</text>
+	  <text name="PostsDetails">Post Detail</text>
+	  <text name="RoomStatus">Trạng thái phòng</text>
+	  <text name="CreateNewPost" value="Create New Post" />
+	  <text name="Photo" value="Photo" />
+	  <text name="Square" value="Square" />
   </texts>
 </localizationDictionary>

@@ -893,55 +893,82 @@ export class ManagePostsServiceProxy {
     }
 
     /**
-     * @param roomPrice (optional) 
-     * @param address (optional) 
-     * @param square (optional) 
-     * @param roomStatus (optional) 
-     * @param priceCategory (optional) 
-     * @param wifi (optional) 
-     * @param parking (optional) 
-     * @param conditioner (optional) 
      * @param id (optional) 
      * @return Success
      */
-    getAll(roomPrice: number | undefined, address: string | undefined, square: number | undefined, roomStatus: boolean | undefined, priceCategory: string | undefined, wifi: boolean | undefined, parking: boolean | undefined, conditioner: boolean | undefined, id: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAll?";
-        if (roomPrice === null)
-            throw new Error("The parameter 'roomPrice' cannot be null.");
-        else if (roomPrice !== undefined)
-            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
-        if (address === null)
-            throw new Error("The parameter 'address' cannot be null.");
-        else if (address !== undefined)
-            url_ += "Address=" + encodeURIComponent("" + address) + "&";
-        if (square === null)
-            throw new Error("The parameter 'square' cannot be null.");
-        else if (square !== undefined)
-            url_ += "Square=" + encodeURIComponent("" + square) + "&";
-        if (roomStatus === null)
-            throw new Error("The parameter 'roomStatus' cannot be null.");
-        else if (roomStatus !== undefined)
-            url_ += "RoomStatus=" + encodeURIComponent("" + roomStatus) + "&";
-        if (priceCategory === null)
-            throw new Error("The parameter 'priceCategory' cannot be null.");
-        else if (priceCategory !== undefined)
-            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
-        if (wifi === null)
-            throw new Error("The parameter 'wifi' cannot be null.");
-        else if (wifi !== undefined)
-            url_ += "Wifi=" + encodeURIComponent("" + wifi) + "&";
-        if (parking === null)
-            throw new Error("The parameter 'parking' cannot be null.");
-        else if (parking !== undefined)
-            url_ += "Parking=" + encodeURIComponent("" + parking) + "&";
-        if (conditioner === null)
-            throw new Error("The parameter 'conditioner' cannot be null.");
-        else if (conditioner !== undefined)
-            url_ += "Conditioner=" + encodeURIComponent("" + conditioner) + "&";
+    delete(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/Delete?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelete(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelete(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDelete(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAll?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -986,6 +1013,62 @@ export class ManagePostsServiceProxy {
             }));
         }
         return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getLoyaltyGiftItemForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetLoyaltyGiftItemForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLoyaltyGiftItemForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLoyaltyGiftItemForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForEditOutput>;
+        }));
+    }
+
+    protected processGetLoyaltyGiftItemForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForEditOutput>(null as any);
     }
 }
 
@@ -2926,7 +3009,8 @@ export interface IChangeUserLanguageDto {
 
 export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     id: number | undefined;
-    postId: number | undefined;
+    accommodateId: number;
+    postId: number;
     tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
@@ -2953,6 +3037,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.accommodateId = _data["accommodateId"];
             this.postId = _data["postId"];
             this.tenantId = _data["tenantId"];
             this.title = _data["title"];
@@ -2980,6 +3065,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["accommodateId"] = this.accommodateId;
         data["postId"] = this.postId;
         data["tenantId"] = this.tenantId;
         data["title"] = this.title;
@@ -3007,7 +3093,8 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
 
 export interface ICreateOrEditIPostDto {
     id: number | undefined;
-    postId: number | undefined;
+    accommodateId: number;
+    postId: number;
     tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
@@ -3487,12 +3574,56 @@ export interface IGetCurrentLoginInformationsOutput {
     tenant: TenantLoginInfoDto;
 }
 
+export class GetPostForEditOutput implements IGetPostForEditOutput {
+    createOrEditPost: CreateOrEditIPostDto;
+    createOrEditAcom: CreateOrEditIPostDto;
+
+    constructor(data?: IGetPostForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createOrEditPost = _data["createOrEditPost"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditPost"]) : <any>undefined;
+            this.createOrEditAcom = _data["createOrEditAcom"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditAcom"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetPostForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createOrEditPost"] = this.createOrEditPost ? this.createOrEditPost.toJSON() : <any>undefined;
+        data["createOrEditAcom"] = this.createOrEditAcom ? this.createOrEditAcom.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): GetPostForEditOutput {
+        const json = this.toJSON();
+        let result = new GetPostForEditOutput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPostForEditOutput {
+    createOrEditPost: CreateOrEditIPostDto;
+    createOrEditAcom: CreateOrEditIPostDto;
+}
+
 export class GetPostForViewDto implements IGetPostForViewDto {
     id: number | undefined;
-    postId: number | undefined;
-    emailAddress: string | undefined;
-    phoneNumber: string | undefined;
-    name: string | undefined;
+    tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
     photo: string | undefined;
@@ -3519,10 +3650,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.postId = _data["postId"];
-            this.emailAddress = _data["emailAddress"];
-            this.phoneNumber = _data["phoneNumber"];
-            this.name = _data["name"];
+            this.tenantId = _data["tenantId"];
             this.title = _data["title"];
             this.contentPost = _data["contentPost"];
             this.photo = _data["photo"];
@@ -3549,10 +3677,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["postId"] = this.postId;
-        data["emailAddress"] = this.emailAddress;
-        data["phoneNumber"] = this.phoneNumber;
-        data["name"] = this.name;
+        data["tenantId"] = this.tenantId;
         data["title"] = this.title;
         data["contentPost"] = this.contentPost;
         data["photo"] = this.photo;
@@ -3579,10 +3704,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
 
 export interface IGetPostForViewDto {
     id: number | undefined;
-    postId: number | undefined;
-    emailAddress: string | undefined;
-    phoneNumber: string | undefined;
-    name: string | undefined;
+    tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
     photo: string | undefined;

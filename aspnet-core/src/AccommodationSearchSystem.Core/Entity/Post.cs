@@ -13,10 +13,9 @@ namespace AccommodationSearchSystem.Entity
     [Table("Post")]
     public class Post : FullAuditedEntity<long>, IEntity<long>
     {
-        [Required]
-        public int? PostId { get; set; }
         public int? TenantId { get; set; }
         [StringLength(4000)]
+        public int AccommodateId { get; set; }
         public string Title { get; set; }
         [StringLength(4000)]
         public string ContentPost { get; set; }

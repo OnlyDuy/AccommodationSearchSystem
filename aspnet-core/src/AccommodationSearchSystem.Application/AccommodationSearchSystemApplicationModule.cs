@@ -2,6 +2,7 @@
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using AccommodationSearchSystem.Authorization;
+using AccommodationSearchSystem.Helpers;
 
 namespace AccommodationSearchSystem
 {
@@ -13,6 +14,9 @@ namespace AccommodationSearchSystem
         public override void PreInitialize()
         {
             Configuration.Authorization.Providers.Add<AccommodationSearchSystemAuthorizationProvider>();
+
+            //Adding custom AutoMapper configuration
+            Configuration.Modules.AbpAutoMapper().Configurators.Add(CustomDtoMapper.CreateMappings);
         }
 
         public override void Initialize()

@@ -20,7 +20,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IO;
-
 namespace AccommodationSearchSystem.Web.Host.Startup
 {
     public class Startup

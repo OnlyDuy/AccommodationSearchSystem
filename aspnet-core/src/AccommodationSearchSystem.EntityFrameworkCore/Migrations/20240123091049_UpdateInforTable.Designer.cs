@@ -4,6 +4,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    partial class AccommodationSearchSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240123091049_UpdateInforTable")]
+    partial class UpdateInforTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1628,6 +1630,9 @@ namespace AccommodationSearchSystem.Migrations
                     b.Property<int?>("TenantId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Wifi")
                         .HasColumnType("bit");
 
@@ -1683,6 +1688,9 @@ namespace AccommodationSearchSystem.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Notification");
@@ -1731,6 +1739,9 @@ namespace AccommodationSearchSystem.Migrations
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1788,6 +1799,9 @@ namespace AccommodationSearchSystem.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

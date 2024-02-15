@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Abp.Castle.Log4Net" Version="7.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AccommodationSearchSystem.Core\AccommodationSearchSystem.Core.csproj" />
