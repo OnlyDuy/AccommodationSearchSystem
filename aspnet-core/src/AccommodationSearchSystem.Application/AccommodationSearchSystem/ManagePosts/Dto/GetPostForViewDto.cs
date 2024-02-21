@@ -11,6 +11,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
 {
     public class GetPostForViewDto : Entity<long?>
     {
+        public string PostCode { get; set; }
         public int? TenantId { get; set; }
         public string Title { get; set; }
         public string ContentPost { get; set; }
@@ -25,6 +26,5 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public bool Parking { get; set; } // Có chỗ để xe hay không
         public bool Conditioner { get; set; } // Có điều hóa hay không
         public bool RoomStatus { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

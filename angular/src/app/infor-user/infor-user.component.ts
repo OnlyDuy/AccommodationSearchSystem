@@ -121,5 +121,9 @@ export class InforUserComponent extends PagedListingComponentBase<UserDto> {
         }
       );
     }
+    createOrEditUserDialog.content.onSave.subscribe(() => {
+      this.refresh();
+    });
   }
+
 }

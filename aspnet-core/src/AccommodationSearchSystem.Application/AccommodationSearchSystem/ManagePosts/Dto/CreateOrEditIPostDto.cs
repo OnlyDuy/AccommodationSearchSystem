@@ -11,8 +11,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
 {
     public class CreateOrEditIPostDto : EntityDto<long?>
     {
-        public int AccommodateId { get; set; }
-        public int PostId { get; set; }
+        public string PostCode { get; set; }
         public int? TenantId { get; set; }
         [StringLength(4000)]
         public string Title { get; set; }

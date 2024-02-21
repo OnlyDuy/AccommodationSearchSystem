@@ -1,3 +1,145 @@
-<p>
-  post works!
-</p>
+<div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>{{ "Posts" | localize }}</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <a class="btn bg-blue mr-2" (click)="createPost()">
+                        <i class="fa fa-plus-square"></i>
+                        {{ "Create" | localize }}
+                    </a>
+                    <button class="btn bg-success mr-2" (click)="editPost()" [disabled]="!selectedRow">
+                        <i class="fas fa-pencil-alt"></i>
+                        {{ "Edit" | localize }}
+                    </button>
+                    <button class="btn bg-danger" (click)="deletePost()" [disabled]="!selectedRow">
+                        <i class="fas fa-trash-alt"></i>
+                        {{ "Delete" | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                        selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
+                        [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
+                        [busy]="isLoading"
+                        [selection]="selectedPost"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [globalFilterFields]="['title', 'roomPrice', 'id']">
+                        <ng-template pTemplate="caption">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                            <i class="pi pi-undo"></i>
+                                            {{ "Reset" | localize }}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-outline mb-2" data-mdb-input-init>
+
+                                            <input pInputText class="form-control" type="search"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search keyword" />
+
+                                        </div>
+                                        <!-- <span class="p-input-icon-left ml-5">
+                                          <i class="pi pi-search"></i>
+                                          <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                      </span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="min-width:10rem" pFrozenColumn>
+                                    <div class="flex align-items-center">
+                                        Mã
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        {{l("Title")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        {{l("ContentPost")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        {{l("RoomPrice")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        {{l("Address")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        {{l("PriceCategory")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        {{l("RoomStatus")}}
+                                    </div>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                            <tr [class.p-odd]="rowIndex % 2 === 0" [class.p-even]="rowIndex % 2 !== 0"
+                                [pSelectableRow]="rowData" (click)="selectedRow = rowData">
+                                <td style="min-width:10rem" pFrozenColumn>
+                                    {{ rowData.id }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.title }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.contentPost }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowData.roomPrice }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowData.address }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowData.priceCategory }}
+                                </td>
+
+                                <td class="text-center" style="min-width:10rem">
+                                    <i class="pi"
+                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowData.roomStatus === true, 'text-red-500 pi-times-circle': rowData.roomStatus === false } "></i>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5">No customers found.</td>
+                            </tr>
+                        </ng-template>
+
+                    </p-table>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<CreateOrEditPost #CreateOrEditPost>
+
+</CreateOrEditPost>

@@ -10,7 +10,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
     public class GetPostForEditOutput
     {
         public CreateOrEditIPostDto CreateOrEditPost { get; set; }
-        public CreateOrEditIPostDto CreateOrEditAcom { get; set; }
 
     }
 }

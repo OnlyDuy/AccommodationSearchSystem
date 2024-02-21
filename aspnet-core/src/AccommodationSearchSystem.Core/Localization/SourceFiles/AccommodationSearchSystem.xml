@@ -138,5 +138,7 @@
 	  <text name="CreateNewPost" value="Create New Post" />
 	  <text name="Photo" value="Photo" />
 	  <text name="Square" value="Square" />
+
+	  <text name="Reset" value="Reset" />
   </texts>
 </localizationDictionary>

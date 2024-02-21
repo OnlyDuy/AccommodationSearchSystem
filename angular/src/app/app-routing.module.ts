@@ -9,7 +9,6 @@ import { TenantsComponent } from './tenants/tenants.component';
 import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { InforUserComponent } from './infor-user/infor-user.component';
-// import { CreatePostComponent } from './post/create-post/create-post.component';
 import { PostComponent } from './post/post.component';
 
 @NgModule({

@@ -1,0 +1,116 @@
+<div bsModal #createOrEditModal="bs-modal" class="modal fade"
+  aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-md modal-lg">
+    <div class="modal-content">
+      <form class="form-horizontal" autocomplete="off" #createpostsModal="ngForm" (ngSubmit)="save()" *ngIf="active">
+
+        <abp-modal-header *ngIf="posts.id" [title]="'CreateNewPost' | localize"
+          (onCloseClick)="modal.hide()"></abp-modal-header>
+        <abp-modal-header *ngIf="!posts.id" [title]="'CreateNewPost' | localize"
+          (onCloseClick)="modal.hide()"></abp-modal-header>
+
+        <div class="modal-body">
+          <tabset>
+            <tab [heading]="'PostsDetails' | localize" class="pt-3 px-2">
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="title">
+                  {{ "Title" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="title" id="title" required [(ngModel)]="posts.title"
+                    #titleModel="ngModel" #titleEl />
+                  <abp-validation-summary [control]="titleModel" [controlEl]="titleEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="contentPost">
+                  {{ "ContentPost" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="contentPost" id="contentPost" required
+                    [(ngModel)]="posts.contentPost" #contentPostModel="ngModel" #contentPostEl />
+                  <abp-validation-summary [control]="contentPostModel" [controlEl]="contentPostEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="photo">
+                  {{ "Photo" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="photo" id="photo" required minlength="2"
+                    [(ngModel)]="posts.photo" #photoModel="ngModel" #photoEl />
+                  <abp-validation-summary [control]="photoModel" [controlEl]="photoEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="roomPrice">
+                  {{ "RoomPrice" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="roomPrice" id="roomPrice" required
+                    [(ngModel)]="posts.roomPrice" #roomPriceModel="ngModel" #roomPriceEl />
+                  <abp-validation-summary [control]="roomPriceModel" [controlEl]="roomPriceEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="address">
+                  {{ "Address" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="address" id="address" required [(ngModel)]="posts.address"
+                    ngModel #addressModel="ngModel" #addressEl />
+                  <abp-validation-summary [control]="addressModel" [controlEl]="addressEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="square">
+                  {{ "Square" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input class="form-control" name="square" id="square" required [(ngModel)]="posts.square"
+                    #squareModel="ngModel" #squareEl />
+                  <abp-validation-summary [control]="squareModel" [controlEl]="squareEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="priceCategory">
+                  {{ "PriceCategory" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="priceCategory" id="priceCategory" required
+                    [(ngModel)]="posts.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl />
+                  <abp-validation-summary [control]="priceCategoryModel"
+                    [controlEl]="priceCategoryEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="form-group row mb-0">
+                <label class="col-md-3 col-form-label">
+                  {{ "RoomStatus" | localize }}
+                </label>
+                <div class="col-md-9">
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" name="roomStatus" id="roomStatus"
+                      [(ngModel)]="posts.roomStatus" />
+                    <label class="custom-control-label mt-2" for="roomStatus"></label>
+                  </div>
+                </div>
+              </div>
+            </tab>
+          </tabset>
+        </div>
+        <div class="modal-footer">
+          <abp-modal-footer
+          [cancelDisabled]="saving"
+          [saveDisabled]="!createpostsModal.form.valid || saving"
+          (onCancelClick)="modal.hide()"
+        ></abp-modal-footer>
+          <!-- <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
+            (click)="close()">{{l("Cancel")}}</button>
+          <button type="submit" class="btn btn-outline-primary" [cancelDisabled]="saving"  [saveDisabled]="!createpostsModal.form.valid || saving"
+            ><i class="fa fa-save mr-1"></i>
+            <span>{{l("Save")}}</span></button> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

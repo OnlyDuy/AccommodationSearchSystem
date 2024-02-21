@@ -36,14 +36,15 @@
     "ngx-bootstrap": "^5.6.1",
     "ngx-pagination": "^5.0.0",
     "ngx-spinner": "^16.0.2",
+    "primeflex": "^3.3.1",
+    "primeicons": "^6.0.1",
+    "primeng": "^12.2.3",
     "push.js": "1.0.12",
     "rxjs": "^6.4.0",
     "sweetalert2": "^10.15.6",
     "ts-helpers": "^1.1.2",
     "tslib": "^2.0.0",
     "web-animations-js": "^2.3.2",
-    "primeicons": "^6.0.1",
-    "primeng": "^12.2.3",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

@@ -140,6 +140,8 @@
 	  <text name="CreateNewPost" value="Tạo bài đăng mới" />
 	  <text name="Photo" value="Ảnh phòng" />
 	  <text name="Square" value="Diện tích" />
+
+	  <text name="Reset" value="Thiết lập lại" />
 	  
 
   </texts>

@@ -896,8 +896,8 @@ export class ManagePostsServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    delete(id: number | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ManagePosts/Delete?";
+    deletePost(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/DeletePost?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -912,11 +912,11 @@ export class ManagePostsServiceProxy {
         };
 
         return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDelete(response_);
+            return this.processDeletePost(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDelete(response_ as any);
+                    return this.processDeletePost(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -925,7 +925,7 @@ export class ManagePostsServiceProxy {
         }));
     }
 
-    protected processDelete(response: HttpResponseBase): Observable<void> {
+    protected processDeletePost(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3009,8 +3009,7 @@ export interface IChangeUserLanguageDto {
 
 export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     id: number | undefined;
-    accommodateId: number;
-    postId: number;
+    postCode: string | undefined;
     tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
@@ -3037,8 +3036,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.accommodateId = _data["accommodateId"];
-            this.postId = _data["postId"];
+            this.postCode = _data["postCode"];
             this.tenantId = _data["tenantId"];
             this.title = _data["title"];
             this.contentPost = _data["contentPost"];
@@ -3065,8 +3063,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["accommodateId"] = this.accommodateId;
-        data["postId"] = this.postId;
+        data["postCode"] = this.postCode;
         data["tenantId"] = this.tenantId;
         data["title"] = this.title;
         data["contentPost"] = this.contentPost;
@@ -3093,8 +3090,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
 
 export interface ICreateOrEditIPostDto {
     id: number | undefined;
-    accommodateId: number;
-    postId: number;
+    postCode: string | undefined;
     tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
@@ -3576,7 +3572,6 @@ export interface IGetCurrentLoginInformationsOutput {
 
 export class GetPostForEditOutput implements IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
-    createOrEditAcom: CreateOrEditIPostDto;
 
     constructor(data?: IGetPostForEditOutput) {
         if (data) {
@@ -3590,7 +3585,6 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
     init(_data?: any) {
         if (_data) {
             this.createOrEditPost = _data["createOrEditPost"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditPost"]) : <any>undefined;
-            this.createOrEditAcom = _data["createOrEditAcom"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditAcom"]) : <any>undefined;
         }
     }
 
@@ -3604,7 +3598,6 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["createOrEditPost"] = this.createOrEditPost ? this.createOrEditPost.toJSON() : <any>undefined;
-        data["createOrEditAcom"] = this.createOrEditAcom ? this.createOrEditAcom.toJSON() : <any>undefined;
         return data;
     }
 
@@ -3618,11 +3611,11 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
 
 export interface IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
-    createOrEditAcom: CreateOrEditIPostDto;
 }
 
 export class GetPostForViewDto implements IGetPostForViewDto {
     id: number | undefined;
+    postCode: string | undefined;
     tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
@@ -3636,7 +3629,6 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     parking: boolean;
     conditioner: boolean;
     roomStatus: boolean;
-    isDeleted: boolean;
 
     constructor(data?: IGetPostForViewDto) {
         if (data) {
@@ -3650,6 +3642,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
+            this.postCode = _data["postCode"];
             this.tenantId = _data["tenantId"];
             this.title = _data["title"];
             this.contentPost = _data["contentPost"];
@@ -3663,7 +3656,6 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             this.parking = _data["parking"];
             this.conditioner = _data["conditioner"];
             this.roomStatus = _data["roomStatus"];
-            this.isDeleted = _data["isDeleted"];
         }
     }
 
@@ -3677,6 +3669,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
+        data["postCode"] = this.postCode;
         data["tenantId"] = this.tenantId;
         data["title"] = this.title;
         data["contentPost"] = this.contentPost;
@@ -3690,7 +3683,6 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         data["parking"] = this.parking;
         data["conditioner"] = this.conditioner;
         data["roomStatus"] = this.roomStatus;
-        data["isDeleted"] = this.isDeleted;
         return data;
     }
 
@@ -3704,6 +3696,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
 
 export interface IGetPostForViewDto {
     id: number | undefined;
+    postCode: string | undefined;
     tenantId: number | undefined;
     title: string | undefined;
     contentPost: string | undefined;
@@ -3717,7 +3710,6 @@ export interface IGetPostForViewDto {
     parking: boolean;
     conditioner: boolean;
     roomStatus: boolean;
-    isDeleted: boolean;
 }
 
 export class GetPostForViewDtoPagedResultDto implements IGetPostForViewDtoPagedResultDto {

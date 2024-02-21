@@ -46,7 +46,7 @@ import { SidebarLogoComponent } from './layout/sidebar-logo.component';
 import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component';
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { PostComponent } from './post/post.component';
-
+import { CreateOrEditPostComponent } from './post/create-or-edit-post/create-or-edit-post.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,7 +81,10 @@ import { PostComponent } from './post/post.component';
     SidebarLogoComponent,
     SidebarUserPanelComponent,
     SidebarMenuComponent,
-      PostComponent
+
+    // posts
+    PostComponent,
+    CreateOrEditPostComponent
    ],
   imports: [
     CommonModule,
@@ -110,6 +113,7 @@ import { PostComponent } from './post/post.component';
     CreateUserDialogComponent,
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
+    CreateOrEditPostComponent
   ],
 })
 export class AppModule {}
