@@ -47,6 +47,7 @@ import { SidebarUserPanelComponent } from './layout/sidebar-user-panel.component
 import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { PostComponent } from './post/post.component';
 import { CreateOrEditPostComponent } from './post/create-or-edit-post/create-or-edit-post.component';
+import { PostDetailComponent } from './post/post-detail/post-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +85,8 @@ import { CreateOrEditPostComponent } from './post/create-or-edit-post/create-or-
 
     // posts
     PostComponent,
-    CreateOrEditPostComponent
+    CreateOrEditPostComponent,
+    PostDetailComponent
    ],
   imports: [
     CommonModule,

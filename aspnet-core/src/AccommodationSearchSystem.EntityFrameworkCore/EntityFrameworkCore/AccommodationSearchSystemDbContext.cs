@@ -12,6 +12,7 @@ namespace AccommodationSearchSystem.EntityFrameworkCore
         /* Define a DbSet for each entity of the application */
 
         public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<PhotoPost> PhotoPosts { get; set; }
         public virtual DbSet<Accommodate> Accommodates { get; set; }
         public virtual DbSet<Service> Services { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }

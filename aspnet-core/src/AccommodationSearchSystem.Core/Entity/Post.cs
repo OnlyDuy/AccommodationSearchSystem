@@ -32,6 +32,7 @@ namespace AccommodationSearchSystem.Entity
         public string PriceCategory { get; set; } // Loại phòng
         public bool Wifi { get; set; } // Có wifi hay không
         public bool Parking { get; set; } // Có chỗ để xe hay không
+        public ICollection<PhotoPost> PhotoPosts { get; set; }
         public bool Conditioner { get; set; } // Có điều hóa hay không
 
     }

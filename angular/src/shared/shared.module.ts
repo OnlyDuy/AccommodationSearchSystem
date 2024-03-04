@@ -19,9 +19,15 @@ import { BusyDirective } from './directives/busy.directive';
 import { EqualValidator } from './directives/equal-validator.directive';
 
 import { ButtonModule } from 'primeng/button';
-import { FileUpload, FileUploadModule } from 'primeng/fileupload';
+// import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
+import { OrderListModule } from 'primeng/orderlist';
 import { PaginatorModule } from 'primeng/paginator';
+import { DataViewModule } from 'primeng/dataview';
+import { CardModule } from 'primeng/card';
+
+import { FileUploadModule } from 'ng2-file-upload';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -30,6 +36,9 @@ import { PaginatorModule } from 'primeng/paginator';
         ButtonModule,
         FileUploadModule,
         TableModule,
+        OrderListModule,
+        DataViewModule,
+        CardModule,
         PaginatorModule
     ],
 
@@ -50,9 +59,13 @@ import { PaginatorModule } from 'primeng/paginator';
         LocalizePipe,
         BusyDirective,
         EqualValidator,
+        FileUploadModule,
         ButtonModule,
-        FileUpload,
         TableModule,
+        OrderListModule,
+        DataViewModule,
+        CardModule,
+        NgxPaginationModule,
         PaginatorModule
     ]
 })

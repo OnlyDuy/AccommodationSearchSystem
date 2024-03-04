@@ -20,6 +20,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System.IO;
+using AccommodationSearchSystem.Helpers;
+using AccommodationSearchSystem.Interfaces;
+using AccommodationSearchSystem.Services;
+using AccommodationSearchSystem.EntityFrameworkCore;
+
 namespace AccommodationSearchSystem.Web.Host.Startup
 {
     public class Startup
@@ -30,11 +35,12 @@ namespace AccommodationSearchSystem.Web.Host.Startup
 
         private readonly IConfigurationRoot _appConfiguration;
         private readonly IWebHostEnvironment _hostingEnvironment;
-
-        public Startup(IWebHostEnvironment env)
+        private readonly IConfiguration _config;
+        public Startup(IWebHostEnvironment env, IConfiguration config)
         {
             _hostingEnvironment = env;
             _appConfiguration = env.GetAppConfiguration();
+            _config = config;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -86,6 +92,9 @@ namespace AccommodationSearchSystem.Web.Host.Startup
                     )
                 )
             );
+            services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
+            services.AddScoped<IPhotoService, PhotoService>();
+            services.AddDbContext<AccommodationSearchSystemDbContext>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)

@@ -1,5 +1,5 @@
-<div bsModal #createOrEditModal="bs-modal" class="modal fade"
-  aria-labelledby="createOrEditModal" aria-hidden="true" [config]="{backdrop: 'static'}">
+<div bsModal #createOrEditModal="bs-modal" class="modal fade" aria-labelledby="createOrEditModal" aria-hidden="true"
+  [config]="{backdrop: 'static'}">
   <div class="modal-dialog modal-md modal-lg">
     <div class="modal-content">
       <form class="form-horizontal" autocomplete="off" #createpostsModal="ngForm" (ngSubmit)="save()" *ngIf="active">
@@ -29,17 +29,8 @@
                 <div class="col-md-9">
                   <input type="text" class="form-control" name="contentPost" id="contentPost" required
                     [(ngModel)]="posts.contentPost" #contentPostModel="ngModel" #contentPostEl />
-                  <abp-validation-summary [control]="contentPostModel" [controlEl]="contentPostEl"></abp-validation-summary>
-                </div>
-              </div>
-              <div class="form-group row required">
-                <label class="col-md-3 col-form-label" for="photo">
-                  {{ "Photo" | localize }}
-                </label>
-                <div class="col-md-9">
-                  <input type="text" class="form-control" name="photo" id="photo" required minlength="2"
-                    [(ngModel)]="posts.photo" #photoModel="ngModel" #photoEl />
-                  <abp-validation-summary [control]="photoModel" [controlEl]="photoEl"></abp-validation-summary>
+                  <abp-validation-summary [control]="contentPostModel"
+                    [controlEl]="contentPostEl"></abp-validation-summary>
                 </div>
               </div>
               <div class="form-group row required">
@@ -57,8 +48,8 @@
                   {{ "Address" | localize }}
                 </label>
                 <div class="col-md-9">
-                  <input type="text" class="form-control" name="address" id="address" required [(ngModel)]="posts.address"
-                    ngModel #addressModel="ngModel" #addressEl />
+                  <input type="text" class="form-control" name="address" id="address" required
+                    [(ngModel)]="posts.address" ngModel #addressModel="ngModel" #addressEl />
                   <abp-validation-summary [control]="addressModel" [controlEl]="addressEl"></abp-validation-summary>
                 </div>
               </div>
@@ -95,15 +86,115 @@
                   </div>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-12 col-sm-4">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="conditioner" id="conditioner"
+                        [(ngModel)]="posts.conditioner" />
+                      <label class="custom-control-label" for="conditioner">{{ "Điều hóa" | localize }}</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-4">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="parking" id="parking"
+                        [(ngModel)]="posts.parking" />
+                      <label class="custom-control-label" for="parking">{{ "Chỗ để xe" | localize }}</label>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-12 col-sm-4">
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="wifi" id="wifi"
+                        [(ngModel)]="posts.wifi" />
+                      <label class="custom-control-label" for="wifi">{{ "Internet" | localize }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <upload (onUploadFinished)="uploadFinished($event)"></upload>
+              </div>
+            </tab>
+
+            <tab [heading]="'PostsDetails' | localize" class="pt-3 px-2">
+              <div class="row mt-3">
+
+                <div class="col-md-3">
+
+                  <h3>Add Photos</h3>
+
+                  <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropzoneOver}" (fileOver)="fileOverBase($event)"
+                    [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
+                    <i class="fa fa-upload fa-3x"></i>
+                    Drop photos here
+                  </div>
+
+                  Multiple
+                  <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
+
+                  Single
+                  <input type="file" ng2FileSelect [uploader]="uploader" />
+                </div>
+
+                <div class="col-md-9" style="margin-bottom: 40px">
+
+                  <h3>Upload queue</h3>
+                  <p>Queue length: {{ uploader?.queue?.length }}</p>
+
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th width="50%">Name</th>
+                        <th>Size</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of uploader.queue">
+                        <td><strong>{{ item?.file?.name }}</strong></td>
+                        <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB
+                        </td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div>
+                    <div>
+                      Queue progress:
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
+                        </div>
+                      </div>
+                    </div>
+                    <button class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+                      [disabled]="!uploader.getNotUploadedItems().length">
+                      <span class="fa fa-upload"></span> Upload all
+                    </button>
+                    <button class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
+                      [disabled]="!uploader.isUploading">
+                      <span class="fa fa-ban"></span> Cancel all
+                    </button>
+                    <button class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
+                      [disabled]="!uploader.queue.length">
+                      <span class="fa fa-trash"></span> Remove all
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
             </tab>
           </tabset>
         </div>
         <div class="modal-footer">
-          <abp-modal-footer
-          [cancelDisabled]="saving"
-          [saveDisabled]="!createpostsModal.form.valid || saving"
-          (onCancelClick)="modal.hide()"
-        ></abp-modal-footer>
+          <abp-modal-footer [cancelDisabled]="saving" [saveDisabled]="!createpostsModal.form.valid || saving"
+            (onCancelClick)="modal.hide()"></abp-modal-footer>
           <!-- <button [disabled]="saving" type="button" class="tmss-btn btn-outline-dark"
             (click)="close()">{{l("Cancel")}}</button>
           <button type="submit" class="btn btn-outline-primary" [cancelDisabled]="saving"  [saveDisabled]="!createpostsModal.form.valid || saving"

@@ -1,0 +1,45 @@
+ <div class="row">
+    <div class="col-4">
+        <div class="card">
+            <img src="{{'https://primefaces.org/cdn/primeng/images/usercard.png'}}"
+                class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div>
+                    <strong>Location:</strong>
+                    <p>{{post.title}}</p>
+                </div>
+                <div>
+                    <strong>Age:</strong>
+                    <p>{{post.contentPost}}</p>
+                </div>
+                <div>
+                    <strong>Last Active:</strong>
+                    <p>{{post.roomPrice }}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group d-flex">
+                    <button class="btn btn-primary">Like</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-8">
+        <!-- dùng 1 tham chiếu mẫu ở đây đang giải quyết vấn đề API: #memberTabs -->
+        <tabset class="member_content" #memberTabs >
+            <tab class="tab_content-members" heading="About">
+                <h4>Description</h4>
+                <p>{{post.contentPost}}</p>
+                <h4>Looking for</h4>
+                <p>{{post.contentPost}}</p>
+            </tab>
+            <tab class="tab_content-members" heading="Interests">
+                <h4>Interests</h4>
+                <p>{{post.contentPost}}</p>
+            </tab>
+
+        </tabset>
+    </div>
+</div>

@@ -1,9 +1,8 @@
-﻿<div [@routerTransition]>
+﻿<div >
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h2 class="font__title">{{ "HomePage" | localize }}</h2>
           <h1 class="font__title-v2">{{"NewPost" | localize}}</h1>
         </div>
       </div>
@@ -11,56 +10,41 @@
   </section>
   <section class="content px-2">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-3 col-6">
-          <!-- <div class="small-box bg-success">
-            <div class="inner">
-              <h3>8.2k+</h3>
-              <p>Stargazers</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-star"></i>
-            </div>
-            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/stargazers"
-              class="small-box-footer"
-              target="_blank">
-              More info
-              <i class="fas fa-arrow-circle-right"></i>
-            </a>
-          </div> -->
-          <div class="card">
-            <img  src="https://mdbcdn.b-cdn.net/img/new/standard/nature/184.webp" class="card-img-top" alt="Fissure in Sandstone"/>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <a href="#"
-                class="small-box-footer"
-                target="_blank">
-                More info
-                <i class="fas fa-arrow-circle-right"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-6">
-          <div class="small-box bg-info">
-            <div class="inner">
-              <h3>140+</h3>
-              <p>Contributors</p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-users"></i>
-            </div>
-            <a href="https://github.com/aspnetboilerplate/aspnetboilerplate/graphs/contributors"
-              class="small-box-footer"
-              target="_blank">
-              More info
-              <i class="fas fa-arrow-circle-right"></i>
-            </a>
-          </div>
-        </div>
+        <div *ngIf="data">
+          <div class="row">
+            <!-- Loop through rowData and display each item as a card -->
+            <div class="col-md-3 mb-3" *ngFor="let post of data">
+                <p-card>
+                    <ng-template pTemplate="header">
+                        <!-- You can customize the header here -->
+                        <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                    </ng-template>
+                    <strong>Title:</strong> {{ post.title }} <br>
+                    <p>
+                        {{ post.contentPost }}
+                    </p>
+                    <p>
+                        <!-- Content of the card -->
+                        <strong>Room Price:</strong> {{ post.roomPrice }} <br>
+                        <strong>Room Status:</strong> {{ post.roomStatus ? 'Available' : 'Not Available' }} <br>
+                    </p>
+                    <ng-template pTemplate="footer">
+                      <p-button label="View" [routerLink]="['./', post.id]"></p-button>
+                      <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>
+                  </ng-template>
 
-      </div>
+                </p-card>
+            </div>
+          </div>
+          <div class="card flex justify-content-center">
+            <p-paginator
+              [rows]="8"
+              [totalRecords]="paginationParams.totalCount"
+              [rowsPerPageOptions]="[8, 12, 16]"
+              (onPageChange)="onPageChange($event)"
+            ></p-paginator>
+          </div>
+        </div>
     </div>
-  </section>
+</section>
 </div>

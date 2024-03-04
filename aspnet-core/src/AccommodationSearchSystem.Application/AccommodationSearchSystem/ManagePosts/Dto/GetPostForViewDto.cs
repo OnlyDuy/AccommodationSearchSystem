@@ -26,5 +26,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public bool Parking { get; set; } // Có chỗ để xe hay không
         public bool Conditioner { get; set; } // Có điều hóa hay không
         public bool RoomStatus { get; set; }
+        public ICollection<PhotoDto> Photos { get; set; }
     }
 }

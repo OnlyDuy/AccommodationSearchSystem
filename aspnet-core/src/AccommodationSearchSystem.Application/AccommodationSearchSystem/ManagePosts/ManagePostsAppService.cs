@@ -6,16 +6,16 @@ using Abp.Linq.Extensions;
 using Abp.UI;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.Authorization;
-using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
+using AccommodationSearchSystem.EntityFrameworkCore;
+using AccommodationSearchSystem.Interfaces;
 using AccommodationSearchSystem.MultiTenancy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using static AccommodationSearchSystem.Authorization.Roles.StaticRoleNames;
 
 namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
 {
@@ -24,16 +24,22 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
     {
         private readonly IRepository<Post, long> _repositoryPost;
         private readonly IRepository<Tenant, int> _tenantRepo;
+        private readonly IPhotoService _photoService;
+        private readonly AccommodationSearchSystemDbContext _context;
 
         public ManagePostsAppService(
             IRepository<Post, long> repositoryPost, 
             IRepository<Accommodate, long> repositoryAccommodate,
+            IPhotoService photoService,
+            AccommodationSearchSystemDbContext context,
             IRepository<Tenant, int> tenantRepo)
 
         {
             _repositoryPost = repositoryPost;
             _tenantRepo = tenantRepo;
-
+            _photoService = photoService;
+            _context = context;
+ 
         }
         public async Task CreateOrEdit(CreateOrEditIPostDto input)
         {
@@ -65,18 +71,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
 
         protected virtual async Task Update(CreateOrEditIPostDto input)
         {
-            var tenantId = AbpSession.TenantId;
-            var postCount = _repositoryPost.GetAll().Where(e => e.Id != input.Id && e.TenantId == tenantId).Count();
-            if (postCount <= 1)
-            {
-                throw new UserFriendlyException(00, L("ThisItemAlreadyExists"));
-            }
-            else
-            {
-                var post = await _repositoryPost.FirstOrDefaultAsync((long)input.Id);
+            var post = await _repositoryPost.FirstOrDefaultAsync((long)input.Id);
                 // Cập nhật các trường dữ liệu của bài đăng từ input
                 ObjectMapper.Map(input, post);
-            }
          
         }
 
@@ -95,6 +92,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             var query = from p in _repositoryPost.GetAll()
                         .Where(e => tenantId == e.TenantId)
                         .Where(e => input.filterText == null || e.Title.Contains(input.filterText))
+                        orderby p.Id descending
 
                         //join acom in _repositoryAccommodate.GetAll()
                         //on p.Id equals acom.Id
@@ -141,5 +139,50 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
 
             return output;
         }
+
+        public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file, long Id)
+        {
+            // Nhận bài đăng theo postId
+            var post = await _repositoryPost.FirstOrDefaultAsync(Id);
+
+            // Kết quả là một dịch vụ ảnh
+            var result = await _photoService.AddPhotoAsync(file);
+
+            // Kiểm tra lỗi
+            if (result.Error != null)
+            {
+                throw new UserFriendlyException(result.Error.Message);
+            }
+
+            // Khởi tạo danh sách nếu chưa được khởi tạo
+            if (post.PhotoPosts == null)
+            {
+                post.PhotoPosts = new List<PhotoPost>();
+            }
+
+            var photo = new PhotoPost
+            {
+                // Url an toàn và tuyệt đối
+                Url = result.SecureUrl.AbsoluteUri,
+                // Id công khai
+                PublicId = result.PublicId,
+                PostId = (int)post.Id
+            };
+
+            // Kiểm tra liệu người dùng có bất kỳ bức ảnh nào vào lúc này hay không
+            if (post.PhotoPosts.Count == 0)
+            {
+                // Nếu không có thì đây là bức ảnh đầu tiên được tải lên và nó là ảnh chính   
+                photo.IsMain = true;
+            }
+
+            // Thêm hình ảnh
+            post.PhotoPosts.Add(photo);
+
+            // Lưu cấc thay đổi
+            return new CreatedAtRouteResult("GetLoyaltyGiftItemForEdit", new { id = post.Id }, ObjectMapper.Map<PhotoDto>(photo));
+            //throw new UserFriendlyException(00, L("ThisItemAlreadyExists"));
+        }
+
     }
 }

@@ -16,6 +16,7 @@ namespace AccommodationSearchSystem.Helpers
         {
             configuration.CreateMap<Post, CreateOrEditIPostDto>().ReverseMap();
             configuration.CreateMap<Accommodate, CreateOrEditIPostDto>().ReverseMap();
+            configuration.CreateMap<PhotoPost, PhotoDto>().ReverseMap();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace AccommodationSearchSystem.EntityFrameworkCore
                     {
                         AccommodationSearchSystemDbContextConfigurer.Configure(options.DbContextOptions, options.ConnectionString);
                     }
-                });
+                    });
             }
         }
 

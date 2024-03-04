@@ -12,9 +12,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AccommodationSearchSystem.Core\AccommodationSearchSystem.Core.csproj" />
+    <ProjectReference Include="..\AccommodationSearchSystem.EntityFrameworkCore\AccommodationSearchSystem.EntityFrameworkCore.csproj" />
   </ItemGroup>
 </Project>

@@ -1070,6 +1070,62 @@ export class ManagePostsServiceProxy {
         }
         return _observableOf<GetPostForEditOutput>(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    addPhoto(body: CreateOrEditIPostDto | undefined): Observable<PhotoDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/AddPhoto";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddPhoto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddPhoto(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PhotoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PhotoDto>;
+        }));
+    }
+
+    protected processAddPhoto(response: HttpResponseBase): Observable<PhotoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PhotoDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PhotoDto>(null as any);
+    }
 }
 
 @Injectable()
@@ -3023,6 +3079,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     wifi: boolean;
     parking: boolean;
     conditioner: boolean;
+    photos: PhotoDto[] | undefined;
 
     constructor(data?: ICreateOrEditIPostDto) {
         if (data) {
@@ -3050,6 +3107,11 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
             this.wifi = _data["wifi"];
             this.parking = _data["parking"];
             this.conditioner = _data["conditioner"];
+            if (Array.isArray(_data["photos"])) {
+                this.photos = [] as any;
+                for (let item of _data["photos"])
+                    this.photos.push(PhotoDto.fromJS(item));
+            }
         }
     }
 
@@ -3077,6 +3139,11 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
         data["wifi"] = this.wifi;
         data["parking"] = this.parking;
         data["conditioner"] = this.conditioner;
+        if (Array.isArray(this.photos)) {
+            data["photos"] = [];
+            for (let item of this.photos)
+                data["photos"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -3104,6 +3171,7 @@ export interface ICreateOrEditIPostDto {
     wifi: boolean;
     parking: boolean;
     conditioner: boolean;
+    photos: PhotoDto[] | undefined;
 }
 
 export class CreateRoleDto implements ICreateRoleDto {
@@ -3629,6 +3697,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     parking: boolean;
     conditioner: boolean;
     roomStatus: boolean;
+    photos: PhotoDto[] | undefined;
 
     constructor(data?: IGetPostForViewDto) {
         if (data) {
@@ -3656,6 +3725,11 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             this.parking = _data["parking"];
             this.conditioner = _data["conditioner"];
             this.roomStatus = _data["roomStatus"];
+            if (Array.isArray(_data["photos"])) {
+                this.photos = [] as any;
+                for (let item of _data["photos"])
+                    this.photos.push(PhotoDto.fromJS(item));
+            }
         }
     }
 
@@ -3683,6 +3757,11 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         data["parking"] = this.parking;
         data["conditioner"] = this.conditioner;
         data["roomStatus"] = this.roomStatus;
+        if (Array.isArray(this.photos)) {
+            data["photos"] = [];
+            for (let item of this.photos)
+                data["photos"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -3710,6 +3789,7 @@ export interface IGetPostForViewDto {
     parking: boolean;
     conditioner: boolean;
     roomStatus: boolean;
+    photos: PhotoDto[] | undefined;
 }
 
 export class GetPostForViewDtoPagedResultDto implements IGetPostForViewDtoPagedResultDto {
@@ -4071,6 +4151,57 @@ export class PermissionDtoListResultDto implements IPermissionDtoListResultDto {
 
 export interface IPermissionDtoListResultDto {
     items: PermissionDto[] | undefined;
+}
+
+export class PhotoDto implements IPhotoDto {
+    id: number;
+    url: string | undefined;
+    isMain: boolean;
+
+    constructor(data?: IPhotoDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.url = _data["url"];
+            this.isMain = _data["isMain"];
+        }
+    }
+
+    static fromJS(data: any): PhotoDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PhotoDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["url"] = this.url;
+        data["isMain"] = this.isMain;
+        return data;
+    }
+
+    clone(): PhotoDto {
+        const json = this.toJSON();
+        let result = new PhotoDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPhotoDto {
+    id: number;
+    url: string | undefined;
+    isMain: boolean;
 }
 
 export class RegisterInput implements IRegisterInput {

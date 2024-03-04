@@ -10,6 +10,7 @@ import { RolesComponent } from 'app/roles/roles.component';
 import { ChangePasswordComponent } from './users/change-password/change-password.component';
 import { InforUserComponent } from './infor-user/infor-user.component';
 import { PostComponent } from './post/post.component';
+import { PostDetailComponent } from './post/post-detail/post-detail.component';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import { PostComponent } from './post/post.component';
                 component: AppComponent,
                 children: [
                     { path: 'home', component: HomeComponent,  canActivate: [AppRouteGuard] },
+                    { path: 'home/:id', component: PostDetailComponent,  canActivate: [AppRouteGuard] },
 
                     // {path: 'create-post', component: CreatePostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
                     {path: 'post', component: PostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
