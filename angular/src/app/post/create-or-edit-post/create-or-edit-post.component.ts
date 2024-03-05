@@ -47,7 +47,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     this._sessionService.getCurrentLoginInformations().subscribe((res) => {
       this.tenantId = res.tenant.id;
     });
-    this.initializeUploader();
+    // this.initializeUploader();
   }
 
   show(PostId?: number): void {
@@ -94,78 +94,78 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     this.modal.hide();
   }
 
-  initializeUploader() {
-    this.uploader = new FileUploader({
-      headers: [
-        { name: 'Accept', value: 'application/json' },
-        { name: 'Content-Type', value: 'application/json' }
-      ],
-      url: this.baseUrl + 'api/services/app/ManagePosts/AddPhoto',
-      isHTML5: true,
-      authToken: 'Bearer ' + abp.auth.getToken(),
-      allowedFileType: ['image'],
-      removeAfterUpload: true,
-      autoUpload: false,
-      maxFileSize: 10 * 1024 * 1024
-    });
+  // initializeUploader() {
+  //   this.uploader = new FileUploader({
+  //     headers: [
+  //       { name: 'Accept', value: 'application/json' },
+  //       { name: 'Content-Type', value: 'application/json' }
+  //     ],
+  //     url: this.baseUrl + 'api/services/app/ManagePosts/AddPhoto',
+  //     isHTML5: true,
+  //     authToken: 'Bearer ' + abp.auth.getToken(),
+  //     allowedFileType: ['image'],
+  //     removeAfterUpload: true,
+  //     autoUpload: false,
+  //     maxFileSize: 10 * 1024 * 1024
+  //   });
 
-    console.log(this.uploader);
+  //   console.log(this.uploader);
 
-    this.uploader.onAfterAddingFile = (file) => {
-      file.withCredentials = false;
-      if (this.uploader.queue.length > 1) {
-        this.uploader.addToQueue([file._file]);
-      }
-      // Thêm file vào hàng đợi để chuẩn bị gửi lên máy chủ
-      // file.upload(); // Hoặc có thể sử dụng this.uploader.uploadAll() nếu muốn gửi tất cả các file trong hàng đợi
-    };
+  //   this.uploader.onAfterAddingFile = (file) => {
+  //     file.withCredentials = false;
+  //     if (this.uploader.queue.length > 1) {
+  //       this.uploader.addToQueue([file._file]);
+  //     }
+  //     // Thêm file vào hàng đợi để chuẩn bị gửi lên máy chủ
+  //     // file.upload(); // Hoặc có thể sử dụng this.uploader.uploadAll() nếu muốn gửi tất cả các file trong hàng đợi
+  //   };
 
-    this.uploader.onSuccessItem = (item, response, status, headers) => {
-      if (response) {
-        const photoDto: any = JSON.parse(response);
+  //   this.uploader.onSuccessItem = (item, response, status, headers) => {
+  //     if (response) {
+  //       const photoDto: any = JSON.parse(response);
 
-        const postDto: CreateOrEditIPostDto = {
-          id: this.post.id,
-          postCode: this.posts.postCode,
-          tenantId: this.posts.tenantId,
-          title: this.post.title,
-          contentPost: this.post.contentPost,
-          photo: '',
-          roomPrice: this.post.roomPrice,
-          address: this.post.address,
-          area: this.post.area,
-          square: this.post.square,
-          roomStatus: this.posts.roomStatus,
-          priceCategory: this.post.priceCategory,
-          wifi: this.post.wifi,
-          parking: this.post.parking,
-          conditioner: this.post.conditioner,
-          photos: [photoDto],
-          init: function (_data?: any): void {
-            throw new Error('Function not implemented.');
-          },
-          toJSON: function (data?: any) {
-            throw new Error('Function not implemented.');
-          },
-          clone: function (): CreateOrEditIPostDto {
-            throw new Error('Function not implemented.');
-          }
-        };
+  //       const postDto: CreateOrEditIPostDto = {
+  //         id: this.post.id,
+  //         postCode: this.posts.postCode,
+  //         tenantId: this.posts.tenantId,
+  //         title: this.post.title,
+  //         contentPost: this.post.contentPost,
+  //         photo: '',
+  //         roomPrice: this.post.roomPrice,
+  //         address: this.post.address,
+  //         area: this.post.area,
+  //         square: this.post.square,
+  //         roomStatus: this.posts.roomStatus,
+  //         priceCategory: this.post.priceCategory,
+  //         wifi: this.post.wifi,
+  //         parking: this.post.parking,
+  //         conditioner: this.post.conditioner,
+  //         photos: [photoDto],
+  //         init: function (_data?: any): void {
+  //           throw new Error('Function not implemented.');
+  //         },
+  //         toJSON: function (data?: any) {
+  //           throw new Error('Function not implemented.');
+  //         },
+  //         clone: function (): CreateOrEditIPostDto {
+  //           throw new Error('Function not implemented.');
+  //         }
+  //       };
 
-        this._postService.addPhoto(postDto)
-          .subscribe((photo) => {
-            if (photo) {
-              this.post.photos.push(photo);
-              if (photo.isMain) {
-                this.post.photoUrl = photo.url;
-              }
-            }
-          }, (error) => {
-            console.error("Error adding photo: ", error);
-          });
-      }
-    };
-  }
+  //       this._postService.addPhoto(postDto)
+  //         .subscribe((photo) => {
+  //           if (photo) {
+  //             this.post.photos.push(photo);
+  //             if (photo.isMain) {
+  //               this.post.photoUrl = photo.url;
+  //             }
+  //           }
+  //         }, (error) => {
+  //           console.error("Error adding photo: ", error);
+  //         });
+  //     }
+  //   };
+  // }
 
 
   deletePhoto() {

@@ -1,0 +1,50 @@
+<div >
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="font__title-v2">{{"NewPost" | localize}}</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-2">
+      <div class="container-fluid">
+          <div *ngIf="data">
+            <div class="row">
+              <!-- Loop through rowData and display each item as a card -->
+              <div class="col-md-3 mb-3" *ngFor="let post of data">
+                  <p-card>
+                      <ng-template pTemplate="header">
+                          <!-- You can customize the header here -->
+                          <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+                      </ng-template>
+                      <strong>Title:</strong> {{ post.title }} <br>
+                      <p>
+                          {{ post.contentPost }}
+                      </p>
+                      <p>
+                          <!-- Content of the card -->
+                          <strong>Room Price:</strong> {{ post.roomPrice }} <br>
+                          <strong>Room Status:</strong> {{ post.roomStatus ? 'Available' : 'Not Available' }} <br>
+                      </p>
+                      <ng-template pTemplate="footer">
+                        <p-button label="View" [routerLink]="['./', post.id]"></p-button>
+                        <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>
+                    </ng-template>
+
+                  </p-card>
+              </div>
+            </div>
+            <div class="card flex justify-content-center">
+              <p-paginator
+                [rows]="8"
+                [totalRecords]="paginationParams.totalCount"
+                [rowsPerPageOptions]="[8, 12, 16]"
+                (onPageChange)="onPageChange($event)"
+              ></p-paginator>
+            </div>
+          </div>
+      </div>
+  </section>
+  </div>

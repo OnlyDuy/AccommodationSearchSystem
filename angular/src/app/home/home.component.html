@@ -1,4 +1,4 @@
-﻿<div >
+﻿<div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -10,41 +10,61 @@
   </section>
   <section class="content px-2">
     <div class="container-fluid">
-        <div *ngIf="data">
-          <div class="row">
-            <!-- Loop through rowData and display each item as a card -->
-            <div class="col-md-3 mb-3" *ngFor="let post of data">
-                <p-card>
-                    <ng-template pTemplate="header">
-                        <!-- You can customize the header here -->
-                        <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
-                    </ng-template>
-                    <strong>Title:</strong> {{ post.title }} <br>
-                    <p>
-                        {{ post.contentPost }}
-                    </p>
-                    <p>
-                        <!-- Content of the card -->
-                        <strong>Room Price:</strong> {{ post.roomPrice }} <br>
-                        <strong>Room Status:</strong> {{ post.roomStatus ? 'Available' : 'Not Available' }} <br>
-                    </p>
-                    <ng-template pTemplate="footer">
-                      <p-button label="View" [routerLink]="['./', post.id]"></p-button>
-                      <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button>
-                  </ng-template>
-
-                </p-card>
+      <div *ngIf="filteredData">
+        <div class="row mb-4">
+          <div class="col-4">
+            <button class="btn btn-outline-info" (click)="refresh()">
+              <i class="pi pi-undo"></i>
+              {{ "Reset" | localize }}
+            </button>
+          </div>
+          <div class="col-8">
+            <div class="row">
+              <div class="col-md-6"> <!-- Thêm class col-md-6 để chiếm 50% chiều rộng -->
+                <input class="form-control" type="text" [(ngModel)]="searchValue"
+                  placeholder="Tìm kiếm theo địa chỉ hoặc giá">
+              </div>
+              <div class="col-md-6"> <!-- Thêm class col-md-6 để chiếm 50% chiều rộng -->
+                <button class="btn btn-outline-secondary" (click)="search()">Search</button>
+              </div>
             </div>
           </div>
-          <div class="card flex justify-content-center">
-            <p-paginator
-              [rows]="8"
-              [totalRecords]="paginationParams.totalCount"
-              [rowsPerPageOptions]="[8, 12, 16]"
-              (onPageChange)="onPageChange($event)"
-            ></p-paginator>
+          <!-- Thêm hộp tìm kiếm -->
+        </div>
+        <div class="row">
+          <!-- Loop through rowData and display each item as a card -->
+          <div class="col-md-3 mb-3" *ngFor="let post of filteredData" [busy]="isLoading">
+            <p-card>
+              <ng-template pTemplate="header">
+                <!-- You can customize the header here -->
+                <img alt="Card" src="https://primefaces.org/cdn/primeng/images/usercard.png" />
+              </ng-template>
+              <strong>Title:</strong> {{ post.title }} <br>
+              <p>
+                {{ post.contentPost }}
+              </p>
+              <p>
+                <!-- Content of the card -->
+                <strong>Room Price:</strong> {{ post.roomPrice }} <br>
+                <strong>Room Status:</strong> {{ post.roomStatus ? 'Available' : 'Not Available' }} <br>
+              </p>
+              <ng-template pTemplate="footer">
+                <p-button label="View" [routerLink]="['./', post.id]"></p-button>
+                <p-button label="Cancel" [disabled]="true" styleClass="p-button-secondary"
+                  [style]="{ 'margin-left': '.5em' }"></p-button>
+              </ng-template>
+
+            </p-card>
           </div>
         </div>
+        <div *ngIf="filteredData && filteredData.length === 0">
+          <p>No results found.</p>
+        </div>
+        <div class="card flex justify-content-center">
+          <p-paginator [rows]="8" [totalRecords]="paginationParams.totalCount" [rowsPerPageOptions]="[8, 12, 16]"
+            (onPageChange)="onPageChange($event)"></p-paginator>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 </div>

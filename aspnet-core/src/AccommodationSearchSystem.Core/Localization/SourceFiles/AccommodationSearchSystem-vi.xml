@@ -121,6 +121,8 @@
     <text name="UsersActivation">Kích hoạt người dùng</text>
 	<text name="UnexpectedAuthenticateResult">Kết quả xác thực không mong đợi</text>
 	<text name="Posts">Quản lý bài đăng</text>
+	  <text name="ViewPosts">Xem bài đăng</text>
+
 	  <text name="PersonalInformation">Thông tin cá nhân</text>
 	  <text name="ManageAppointmentSchedules">Quản lý lịch hẹn</text>
 	  <text name="NewPost">Bài đăng mới</text>
@@ -133,13 +135,13 @@
 	  <text name="PostsDetails">Chi tiết bài đăng</text>
 	  <text name="Title">Tiêu đề</text>
 	  <text name="ContentPost">Nội dung bài đăng</text>
-	  <text name="RoomPrice">Giá phòng</text>
+	  <text name="RoomPrice">Giá phòng (triệu đồng)</text>
+	  <text name="Square">Diện tích (m2)</text>
 	  <text name="Address">Địa chỉ</text>
 	  <text name="PriceCategory">Loại phòng</text>
 	  <text name="RoomStatus">Trạng thái phòng</text>
 	  <text name="CreateNewPost" value="Tạo bài đăng mới" />
 	  <text name="Photo" value="Ảnh phòng" />
-	  <text name="Square" value="Diện tích" />
 
 	  <text name="Reset" value="Thiết lập lại" />
 	  

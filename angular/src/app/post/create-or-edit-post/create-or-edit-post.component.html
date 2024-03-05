@@ -27,20 +27,10 @@
                   {{ "ContentPost" | localize }}
                 </label>
                 <div class="col-md-9">
-                  <input type="text" class="form-control" name="contentPost" id="contentPost" required
-                    [(ngModel)]="posts.contentPost" #contentPostModel="ngModel" #contentPostEl />
+                  <textarea type="text" class="form-control" name="contentPost" id="contentPost" required
+                    [(ngModel)]="posts.contentPost" #contentPostModel="ngModel" #contentPostEl > </textarea>
                   <abp-validation-summary [control]="contentPostModel"
                     [controlEl]="contentPostEl"></abp-validation-summary>
-                </div>
-              </div>
-              <div class="form-group row required">
-                <label class="col-md-3 col-form-label" for="roomPrice">
-                  {{ "RoomPrice" | localize }}
-                </label>
-                <div class="col-md-9">
-                  <input type="text" class="form-control" name="roomPrice" id="roomPrice" required
-                    [(ngModel)]="posts.roomPrice" #roomPriceModel="ngModel" #roomPriceEl />
-                  <abp-validation-summary [control]="roomPriceModel" [controlEl]="roomPriceEl"></abp-validation-summary>
                 </div>
               </div>
               <div class="form-group row required">
@@ -54,24 +44,78 @@
                 </div>
               </div>
               <div class="form-group row required">
-                <label class="col-md-3 col-form-label" for="square">
-                  {{ "Square" | localize }}
-                </label>
-                <div class="col-md-9">
-                  <input class="form-control" name="square" id="square" required [(ngModel)]="posts.square"
-                    #squareModel="ngModel" #squareEl />
-                  <abp-validation-summary [control]="squareModel" [controlEl]="squareEl"></abp-validation-summary>
-                </div>
-              </div>
-              <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="priceCategory">
                   {{ "PriceCategory" | localize }}
                 </label>
                 <div class="col-md-9">
-                  <input type="text" class="form-control" name="priceCategory" id="priceCategory" required
-                    [(ngModel)]="posts.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl />
+                  <select type="text" class="form-control" name="priceCategory" id="priceCategory" required
+                    [(ngModel)]="posts.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl >
+                    <option selected>Phòng đơn</option>
+                    <option value="Chung cư mini">Chung cư mini</option>
+                    <option value="2 người trở lên">2 người trở lên</option></select>
                   <abp-validation-summary [control]="priceCategoryModel"
                     [controlEl]="priceCategoryEl"></abp-validation-summary>
+                </div>
+              </div>
+              <div class="col" style="margin-left: -9px;">
+                  <label class="">
+                    {{ "Tiện ích" | localize }}
+                  </label>
+                  <div class="row ml-4">
+                    <div class="col-12 col-sm-4">
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" name="conditioner" id="conditioner"
+                            [(ngModel)]="posts.conditioner" />
+                          <label class="custom-control-label" style="font-weight: normal;" for="conditioner">{{ "Điều hóa" | localize }}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" name="parking" id="parking"
+                            [(ngModel)]="posts.parking" />
+                          <label class="custom-control-label" style="font-weight: normal;" for="parking">{{ "Chỗ để xe" | localize }}</label>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-12 col-sm-4">
+                      <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" name="wifi" id="wifi"
+                            [(ngModel)]="posts.wifi" />
+                          <label class="custom-control-label" style="font-weight: normal;" for="wifi">{{ "Internet" | localize }}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-6 ">
+                  <div class="form-group col required">
+                    <label class="col-form-label" for="roomPrice">
+                      {{ "RoomPrice" | localize }}
+                    </label>
+                    <div class="">
+                      <input type="text" class="form-control" name="roomPrice" id="roomPrice" required
+                        [(ngModel)]="posts.roomPrice" #roomPriceModel="ngModel" #roomPriceEl />
+                      <abp-validation-summary [control]="roomPriceModel" [controlEl]="roomPriceEl"></abp-validation-summary>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group col required">
+                    <label class="col-form-label" for="square">
+                      {{ "Square" | localize }}
+                    </label>
+                    <div class="">
+                      <input type="text" class="form-control" name="square" id="square" required
+                        [(ngModel)]="posts.square" #squareModel="ngModel" #squareEl />
+                      <abp-validation-summary [control]="squareModel" [controlEl]="squareEl"></abp-validation-summary>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="form-group row mb-0">
@@ -86,43 +130,9 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-12 col-sm-4">
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="conditioner" id="conditioner"
-                        [(ngModel)]="posts.conditioner" />
-                      <label class="custom-control-label" for="conditioner">{{ "Điều hóa" | localize }}</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 col-sm-4">
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="parking" id="parking"
-                        [(ngModel)]="posts.parking" />
-                      <label class="custom-control-label" for="parking">{{ "Chỗ để xe" | localize }}</label>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="col-12 col-sm-4">
-                  <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" name="wifi" id="wifi"
-                        [(ngModel)]="posts.wifi" />
-                      <label class="custom-control-label" for="wifi">{{ "Internet" | localize }}</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <upload (onUploadFinished)="uploadFinished($event)"></upload>
-              </div>
             </tab>
 
-            <tab [heading]="'PostsDetails' | localize" class="pt-3 px-2">
+            <!-- <tab [heading]="'PostsDetails' | localize" class="pt-3 px-2">
               <div class="row mt-3">
 
                 <div class="col-md-3">
@@ -189,7 +199,7 @@
                 </div>
 
               </div>
-            </tab>
+            </tab> -->
           </tabset>
         </div>
         <div class="modal-footer">

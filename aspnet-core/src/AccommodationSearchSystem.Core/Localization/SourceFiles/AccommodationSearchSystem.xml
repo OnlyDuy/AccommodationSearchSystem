@@ -121,6 +121,7 @@
     <text name="UsersActivation">Users activation</text>
 	<text name="UnexpectedAuthenticateResult">Unexpected authenticate Result</text>
 	<text name="Posts">Posts</text>
+	  <text name="ViewPosts">ViewPosts</text>
 	  <text name="PersonalInformation">Personal information</text>
 	  <text name="ManageAppointmentSchedules">Manage appointment schedules</text>
 	  <text name="NewPost">New Post</text>

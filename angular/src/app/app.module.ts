@@ -48,6 +48,8 @@ import { SidebarMenuComponent } from './layout/sidebar-menu.component';
 import { PostComponent } from './post/post.component';
 import { CreateOrEditPostComponent } from './post/create-or-edit-post/create-or-edit-post.component';
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
+import { PostViewComponent } from './post/post-view/post-view.component';
+import { PostViewDetailComponent } from './post/post-view-detail/post-view-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +88,9 @@ import { PostDetailComponent } from './post/post-detail/post-detail.component';
     // posts
     PostComponent,
     CreateOrEditPostComponent,
-    PostDetailComponent
+    PostDetailComponent,
+    PostViewComponent,
+    PostViewDetailComponent
    ],
   imports: [
     CommonModule,

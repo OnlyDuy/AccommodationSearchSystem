@@ -11,6 +11,8 @@ import { ChangePasswordComponent } from './users/change-password/change-password
 import { InforUserComponent } from './infor-user/infor-user.component';
 import { PostComponent } from './post/post.component';
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
+import { PostViewComponent } from './post/post-view/post-view.component';
+import { PostViewDetailComponent } from './post/post-view-detail/post-view-detail.component';
 
 @NgModule({
     imports: [
@@ -19,11 +21,13 @@ import { PostDetailComponent } from './post/post-detail/post-detail.component';
                 path: '',
                 component: AppComponent,
                 children: [
-                    { path: 'home', component: HomeComponent,  canActivate: [AppRouteGuard] },
-                    { path: 'home/:id', component: PostDetailComponent,  canActivate: [AppRouteGuard] },
+                    { path: 'home', component: HomeComponent, data: { permission: 'Pages.Posts' },  canActivate: [AppRouteGuard] },
+                    { path: 'home/:id', component: PostDetailComponent, data: { permission: 'Pages.Posts' },  canActivate: [AppRouteGuard] },
 
                     // {path: 'create-post', component: CreatePostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
                     {path: 'post', component: PostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
+                    {path: 'post/post-view', component: PostViewComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
+                    { path: 'post/post-view/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' },  canActivate: [AppRouteGuard] },
 
                     { path: 'infor-user', component: InforUserComponent, data: { permission: 'Pages.Personal.Information' },  canActivate: [AppRouteGuard] },
                     // { path: 'edit-user', component: EditUserComponent, data: { permission: 'Pages.Personal.Information' }, canActivate: [AppRouteGuard] },

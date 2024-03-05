@@ -91,7 +91,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
                         .Where(e => tenantId == e.TenantId)
-                        .Where(e => input.filterText == null || e.Title.Contains(input.filterText))
+                        .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
+                                            || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
 
                         //join acom in _repositoryAccommodate.GetAll()
