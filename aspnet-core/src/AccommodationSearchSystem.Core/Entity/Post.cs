@@ -34,6 +34,7 @@ namespace AccommodationSearchSystem.Entity
         public bool Parking { get; set; } // Có chỗ để xe hay không
         public ICollection<PhotoPost> PhotoPosts { get; set; }
         public bool Conditioner { get; set; } // Có điều hóa hay không
+        public ICollection<AppointmentSchedule> AppointmentSchedules { get; set; }
 
     }
 }

@@ -15,5 +15,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         Task<PagedResultDto<GetPostForViewDto>> GetAll(GetPostInputDto input);
         Task DeletePost(EntityDto<long> input);
         Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input);
+        Task<GetPostForViewDto> GetForEdit(EntityDto<long> input);
     }
 }

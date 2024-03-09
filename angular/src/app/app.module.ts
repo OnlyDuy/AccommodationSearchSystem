@@ -50,6 +50,9 @@ import { CreateOrEditPostComponent } from './post/create-or-edit-post/create-or-
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import { PostViewComponent } from './post/post-view/post-view.component';
 import { PostViewDetailComponent } from './post/post-view-detail/post-view-detail.component';
+import { AppScheduleComponent } from './app-schedule/app-schedule.component';
+import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success/app-schedule-success.component';
+import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-schedule-wait.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,7 +93,10 @@ import { PostViewDetailComponent } from './post/post-view-detail/post-view-detai
     CreateOrEditPostComponent,
     PostDetailComponent,
     PostViewComponent,
-    PostViewDetailComponent
+    PostViewDetailComponent,
+    AppScheduleComponent,
+    AppScheduleSuccessComponent,
+    AppScheduleWaitComponent
    ],
   imports: [
     CommonModule,

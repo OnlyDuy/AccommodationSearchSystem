@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
-import { CreateOrEditIPostDto, SessionServiceProxy, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CreateOrEditIPostDto, CreateOrEditSchedulesDto, GetPostForViewDto, SessionServiceProxy, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
 
 @Component({
   selector: 'app-post-view-detail',
@@ -11,7 +11,9 @@ import { CreateOrEditIPostDto, SessionServiceProxy, ViewPostServiceProxy } from 
 })
 export class PostViewDetailComponent extends AppComponentBase implements OnInit {
   postId: number;
-  post: CreateOrEditIPostDto = new CreateOrEditIPostDto();
+  post: GetPostForViewDto = new GetPostForViewDto();
+
+  schedule: CreateOrEditSchedulesDto = new CreateOrEditSchedulesDto();
 
   constructor(
     injector: Injector,
@@ -30,9 +32,16 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   }
 
   getPostDetails(postId: number): void {
-    this._postService.getLoyaltyGiftItemForEdit(postId).subscribe((result) => {
-      this.post = result.createOrEditPost;
+    this._postService.getForEdit(postId).subscribe((result) => {
+      this.post = result;
     });
   }
 
+  booking() {
+
+  }
+
+  favourite() {
+
+  }
 }

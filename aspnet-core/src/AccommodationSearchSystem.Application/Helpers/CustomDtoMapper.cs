@@ -1,4 +1,5 @@
 ﻿using Abp.Authorization.Users;
+using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.Entity;
 using AutoMapper;
@@ -16,6 +17,7 @@ namespace AccommodationSearchSystem.Helpers
         {
             configuration.CreateMap<Post, CreateOrEditIPostDto>().ReverseMap();
             configuration.CreateMap<Accommodate, CreateOrEditIPostDto>().ReverseMap();
+            configuration.CreateMap<AppointmentSchedule, CreateOrEditSchedulesDto>().ReverseMap();
             configuration.CreateMap<PhotoPost, PhotoDto>().ReverseMap();
         }
     }

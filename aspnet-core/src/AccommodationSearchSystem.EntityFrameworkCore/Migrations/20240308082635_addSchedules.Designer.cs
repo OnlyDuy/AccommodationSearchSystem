@@ -4,6 +4,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    partial class AccommodationSearchSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240308082635_addSchedules")]
+    partial class addSchedules
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1671,8 +1673,8 @@ namespace AccommodationSearchSystem.Migrations
                     b.Property<string>("HostPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("Hour")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("Hour")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");

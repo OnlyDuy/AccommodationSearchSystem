@@ -13,6 +13,8 @@ import { PostComponent } from './post/post.component';
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import { PostViewComponent } from './post/post-view/post-view.component';
 import { PostViewDetailComponent } from './post/post-view-detail/post-view-detail.component';
+import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-schedule-wait.component';
+import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success/app-schedule-success.component';
 
 @NgModule({
     imports: [
@@ -36,7 +38,12 @@ import { PostViewDetailComponent } from './post/post-view-detail/post-view-detai
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
-                    { path: 'update-password', component: ChangePasswordComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] }
+                    { path: 'update-password', component: ChangePasswordComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
+
+                    { path: 'app-schedule/app-schedule-wait', component: AppScheduleWaitComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' },  canActivate: [AppRouteGuard] },
+                    { path: 'app-schedule/app-schedule-success', component: AppScheduleSuccessComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' },  canActivate: [AppRouteGuard] },
+
+
                 ]
             }
         ])

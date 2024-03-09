@@ -27,5 +27,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public bool Conditioner { get; set; } // Có điều hóa hay không
         public bool RoomStatus { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

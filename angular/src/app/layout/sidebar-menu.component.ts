@@ -75,8 +75,8 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 new MenuItem("Bài đăng mới nhất", "", "far fa-circle"),
             ]),
             new MenuItem("Quản lý lịch hẹn", "", "fas fa-circle", "Pages.Manage.Appointment.Schedules", [
-                new MenuItem("Lịch hẹn thành công", "", "far fa-circle"),
-                new MenuItem("Lịch hẹn chờ xác nhận", "", "far fa-circle"),
+                new MenuItem("Lịch hẹn thành công", "/app/app-schedule/app-schedule-success", "far fa-circle"),
+                new MenuItem("Lịch hẹn chờ xác nhận", "/app/app-schedule/app-schedule-wait", "far fa-circle"),
             ]),
         ];
     }

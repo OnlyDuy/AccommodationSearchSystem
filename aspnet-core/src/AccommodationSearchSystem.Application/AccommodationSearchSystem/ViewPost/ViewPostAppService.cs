@@ -6,6 +6,7 @@ using Abp.Linq.Extensions;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.Authorization;
+using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
 using AccommodationSearchSystem.EntityFrameworkCore;
 using AccommodationSearchSystem.Interfaces;
@@ -24,6 +25,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
     {
         private readonly IRepository<Post, long> _repositoryPost;
         private readonly IRepository<Tenant, int> _tenantRepo;
+        private readonly IRepository<User, long> _repositoryUser;
         private readonly IPhotoService _photoService;
         private readonly AccommodationSearchSystemDbContext _context;
 
@@ -31,12 +33,14 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
             IRepository<Post, long> repositoryPost,
             IRepository<Accommodate, long> repositoryAccommodate,
             IPhotoService photoService,
+            IRepository<User, long> repositoryUser,
             AccommodationSearchSystemDbContext context,
             IRepository<Tenant, int> tenantRepo)
 
         {
             _repositoryPost = repositoryPost;
             _tenantRepo = tenantRepo;
+            _repositoryUser = repositoryUser;
             _photoService = photoService;
             _context = context;
 
@@ -52,16 +56,38 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
             throw new NotImplementedException();
         }
 
-        public async Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
+
+        public async Task<GetPostForViewDto> GetForEdit(EntityDto<long> input)
         {
-            var datapost = await _repositoryPost.FirstOrDefaultAsync(input.Id);
+            var tenantId = AbpSession.TenantId;
+            var query = from p in _repositoryPost.GetAll()
+                        .Where(e => tenantId == e.TenantId)
+                        orderby p.Id descending
+                        join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id
+                        where u.TenantId == p.TenantId
 
-            var output = new GetPostForEditOutput
-            {
-                CreateOrEditPost = ObjectMapper.Map<CreateOrEditIPostDto>(datapost),
-            };
 
-            return output;
+                        select new GetPostForViewDto
+                        {
+                            Id = input.Id,
+                            PostCode = p.PostCode,
+                            Title = p.Title,
+                            ContentPost = p.ContentPost,
+                            Photo = p.Photo,
+                            RoomPrice = p.RoomPrice,
+                            Address = p.Address,
+                            Area = p.Area,
+                            Square = p.Square,
+                            PriceCategory = p.PriceCategory,
+                            Wifi = p.Wifi,
+                            Parking = p.Parking,
+                            Conditioner = p.Conditioner,
+                            RoomStatus = p.RoomStatus,
+                            TenantId = tenantId,
+                            EmailAddress = u.EmailAddress,
+                            PhoneNumber = u.PhoneNumber,
+                        };
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<PagedResultDto<GetPostForViewDto>> GetAll(GetPostInputDto input)
@@ -71,16 +97,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                         .Where(e => tenantId == e.TenantId)
                         .Where(e => input.filterText == null || e.Title.Contains(input.filterText))
                         orderby p.Id descending
-
-                        //join acom in _repositoryAccommodate.GetAll()
-                        //on p.Id equals acom.Id
-                        //into results
-                        //from result in results.DefaultIfEmpty()
-
-                        //join dealername in _tenantRepo.GetAll()
-                        //on p.TenantId equals dealername.Id
-                        //into values
-                        //from value in values.DefaultIfEmpty()
+                        join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id 
+                        where u.TenantId == p.TenantId
 
                         select new GetPostForViewDto
                         {
@@ -98,12 +116,19 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                             Parking = p.Parking,
                             Conditioner = p.Conditioner,
                             RoomStatus = p.RoomStatus,
-                            TenantId = tenantId
+                            TenantId = tenantId,
+                            EmailAddress = u.EmailAddress,
+                            PhoneNumber = u.PhoneNumber,
                         };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
             return new PagedResultDto<GetPostForViewDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
+        }
+
+        public Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
+        {
+            throw new NotImplementedException();
         }
     }
 }

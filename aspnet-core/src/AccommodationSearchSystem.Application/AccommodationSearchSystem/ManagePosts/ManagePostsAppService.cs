@@ -185,5 +185,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             //throw new UserFriendlyException(00, L("ThisItemAlreadyExists"));
         }
 
+        public Task<GetPostForViewDto> GetForEdit(EntityDto<long> input)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

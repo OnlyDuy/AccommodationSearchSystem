@@ -5,41 +5,53 @@
                 class="card-img-top img-thumbnail">
             <div class="card-body">
                 <div>
-                    <strong>Location:</strong>
+                    <strong>{{l("Title")}}</strong>
                     <p>{{post.title}}</p>
                 </div>
                 <div>
-                    <strong>Age:</strong>
-                    <p>{{post.contentPost}}</p>
+                    <strong>{{l("Address")}}</strong>
+                    <p>{{post.address}}</p>
                 </div>
                 <div>
-                    <strong>Last Active:</strong>
-                    <p>{{post.roomPrice }}</p>
+                    <strong>{{l("Square")}}</strong>
+                    <p>{{post.square }} (m2)</p>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="btn-group d-flex">
-                    <button class="btn btn-primary">Like</button>
-
+                    <button class="btn bg-success mr-2" (click)="favourite()" >
+                        <i class="fas fa-pencil-alt"></i>
+                        Yêu thích
+                    </button>
+                    <button class="btn bg-primary" (click)="booking()">
+                        <i class="fas fa-trash-alt"></i>
+                        Đặt phòng
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-8">
+    <div class="col-7">
         <!-- dùng 1 tham chiếu mẫu ở đây đang giải quyết vấn đề API: #memberTabs -->
-        <tabset class="member_content" #memberTabs >
-            <tab class="tab_content-members" heading="About">
-                <h4>Description</h4>
-                <p>{{post.contentPost}}</p>
-                <h4>Looking for</h4>
+        <tabset>
+            <tab class="" [heading]="'Nội dung'">
+                <h4>{{l("ContentPost")}}</h4>
                 <p>{{post.contentPost}}</p>
             </tab>
-            <tab class="tab_content-members" heading="Interests">
+            <tab class="" [heading]="'Thông tin hình ảnh'">
                 <h4>Interests</h4>
                 <p>{{post.contentPost}}</p>
             </tab>
+            <tab class="" [heading]="'Vị trí trên bản đồ'">
 
+            </tab>
+            <tab class="" [heading]="'Người đăng bài'">
+                <h4>Thông tin người đăng bài</h4>
+                <p>{{post.emailAddress}}</p>
+                <br>
+                <p>{{post.phoneNumber}}</p>
+            </tab>
         </tabset>
     </div>
 </div>

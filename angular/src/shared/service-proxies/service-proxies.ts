@@ -830,6 +830,249 @@ export class InforUserServiceProxy {
 }
 
 @Injectable()
+export class ManageAppointmentSchedulesServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    confirmRateFinal(body: ConfirmSchedulesDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/ConfirmRateFinal";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirmRateFinal(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirmRateFinal(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processConfirmRateFinal(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllSchedulesDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/GetAll?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<GetAllSchedulesDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAllSchedulesDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAllSchedulesDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createSchedule(body: Int64EntityDto | undefined): Observable<CreateOrEditSchedulesDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/CreateSchedule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateSchedule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateSchedule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<CreateOrEditSchedulesDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<CreateOrEditSchedulesDto>;
+        }));
+    }
+
+    protected processCreateSchedule(response: HttpResponseBase): Observable<CreateOrEditSchedulesDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CreateOrEditSchedulesDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CreateOrEditSchedulesDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editSchedule(body: CreateOrEditSchedulesDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/EditSchedule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditSchedule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditSchedule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processEditSchedule(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+}
+
+@Injectable()
 export class ManagePostsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -1133,6 +1376,62 @@ export class ManagePostsServiceProxy {
             }));
         }
         return _observableOf<PhotoDto>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getForEdit(id: number | undefined): Observable<GetPostForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForViewDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForViewDto>;
+        }));
+    }
+
+    protected processGetForEdit(response: HttpResponseBase): Observable<GetPostForViewDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForViewDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForViewDto>(null as any);
     }
 }
 
@@ -2888,8 +3187,8 @@ export class ViewPostServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getLoyaltyGiftItemForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
-        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetLoyaltyGiftItemForEdit?";
+    getForEdit(id: number | undefined): Observable<GetPostForViewDto> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetForEdit?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -2905,20 +3204,20 @@ export class ViewPostServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetLoyaltyGiftItemForEdit(response_);
+            return this.processGetForEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetLoyaltyGiftItemForEdit(response_ as any);
+                    return this.processGetForEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<GetPostForEditOutput>;
+                    return _observableThrow(e) as any as Observable<GetPostForViewDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<GetPostForEditOutput>;
+                return _observableThrow(response_) as any as Observable<GetPostForViewDto>;
         }));
     }
 
-    protected processGetLoyaltyGiftItemForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
+    protected processGetForEdit(response: HttpResponseBase): Observable<GetPostForViewDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2929,7 +3228,7 @@ export class ViewPostServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GetPostForEditOutput.fromJS(resultData200);
+            result200 = GetPostForViewDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -2937,7 +3236,7 @@ export class ViewPostServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<GetPostForEditOutput>(null as any);
+        return _observableOf<GetPostForViewDto>(null as any);
     }
 
     /**
@@ -3009,6 +3308,62 @@ export class ViewPostServiceProxy {
             }));
         }
         return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getLoyaltyGiftItemForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetLoyaltyGiftItemForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetLoyaltyGiftItemForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetLoyaltyGiftItemForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForEditOutput>;
+        }));
+    }
+
+    protected processGetLoyaltyGiftItemForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForEditOutput>(null as any);
     }
 }
 
@@ -3181,6 +3536,65 @@ export interface IAuthenticateResultModel {
     userId: number;
 }
 
+export class BigInteger implements IBigInteger {
+    readonly isPowerOfTwo: boolean;
+    readonly isZero: boolean;
+    readonly isOne: boolean;
+    readonly isEven: boolean;
+    readonly sign: number;
+
+    constructor(data?: IBigInteger) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).isPowerOfTwo = _data["isPowerOfTwo"];
+            (<any>this).isZero = _data["isZero"];
+            (<any>this).isOne = _data["isOne"];
+            (<any>this).isEven = _data["isEven"];
+            (<any>this).sign = _data["sign"];
+        }
+    }
+
+    static fromJS(data: any): BigInteger {
+        data = typeof data === 'object' ? data : {};
+        let result = new BigInteger();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isPowerOfTwo"] = this.isPowerOfTwo;
+        data["isZero"] = this.isZero;
+        data["isOne"] = this.isOne;
+        data["isEven"] = this.isEven;
+        data["sign"] = this.sign;
+        return data;
+    }
+
+    clone(): BigInteger {
+        const json = this.toJSON();
+        let result = new BigInteger();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBigInteger {
+    isPowerOfTwo: boolean;
+    isZero: boolean;
+    isOne: boolean;
+    isEven: boolean;
+    sign: number;
+}
+
 export class ChangePasswordDto implements IChangePasswordDto {
     currentPassword: string;
     newPassword: string;
@@ -3314,6 +3728,57 @@ export interface IChangeUserLanguageDto {
     languageName: string;
 }
 
+export class ConfirmSchedulesDto implements IConfirmSchedulesDto {
+    hostId: number;
+    creatorUserId: BigInteger;
+    confirm: boolean;
+
+    constructor(data?: IConfirmSchedulesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.hostId = _data["hostId"];
+            this.creatorUserId = _data["creatorUserId"] ? BigInteger.fromJS(_data["creatorUserId"]) : <any>undefined;
+            this.confirm = _data["confirm"];
+        }
+    }
+
+    static fromJS(data: any): ConfirmSchedulesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ConfirmSchedulesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["hostId"] = this.hostId;
+        data["creatorUserId"] = this.creatorUserId ? this.creatorUserId.toJSON() : <any>undefined;
+        data["confirm"] = this.confirm;
+        return data;
+    }
+
+    clone(): ConfirmSchedulesDto {
+        const json = this.toJSON();
+        let result = new ConfirmSchedulesDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IConfirmSchedulesDto {
+    hostId: number;
+    creatorUserId: BigInteger;
+    confirm: boolean;
+}
+
 export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     id: number | undefined;
     postCode: string | undefined;
@@ -3423,6 +3888,89 @@ export interface ICreateOrEditIPostDto {
     parking: boolean;
     conditioner: boolean;
     photos: PhotoDto[] | undefined;
+}
+
+export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    renterHostName: string | undefined;
+    renterHostPhoneNumber: string | undefined;
+    day: moment.Moment;
+    hour: TimeSpan;
+    postId: number;
+    getPostForViewDtos: GetPostForViewDto;
+
+    constructor(data?: ICreateOrEditSchedulesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.hostId = _data["hostId"];
+            this.hostName = _data["hostName"];
+            this.hostPhoneNumber = _data["hostPhoneNumber"];
+            this.renterHostName = _data["renterHostName"];
+            this.renterHostPhoneNumber = _data["renterHostPhoneNumber"];
+            this.day = _data["day"] ? moment(_data["day"].toString()) : <any>undefined;
+            this.hour = _data["hour"] ? TimeSpan.fromJS(_data["hour"]) : <any>undefined;
+            this.postId = _data["postId"];
+            this.getPostForViewDtos = _data["getPostForViewDtos"] ? GetPostForViewDto.fromJS(_data["getPostForViewDtos"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): CreateOrEditSchedulesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateOrEditSchedulesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["hostId"] = this.hostId;
+        data["hostName"] = this.hostName;
+        data["hostPhoneNumber"] = this.hostPhoneNumber;
+        data["renterHostName"] = this.renterHostName;
+        data["renterHostPhoneNumber"] = this.renterHostPhoneNumber;
+        data["day"] = this.day ? this.day.toISOString() : <any>undefined;
+        data["hour"] = this.hour ? this.hour.toJSON() : <any>undefined;
+        data["postId"] = this.postId;
+        data["getPostForViewDtos"] = this.getPostForViewDtos ? this.getPostForViewDtos.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): CreateOrEditSchedulesDto {
+        const json = this.toJSON();
+        let result = new CreateOrEditSchedulesDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateOrEditSchedulesDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    renterHostName: string | undefined;
+    renterHostPhoneNumber: string | undefined;
+    day: moment.Moment;
+    hour: TimeSpan;
+    postId: number;
+    getPostForViewDtos: GetPostForViewDto;
 }
 
 export class CreateRoleDto implements ICreateRoleDto {
@@ -3838,6 +4386,132 @@ export interface IFlatPermissionDto {
     description: string | undefined;
 }
 
+export class GetAllSchedulesDto implements IGetAllSchedulesDto {
+    id: number | undefined;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    renterHostName: string | undefined;
+    renterHostPhoneNumber: string | undefined;
+    day: moment.Moment;
+    hour: TimeSpan;
+    confirm: boolean;
+
+    constructor(data?: IGetAllSchedulesDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.hostName = _data["hostName"];
+            this.hostPhoneNumber = _data["hostPhoneNumber"];
+            this.renterHostName = _data["renterHostName"];
+            this.renterHostPhoneNumber = _data["renterHostPhoneNumber"];
+            this.day = _data["day"] ? moment(_data["day"].toString()) : <any>undefined;
+            this.hour = _data["hour"] ? TimeSpan.fromJS(_data["hour"]) : <any>undefined;
+            this.confirm = _data["confirm"];
+        }
+    }
+
+    static fromJS(data: any): GetAllSchedulesDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllSchedulesDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["hostName"] = this.hostName;
+        data["hostPhoneNumber"] = this.hostPhoneNumber;
+        data["renterHostName"] = this.renterHostName;
+        data["renterHostPhoneNumber"] = this.renterHostPhoneNumber;
+        data["day"] = this.day ? this.day.toISOString() : <any>undefined;
+        data["hour"] = this.hour ? this.hour.toJSON() : <any>undefined;
+        data["confirm"] = this.confirm;
+        return data;
+    }
+
+    clone(): GetAllSchedulesDto {
+        const json = this.toJSON();
+        let result = new GetAllSchedulesDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetAllSchedulesDto {
+    id: number | undefined;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    renterHostName: string | undefined;
+    renterHostPhoneNumber: string | undefined;
+    day: moment.Moment;
+    hour: TimeSpan;
+    confirm: boolean;
+}
+
+export class GetAllSchedulesDtoPagedResultDto implements IGetAllSchedulesDtoPagedResultDto {
+    items: GetAllSchedulesDto[] | undefined;
+    totalCount: number;
+
+    constructor(data?: IGetAllSchedulesDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(GetAllSchedulesDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): GetAllSchedulesDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllSchedulesDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+
+    clone(): GetAllSchedulesDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new GetAllSchedulesDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetAllSchedulesDtoPagedResultDto {
+    items: GetAllSchedulesDto[] | undefined;
+    totalCount: number;
+}
+
 export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
@@ -3891,6 +4565,7 @@ export interface IGetCurrentLoginInformationsOutput {
 
 export class GetPostForEditOutput implements IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
+    getPostForView: GetPostForViewDto;
 
     constructor(data?: IGetPostForEditOutput) {
         if (data) {
@@ -3904,6 +4579,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
     init(_data?: any) {
         if (_data) {
             this.createOrEditPost = _data["createOrEditPost"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditPost"]) : <any>undefined;
+            this.getPostForView = _data["getPostForView"] ? GetPostForViewDto.fromJS(_data["getPostForView"]) : <any>undefined;
         }
     }
 
@@ -3917,6 +4593,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["createOrEditPost"] = this.createOrEditPost ? this.createOrEditPost.toJSON() : <any>undefined;
+        data["getPostForView"] = this.getPostForView ? this.getPostForView.toJSON() : <any>undefined;
         return data;
     }
 
@@ -3930,6 +4607,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
 
 export interface IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
+    getPostForView: GetPostForViewDto;
 }
 
 export class GetPostForViewDto implements IGetPostForViewDto {
@@ -3949,6 +4627,8 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     conditioner: boolean;
     roomStatus: boolean;
     photos: PhotoDto[] | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
 
     constructor(data?: IGetPostForViewDto) {
         if (data) {
@@ -3981,6 +4661,8 @@ export class GetPostForViewDto implements IGetPostForViewDto {
                 for (let item of _data["photos"])
                     this.photos.push(PhotoDto.fromJS(item));
             }
+            this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
         }
     }
 
@@ -4013,6 +4695,8 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             for (let item of this.photos)
                 data["photos"].push(item.toJSON());
         }
+        data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
         return data;
     }
 
@@ -4041,6 +4725,8 @@ export interface IGetPostForViewDto {
     conditioner: boolean;
     roomStatus: boolean;
     photos: PhotoDto[] | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
 }
 
 export class GetPostForViewDtoPagedResultDto implements IGetPostForViewDtoPagedResultDto {
@@ -5127,6 +5813,89 @@ export interface ITenantLoginInfoDto {
     id: number;
     tenancyName: string | undefined;
     name: string | undefined;
+}
+
+export class TimeSpan implements ITimeSpan {
+    ticks: number;
+    readonly days: number;
+    readonly hours: number;
+    readonly milliseconds: number;
+    readonly minutes: number;
+    readonly seconds: number;
+    readonly totalDays: number;
+    readonly totalHours: number;
+    readonly totalMilliseconds: number;
+    readonly totalMinutes: number;
+    readonly totalSeconds: number;
+
+    constructor(data?: ITimeSpan) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.ticks = _data["ticks"];
+            (<any>this).days = _data["days"];
+            (<any>this).hours = _data["hours"];
+            (<any>this).milliseconds = _data["milliseconds"];
+            (<any>this).minutes = _data["minutes"];
+            (<any>this).seconds = _data["seconds"];
+            (<any>this).totalDays = _data["totalDays"];
+            (<any>this).totalHours = _data["totalHours"];
+            (<any>this).totalMilliseconds = _data["totalMilliseconds"];
+            (<any>this).totalMinutes = _data["totalMinutes"];
+            (<any>this).totalSeconds = _data["totalSeconds"];
+        }
+    }
+
+    static fromJS(data: any): TimeSpan {
+        data = typeof data === 'object' ? data : {};
+        let result = new TimeSpan();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["ticks"] = this.ticks;
+        data["days"] = this.days;
+        data["hours"] = this.hours;
+        data["milliseconds"] = this.milliseconds;
+        data["minutes"] = this.minutes;
+        data["seconds"] = this.seconds;
+        data["totalDays"] = this.totalDays;
+        data["totalHours"] = this.totalHours;
+        data["totalMilliseconds"] = this.totalMilliseconds;
+        data["totalMinutes"] = this.totalMinutes;
+        data["totalSeconds"] = this.totalSeconds;
+        return data;
+    }
+
+    clone(): TimeSpan {
+        const json = this.toJSON();
+        let result = new TimeSpan();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITimeSpan {
+    ticks: number;
+    days: number;
+    hours: number;
+    milliseconds: number;
+    minutes: number;
+    seconds: number;
+    totalDays: number;
+    totalHours: number;
+    totalMilliseconds: number;
+    totalMinutes: number;
+    totalSeconds: number;
 }
 
 export class UserDto implements IUserDto {
