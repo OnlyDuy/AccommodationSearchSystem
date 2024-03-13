@@ -14,7 +14,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public string RenterHostName { get; set; }
         public string RenterHostPhoneNumber { get; set; }
         public DateTime Day { get; set; }
-        public TimeSpan Hour { get; set; }
+        public DateTime Hour { get; set; }
         public bool Confirm { get; set; }
     }
 }

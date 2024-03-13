@@ -12,8 +12,11 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
     public interface IManageAppointmentSchedulesAppService : IApplicationService
     {
         Task<CreateOrEditSchedulesDto> CreateSchedule(EntityDto<long> input);
+        Task UpdateSchedule(CreateOrEditSchedulesDto input);
         Task EditSchedule(CreateOrEditSchedulesDto input);
         Task<PagedResultDto<GetAllSchedulesDto>> GetAll(GetSchedulesInputDto input);
         Task ConfirmRateFinal(ConfirmSchedulesDto input);
+        Task<GetScheduleForEditOutput> GetScheduleForEdit(EntityDto<long> input);
+        Task DeleteSchedule(EntityDto<long> input);
     }
 }

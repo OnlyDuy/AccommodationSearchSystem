@@ -20,7 +20,7 @@ namespace AccommodationSearchSystem.Entity
         public string RenterHostName { get; set; } // Tên người thuê
         public string RenterHostPhoneNumber { get; set; } // Số điện thoại người thuê
         public DateTime Day { get; set; }
-        public TimeSpan Hour { get; set; }
+        public DateTime Hour { get; set; }
         public bool Confirm { get; set; }
         public int? TenantId { get; set; }
         public Post Posts { get; set; }

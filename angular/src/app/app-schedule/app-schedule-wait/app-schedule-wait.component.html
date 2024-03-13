@@ -1,1 +1,237 @@
-<p>app-schedule-wait works!</p>
+<div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>Quản lý lịch hẹn</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn bg-blue mr-2" [disabled]="!selectedRow" *ngIf="isHost" >
+                        <i class="fa fa-plus-square"></i>
+                        Xác nhận
+                    </button>
+                    <button class="btn bg-success mr-2" [disabled]="!selectedRow" (click)="editSchedule()">
+                        <i class="fas fa-pencil-alt"></i>
+                        {{ "Edit" | localize }}
+                    </button>
+                    <button class="btn bg-danger" [disabled]="!selectedRow">
+                        <i class="fas fa-trash-alt"></i>
+                        Hủy lịch
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body" *ngIf="isHost">
+                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                        selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
+                        [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
+                        [busy]="isLoading"
+                        [selection]="selectedSchedule"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [globalFilterFields]="['title', 'roomPrice', 'id']">
+                        <ng-template pTemplate="caption">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                            <i class="pi pi-undo"></i>
+                                            {{ "Reset" | localize }}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-outline mb-2" data-mdb-input-init>
+
+                                            <input pInputText class="form-control" type="search"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search keyword" />
+
+                                        </div>
+                                        <!-- <span class="p-input-icon-left ml-5">
+                                          <i class="pi pi-search"></i>
+                                          <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                      </span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="min-width:10rem" pFrozenColumn>
+                                    <div class="flex align-items-center">
+                                        Mã
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Tên người thuê
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Số điện thoại
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Ngày hẹn
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Giờ hẹn
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Trạng thái chờ
+                                    </div>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                            <tr [class.p-odd]="rowIndex % 2 === 0" [class.p-even]="rowIndex % 2 !== 0"
+                                [pSelectableRow]="rowData" (click)="selectedRow = rowData">
+                                <td style="min-width:10rem" pFrozenColumn>
+                                    {{ rowData.id }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.renterHostName }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.renterHostPhoneNumber }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.day | date: 'dd/MM/YYYY'}}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.hour | date: 'HH:mm:ss' }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    <i class="pi"
+                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5">No customers found.</td>
+                            </tr>
+                        </ng-template>
+
+                    </p-table>
+
+                </div>
+                <div class="card-body" *ngIf="!isHost">
+                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                        selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
+                        [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
+                        [busy]="isLoading"
+                        [selection]="selectedSchedule"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [globalFilterFields]="['title', 'roomPrice', 'id']">
+                        <ng-template pTemplate="caption">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                            <i class="pi pi-undo"></i>
+                                            {{ "Reset" | localize }}
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-outline mb-2" data-mdb-input-init>
+
+                                            <input pInputText class="form-control" type="search"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search keyword" />
+
+                                        </div>
+                                        <!-- <span class="p-input-icon-left ml-5">
+                                          <i class="pi pi-search"></i>
+                                          <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                      </span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="min-width:10rem" pFrozenColumn>
+                                    <div class="flex align-items-center">
+                                        Mã
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Tên chủ trọ
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Số điện thoại
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Ngày hẹn
+                                    </div>
+                                </th>
+                                <th style="min-width:15rem">
+                                    <div class="flex align-items-center">
+                                        Giờ hẹn
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Trạng thái chờ
+                                    </div>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                            <tr [class.p-odd]="rowIndex % 2 === 0" [class.p-even]="rowIndex % 2 !== 0"
+                                [pSelectableRow]="rowData" (click)="selectedRow = rowData">
+                                <td style="min-width:10rem" pFrozenColumn>
+                                    {{ rowData.id }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.hostName }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.hostPhoneNumber }}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.day | date: 'dd MMM yyyy'}}
+                                </td>
+                                <td style="min-width:15rem">
+                                    {{ rowData.hour | date: 'HH:mm:ss' }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    <i class="pi"
+                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5">No customers found.</td>
+                            </tr>
+                        </ng-template>
+
+                    </p-table>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<AppScheduleWaitUpdate #AppScheduleWaitUpdate>
+
+</AppScheduleWaitUpdate>
+

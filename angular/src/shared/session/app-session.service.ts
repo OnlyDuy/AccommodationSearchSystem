@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
     ApplicationInfoDto,
     GetCurrentLoginInformationsOutput,
+    RoleUserLoginDto,
     SessionServiceProxy,
     TenantLoginInfoDto,
     UserLoginInfoDto
@@ -13,6 +14,7 @@ export class AppSessionService {
 
     private _user: UserLoginInfoDto;
     private _tenant: TenantLoginInfoDto;
+    private _roleUser: RoleUserLoginDto;
     private _application: ApplicationInfoDto;
 
     constructor(
@@ -38,6 +40,24 @@ export class AppSessionService {
 
     get tenantId(): number {
         return this.tenant ? this.tenant.id : null;
+    }
+
+    get roleUser(): RoleUserLoginDto {
+        return this._roleUser;
+    }
+
+    get roleUserId(): number {
+        return this.roleUser ? this.roleUser.id : null;
+    }
+
+    getShownLoginRoleId(): number {
+        const id = this._roleUser.roleId;
+        if (!this._abpMultiTenancyService.isEnabled) {
+            return id;
+        }
+        return id;
+
+        // return parseInt((this._tenant ? this._tenant.id : '.') + '\\' + id);
     }
 
     getShownLoginId(): number {
@@ -93,6 +113,7 @@ export class AppSessionService {
                 this._application = result.application;
                 this._user = result.user;
                 this._tenant = result.tenant;
+                this._roleUser = result.userRole;
 
                 resolve(true);
             }, (err) => {

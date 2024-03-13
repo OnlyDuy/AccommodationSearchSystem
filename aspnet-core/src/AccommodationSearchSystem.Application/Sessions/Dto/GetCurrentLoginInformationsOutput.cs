@@ -7,5 +7,7 @@
         public UserLoginInfoDto User { get; set; }
 
         public TenantLoginInfoDto Tenant { get; set; }
+
+        public RoleUserLoginDto UserRole { get; set; }
     }
 }

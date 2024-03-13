@@ -1070,6 +1070,166 @@ export class ManageAppointmentSchedulesServiceProxy {
         }
         return _observableOf<void>(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    updateSchedule(body: CreateOrEditSchedulesDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/UpdateSchedule";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateSchedule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateSchedule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processUpdateSchedule(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getScheduleForEdit(id: number | undefined): Observable<GetScheduleForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/GetScheduleForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetScheduleForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetScheduleForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetScheduleForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetScheduleForEditOutput>;
+        }));
+    }
+
+    protected processGetScheduleForEdit(response: HttpResponseBase): Observable<GetScheduleForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetScheduleForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetScheduleForEditOutput>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    deleteSchedule(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/DeleteSchedule?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteSchedule(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteSchedule(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeleteSchedule(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
 }
 
 @Injectable()
@@ -3899,7 +4059,7 @@ export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
     renterHostName: string | undefined;
     renterHostPhoneNumber: string | undefined;
     day: moment.Moment;
-    hour: TimeSpan;
+    hour: moment.Moment;
     postId: number;
     getPostForViewDtos: GetPostForViewDto;
 
@@ -3922,7 +4082,7 @@ export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
             this.renterHostName = _data["renterHostName"];
             this.renterHostPhoneNumber = _data["renterHostPhoneNumber"];
             this.day = _data["day"] ? moment(_data["day"].toString()) : <any>undefined;
-            this.hour = _data["hour"] ? TimeSpan.fromJS(_data["hour"]) : <any>undefined;
+            this.hour = _data["hour"] ? moment(_data["hour"].toString()) : <any>undefined;
             this.postId = _data["postId"];
             this.getPostForViewDtos = _data["getPostForViewDtos"] ? GetPostForViewDto.fromJS(_data["getPostForViewDtos"]) : <any>undefined;
         }
@@ -3945,7 +4105,7 @@ export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
         data["renterHostName"] = this.renterHostName;
         data["renterHostPhoneNumber"] = this.renterHostPhoneNumber;
         data["day"] = this.day ? this.day.toISOString() : <any>undefined;
-        data["hour"] = this.hour ? this.hour.toJSON() : <any>undefined;
+        data["hour"] = this.hour ? this.hour.toISOString() : <any>undefined;
         data["postId"] = this.postId;
         data["getPostForViewDtos"] = this.getPostForViewDtos ? this.getPostForViewDtos.toJSON() : <any>undefined;
         return data;
@@ -3968,7 +4128,7 @@ export interface ICreateOrEditSchedulesDto {
     renterHostName: string | undefined;
     renterHostPhoneNumber: string | undefined;
     day: moment.Moment;
-    hour: TimeSpan;
+    hour: moment.Moment;
     postId: number;
     getPostForViewDtos: GetPostForViewDto;
 }
@@ -4393,7 +4553,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
     renterHostName: string | undefined;
     renterHostPhoneNumber: string | undefined;
     day: moment.Moment;
-    hour: TimeSpan;
+    hour: moment.Moment;
     confirm: boolean;
 
     constructor(data?: IGetAllSchedulesDto) {
@@ -4413,7 +4573,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
             this.renterHostName = _data["renterHostName"];
             this.renterHostPhoneNumber = _data["renterHostPhoneNumber"];
             this.day = _data["day"] ? moment(_data["day"].toString()) : <any>undefined;
-            this.hour = _data["hour"] ? TimeSpan.fromJS(_data["hour"]) : <any>undefined;
+            this.hour = _data["hour"] ? moment(_data["hour"].toString()) : <any>undefined;
             this.confirm = _data["confirm"];
         }
     }
@@ -4433,7 +4593,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
         data["renterHostName"] = this.renterHostName;
         data["renterHostPhoneNumber"] = this.renterHostPhoneNumber;
         data["day"] = this.day ? this.day.toISOString() : <any>undefined;
-        data["hour"] = this.hour ? this.hour.toJSON() : <any>undefined;
+        data["hour"] = this.hour ? this.hour.toISOString() : <any>undefined;
         data["confirm"] = this.confirm;
         return data;
     }
@@ -4453,7 +4613,7 @@ export interface IGetAllSchedulesDto {
     renterHostName: string | undefined;
     renterHostPhoneNumber: string | undefined;
     day: moment.Moment;
-    hour: TimeSpan;
+    hour: moment.Moment;
     confirm: boolean;
 }
 
@@ -4516,6 +4676,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
+    userRole: RoleUserLoginDto;
 
     constructor(data?: IGetCurrentLoginInformationsOutput) {
         if (data) {
@@ -4531,6 +4692,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
             this.application = _data["application"] ? ApplicationInfoDto.fromJS(_data["application"]) : <any>undefined;
             this.user = _data["user"] ? UserLoginInfoDto.fromJS(_data["user"]) : <any>undefined;
             this.tenant = _data["tenant"] ? TenantLoginInfoDto.fromJS(_data["tenant"]) : <any>undefined;
+            this.userRole = _data["userRole"] ? RoleUserLoginDto.fromJS(_data["userRole"]) : <any>undefined;
         }
     }
 
@@ -4546,6 +4708,7 @@ export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInform
         data["application"] = this.application ? this.application.toJSON() : <any>undefined;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
+        data["userRole"] = this.userRole ? this.userRole.toJSON() : <any>undefined;
         return data;
     }
 
@@ -4561,6 +4724,7 @@ export interface IGetCurrentLoginInformationsOutput {
     application: ApplicationInfoDto;
     user: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
+    userRole: RoleUserLoginDto;
 }
 
 export class GetPostForEditOutput implements IGetPostForEditOutput {
@@ -4849,6 +5013,53 @@ export interface IGetRoleForEditOutput {
     role: RoleEditDto;
     permissions: FlatPermissionDto[] | undefined;
     grantedPermissionNames: string[] | undefined;
+}
+
+export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
+    createOrEditSchedulesDtos: CreateOrEditSchedulesDto;
+    getAllSchedulesDtos: GetAllSchedulesDto;
+
+    constructor(data?: IGetScheduleForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.createOrEditSchedulesDtos = _data["createOrEditSchedulesDtos"] ? CreateOrEditSchedulesDto.fromJS(_data["createOrEditSchedulesDtos"]) : <any>undefined;
+            this.getAllSchedulesDtos = _data["getAllSchedulesDtos"] ? GetAllSchedulesDto.fromJS(_data["getAllSchedulesDtos"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetScheduleForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetScheduleForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["createOrEditSchedulesDtos"] = this.createOrEditSchedulesDtos ? this.createOrEditSchedulesDtos.toJSON() : <any>undefined;
+        data["getAllSchedulesDtos"] = this.getAllSchedulesDtos ? this.getAllSchedulesDtos.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): GetScheduleForEditOutput {
+        const json = this.toJSON();
+        let result = new GetScheduleForEditOutput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetScheduleForEditOutput {
+    createOrEditSchedulesDtos: CreateOrEditSchedulesDto;
+    getAllSchedulesDtos: GetAllSchedulesDto;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {
@@ -5648,6 +5859,61 @@ export interface IRoleListDtoListResultDto {
     items: RoleListDto[] | undefined;
 }
 
+export class RoleUserLoginDto implements IRoleUserLoginDto {
+    id: number;
+    tenantId: number | undefined;
+    userId: number;
+    roleId: number;
+
+    constructor(data?: IRoleUserLoginDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.userId = _data["userId"];
+            this.roleId = _data["roleId"];
+        }
+    }
+
+    static fromJS(data: any): RoleUserLoginDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoleUserLoginDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["userId"] = this.userId;
+        data["roleId"] = this.roleId;
+        return data;
+    }
+
+    clone(): RoleUserLoginDto {
+        const json = this.toJSON();
+        let result = new RoleUserLoginDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRoleUserLoginDto {
+    id: number;
+    tenantId: number | undefined;
+    userId: number;
+    roleId: number;
+}
+
 export enum TenantAvailabilityState {
     _1 = 1,
     _2 = 2,
@@ -5813,89 +6079,6 @@ export interface ITenantLoginInfoDto {
     id: number;
     tenancyName: string | undefined;
     name: string | undefined;
-}
-
-export class TimeSpan implements ITimeSpan {
-    ticks: number;
-    readonly days: number;
-    readonly hours: number;
-    readonly milliseconds: number;
-    readonly minutes: number;
-    readonly seconds: number;
-    readonly totalDays: number;
-    readonly totalHours: number;
-    readonly totalMilliseconds: number;
-    readonly totalMinutes: number;
-    readonly totalSeconds: number;
-
-    constructor(data?: ITimeSpan) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.ticks = _data["ticks"];
-            (<any>this).days = _data["days"];
-            (<any>this).hours = _data["hours"];
-            (<any>this).milliseconds = _data["milliseconds"];
-            (<any>this).minutes = _data["minutes"];
-            (<any>this).seconds = _data["seconds"];
-            (<any>this).totalDays = _data["totalDays"];
-            (<any>this).totalHours = _data["totalHours"];
-            (<any>this).totalMilliseconds = _data["totalMilliseconds"];
-            (<any>this).totalMinutes = _data["totalMinutes"];
-            (<any>this).totalSeconds = _data["totalSeconds"];
-        }
-    }
-
-    static fromJS(data: any): TimeSpan {
-        data = typeof data === 'object' ? data : {};
-        let result = new TimeSpan();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["ticks"] = this.ticks;
-        data["days"] = this.days;
-        data["hours"] = this.hours;
-        data["milliseconds"] = this.milliseconds;
-        data["minutes"] = this.minutes;
-        data["seconds"] = this.seconds;
-        data["totalDays"] = this.totalDays;
-        data["totalHours"] = this.totalHours;
-        data["totalMilliseconds"] = this.totalMilliseconds;
-        data["totalMinutes"] = this.totalMinutes;
-        data["totalSeconds"] = this.totalSeconds;
-        return data;
-    }
-
-    clone(): TimeSpan {
-        const json = this.toJSON();
-        let result = new TimeSpan();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITimeSpan {
-    ticks: number;
-    days: number;
-    hours: number;
-    milliseconds: number;
-    minutes: number;
-    seconds: number;
-    totalDays: number;
-    totalHours: number;
-    totalMilliseconds: number;
-    totalMinutes: number;
-    totalSeconds: number;
 }
 
 export class UserDto implements IUserDto {

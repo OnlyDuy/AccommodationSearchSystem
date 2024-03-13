@@ -2,6 +2,7 @@
 using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.Entity;
+using AccommodationSearchSystem.Sessions.Dto;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,10 @@ namespace AccommodationSearchSystem.Helpers
             configuration.CreateMap<Post, CreateOrEditIPostDto>().ReverseMap();
             configuration.CreateMap<Accommodate, CreateOrEditIPostDto>().ReverseMap();
             configuration.CreateMap<AppointmentSchedule, CreateOrEditSchedulesDto>().ReverseMap();
+            configuration.CreateMap<AppointmentSchedule, GetAllSchedulesDto>().ReverseMap();
             configuration.CreateMap<PhotoPost, PhotoDto>().ReverseMap();
+            //configuration.CreateMap<UserRole, UserRoleDto>().ReverseMap();
+
         }
     }
 }

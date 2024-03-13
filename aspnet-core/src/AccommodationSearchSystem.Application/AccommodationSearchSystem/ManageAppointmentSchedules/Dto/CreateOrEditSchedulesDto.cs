@@ -19,7 +19,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public string RenterHostName { get; set; } // Tên người thuê
         public string RenterHostPhoneNumber { get; set; } // Số điện thoại người thuê
         public DateTime Day { get; set; }
-        public TimeSpan Hour { get; set; }
+        public DateTime Hour { get; set; }
         public int PostId { get; set; } // Id bài đăng
 
         public GetPostForViewDto GetPostForViewDtos { get; set; }

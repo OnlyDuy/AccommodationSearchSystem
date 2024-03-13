@@ -1,0 +1,48 @@
+<div bsModal #editScheduleModal="bs-modal" class="modal fade" aria-labelledby="editScheduleModal" aria-hidden="true"
+    [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-md modal-lg">
+        <div class="modal-content">
+            <form class="form-horizontal" autocomplete="off" #editScheduleFormModal="ngForm" (ngSubmit)="save()"
+                *ngIf="active">
+
+                <abp-modal-header *ngIf="schedules.id" [title]="'Lịch hẹn'"
+                    (onCloseClick)="editScheduleModal.hide()"></abp-modal-header>
+
+                <div class="modal-body">
+                    <tabset>
+                        <tab [heading]="'Điều chỉnh lịch hẹn'" class="pt-3 px-2">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="day">
+                                    Ngày hẹn
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="day" id="day"
+                                        [(ngModel)]="schedules.day" #dayModel="ngModel" [minDate]="minDate" bsDatepicker/>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="hour">
+                                    Giờ hẹn
+                                </label>
+                                <div class="col-md-9">
+                                    <!-- <input type="text" class="form-control" name="hour" id="hour"
+                                        [(ngModel)]="schedules.hour" #hourModel="ngModel" bsTimepicker/> -->
+                                        <p-calendar [(ngModel)]="schedules.hour" [showTime]="true"></p-calendar>
+
+                                </div>
+                            </div>
+
+                        </tab>
+
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <abp-modal-footer [cancelDisabled]="saving"
+                        [saveDisabled]="!editScheduleFormModal.form.valid || saving"
+                        (onCancelClick)="editScheduleModal.hide()"></abp-modal-footer>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -30,6 +30,7 @@
 	  <text name="PhoneNumber" value="Số điện thoại" />
 	<text name="Tenants" value="Người thuê nhà" />
 	<text name="SavedSuccessfully" value="Đã lưu thành công" />
+		<text name="YouAreScheduled" value="Bạn đã được lên lịch" />
 	<text name="CreateNewTenant" value="Tạo người thuê mới" />
 	<text name="AdminEmailAddress" value="Địa chỉ email quản trị viên" />
 	<text name="AdminPassword" value="Mật khẩu quản trị" />

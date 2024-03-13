@@ -53,6 +53,8 @@ import { PostViewDetailComponent } from './post/post-view-detail/post-view-detai
 import { AppScheduleComponent } from './app-schedule/app-schedule.component';
 import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success/app-schedule-success.component';
 import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-schedule-wait.component';
+import { FormDatePipe } from './_forms/form-date.pipe';
+import { AppScheduleWaitUpdateComponent } from './app-schedule/app-schedule-wait/app-schedule-wait-update/app-schedule-wait-update.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,7 +98,9 @@ import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-s
     PostViewDetailComponent,
     AppScheduleComponent,
     AppScheduleSuccessComponent,
-    AppScheduleWaitComponent
+    AppScheduleWaitComponent,
+    FormDatePipe,
+    AppScheduleWaitUpdateComponent
    ],
   imports: [
     CommonModule,

@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 import { AppSessionService } from './session/app-session.service';
 import { AppUrlService } from './nav/app-url.service';
@@ -25,6 +27,7 @@ import { OrderListModule } from 'primeng/orderlist';
 import { PaginatorModule } from 'primeng/paginator';
 import { DataViewModule } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
+import { CalendarModule } from 'primeng/calendar';
 
 import { FileUploadModule } from 'ng2-file-upload';
 
@@ -33,13 +36,16 @@ import { FileUploadModule } from 'ng2-file-upload';
         CommonModule,
         RouterModule,
         NgxPaginationModule,
+        BsDatepickerModule.forRoot(),
+        TimepickerModule.forRoot(),
         ButtonModule,
         FileUploadModule,
         TableModule,
         OrderListModule,
         DataViewModule,
         CardModule,
-        PaginatorModule
+        PaginatorModule,
+        CalendarModule
     ],
 
     declarations: [
@@ -62,9 +68,12 @@ import { FileUploadModule } from 'ng2-file-upload';
         FileUploadModule,
         ButtonModule,
         TableModule,
+        BsDatepickerModule,
+        TimepickerModule,
         OrderListModule,
         DataViewModule,
         CardModule,
+        CalendarModule,
         NgxPaginationModule,
         PaginatorModule
     ]
