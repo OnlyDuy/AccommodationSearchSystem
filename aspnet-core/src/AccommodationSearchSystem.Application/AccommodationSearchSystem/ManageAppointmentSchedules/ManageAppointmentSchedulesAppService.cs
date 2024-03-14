@@ -26,25 +26,24 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         private readonly IRepository<AppointmentSchedule, long> _repositorySchedule;
         private readonly IRepository<User, long> _repositoryUser;
         private readonly IRepository<Post, long> _repositoryPost;
-        private readonly AccommodationSearchSystemDbContext _dbContext;
  
         public ManageAppointmentSchedulesAppService(
            IRepository<AppointmentSchedule, long> repositorySchedule,
            IRepository<Post, long> repositoryPost,
-           IRepository<User, long> repositoryUser,
-           AccommodationSearchSystemDbContext dbContext)
+           IRepository<User, long> repositoryUser)
 
         {
             _repositorySchedule = repositorySchedule;
             _repositoryUser = repositoryUser;
             _repositoryPost = repositoryPost;
-            _dbContext = dbContext;
         }
 
-        public async Task ConfirmRateFinal(ConfirmSchedulesDto input)
+        public async Task ConfirmSchedules(ConfirmSchedulesDto input)
         {
+            var tenantId = AbpSession.TenantId;
             var UserId = AbpSession.UserId;
-            var dataCheck = await _repositorySchedule.FirstOrDefaultAsync(e => UserId == e.HostId && e.Confirm == true && e.Id == input.Id);
+            var dataCheck = await _repositorySchedule.FirstOrDefaultAsync(e => UserId == e.HostId && e.Confirm == true 
+                                    && e.Id == input.Id && tenantId == e.TenantId);
             if (dataCheck != null)
             {
                 throw new UserFriendlyException(400, "Lịch hẹn đã được xác nhận");
@@ -63,12 +62,41 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
             }
         }
 
+        public async Task CancelSchedules(CancelSchedulesDto input)
+        {
+            var UserId = AbpSession.UserId;
+            var tenantId = AbpSession.TenantId;
+            var dataCheck = await _repositorySchedule
+                            .FirstOrDefaultAsync(e => (UserId == e.HostId && e.Cancel == true && e.Id == input.Id && tenantId == e.TenantId)
+                                            || (UserId == e.CreatorUserId && e.Cancel == true && e.Id == input.Id && tenantId == e.TenantId));
+            if (dataCheck != null)
+            {
+                throw new UserFriendlyException(400, "Lịch hẹn đã được hủy trước đó");
+            }
+            else
+            {
+                var schedule = await _repositorySchedule
+                            .FirstOrDefaultAsync(e => (e.Id == input.Id && UserId == e.CreatorUserId)
+                                                    || (e.Id == input.Id && UserId == e.HostId));
+                if (schedule != null)
+                {
+                    // Cập nhật thuộc tính của đối tượng schedule
+                    schedule.Cancel = true;
+                    schedule.CancelById = (int)UserId;
+
+                    // Lưu thay đổi vào cơ sở dữ liệu
+                    await _repositorySchedule.UpdateAsync(schedule);
+                }
+            }
+        }
+
         public async Task<PagedResultDto<GetAllSchedulesDto>> GetAll(GetSchedulesInputDto input)
         {
             var tenantId = AbpSession.TenantId;
             var UserId = AbpSession.UserId;
             var query = from s in _repositorySchedule.GetAll()
-                        .Where(e => (tenantId == e.TenantId && UserId == e.CreatorUserId) || (tenantId == e.TenantId && UserId == e.HostId))
+                        .Where(e => (tenantId == e.TenantId && UserId == e.CreatorUserId && e.Confirm == false && e.Cancel == false) 
+                                    || (tenantId == e.TenantId && UserId == e.HostId && e.Confirm == false && e.Cancel == false))
                         .Where(e => input.filterText == null || e.Confirm.Equals(input.filterText))
                         join p in _repositoryPost.GetAll() on s.PostId equals p.Id
                         join u in _repositoryUser.GetAll() on s.CreatorUserId equals u.Id
@@ -83,7 +111,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                             RenterHostPhoneNumber = u.PhoneNumber,
                             Day = s.Day,
                             Hour = s.Hour,
-                            Confirm = s.Confirm
+                            Confirm = s.Confirm,
+                            Cancel = s.Cancel,
                         };
 
             var totalCount = await query.CountAsync();
@@ -119,7 +148,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                               }).FirstOrDefaultAsync();
             var postCount = await (from s in _repositorySchedule.GetAll()
                                    join user in _repositoryUser.GetAll() on s.CreatorUserId equals user.Id
-                                   where s.PostId == input.Id && s.TenantId == tenantId
+                                   where s.PostId == input.Id && s.TenantId == tenantId 
                                    select s).CountAsync();
 
             if (postCount >= 1)
@@ -145,7 +174,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
             return post;
         }
 
-
         public async Task EditSchedule(CreateOrEditSchedulesDto input)
         {
             var schedule = await _repositorySchedule.FirstOrDefaultAsync((long)input.Id);
@@ -163,10 +191,15 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public async Task<GetScheduleForEditOutput> GetScheduleForEdit(EntityDto<long> input)
         {
             var dataschedule = await _repositorySchedule.FirstOrDefaultAsync(input.Id);
+            var datascheduleConfirm = await _repositorySchedule.FirstOrDefaultAsync(input.Id);
+            var datascheduleCancel = await _repositorySchedule.FirstOrDefaultAsync(input.Id);
+
 
             var output = new GetScheduleForEditOutput
             {
                 CreateOrEditSchedulesDtos = ObjectMapper.Map<CreateOrEditSchedulesDto>(dataschedule),
+                ConfirmSchedulesDtos = ObjectMapper.Map<ConfirmSchedulesDto>(datascheduleConfirm),
+                CancelSchedulesDtos = ObjectMapper.Map<CancelSchedulesDto>(datascheduleCancel),
             };
 
             return output;
@@ -179,6 +212,94 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
             schedule.IsDeleted = true;
 
             await _repositoryPost.DeleteAsync(schedule.Id);
+        }
+
+        public async Task<PagedResultDto<GetAllSchedulesDto>> GetAllScheduleSuccess(GetSchedulesInputDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+            var query = from s in _repositorySchedule.GetAll()
+                        .Where(e => (tenantId == e.TenantId && UserId == e.CreatorUserId && e.Confirm == true)
+                            || (tenantId == e.TenantId && UserId == e.HostId && e.Confirm == true))
+                        .Where(e => input.filterText == null || e.Confirm.Equals(input.filterText))
+                        join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                        join u in _repositoryUser.GetAll() on s.CreatorUserId equals u.Id
+                        orderby s.Id descending
+
+                        select new GetAllSchedulesDto
+                        {
+                            Id = s.Id,
+                            HostName = s.HostName,
+                            HostPhoneNumber = s.HostPhoneNumber,
+                            RenterHostName = u.FullName,
+                            RenterHostPhoneNumber = u.PhoneNumber,
+                            Day = s.Day,
+                            Hour = s.Hour,
+                            Confirm = s.Confirm,
+                            Cancel = s.Cancel,
+                        };
+
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredPost = query.PageBy(input);
+            return new PagedResultDto<GetAllSchedulesDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
+        }
+
+        public async Task<PagedResultDto<GetAllSchedulesDto>> GetAllScheduleCancelByHost(GetSchedulesInputDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+            var query = from s in _repositorySchedule.GetAll()
+                        .Where(e => e.TenantId == tenantId && e.CancelById == e.HostId && e.Cancel == true)
+                        .Where(e => input.filterText == null || e.Confirm.Equals(input.filterText))
+                        join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                        join u in _repositoryUser.GetAll() on s.CreatorUserId equals u.Id
+                        orderby s.Id descending
+
+                        select new GetAllSchedulesDto
+                        {
+                            Id = s.Id,
+                            HostName = s.HostName,
+                            HostPhoneNumber = s.HostPhoneNumber,
+                            RenterHostName = u.FullName,
+                            RenterHostPhoneNumber = u.PhoneNumber,
+                            Day = s.Day,
+                            Hour = s.Hour,
+                            Confirm = s.Confirm,
+                            Cancel = s.Cancel,
+                        };
+
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredPost = query.PageBy(input);
+            return new PagedResultDto<GetAllSchedulesDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
+        }
+
+        public async Task<PagedResultDto<GetAllSchedulesDto>> GetAllScheduleCancelByRenter(GetSchedulesInputDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+            var query = from s in _repositorySchedule.GetAll()
+                        .Where(e => e.TenantId == tenantId && e.CancelById == e.CreatorUserId && e.Cancel == true)
+                        .Where(e => input.filterText == null || e.Confirm.Equals(input.filterText))
+                        join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                        join u in _repositoryUser.GetAll() on s.CreatorUserId equals u.Id
+                        orderby s.Id descending
+
+                        select new GetAllSchedulesDto
+                        {
+                            Id = s.Id,
+                            HostName = s.HostName,
+                            HostPhoneNumber = s.HostPhoneNumber,
+                            RenterHostName = u.FullName,
+                            RenterHostPhoneNumber = u.PhoneNumber,
+                            Day = s.Day,
+                            Hour = s.Hour,
+                            Confirm = s.Confirm,
+                            Cancel = s.Cancel,
+                        };
+
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredPost = query.PageBy(input);
+            return new PagedResultDto<GetAllSchedulesDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
         }
     }
 }

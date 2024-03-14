@@ -844,8 +844,8 @@ export class ManageAppointmentSchedulesServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    confirmRateFinal(body: ConfirmSchedulesDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/ConfirmRateFinal";
+    confirmSchedules(body: ConfirmSchedulesDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/ConfirmSchedules";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -860,11 +860,11 @@ export class ManageAppointmentSchedulesServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processConfirmRateFinal(response_);
+            return this.processConfirmSchedules(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processConfirmRateFinal(response_ as any);
+                    return this.processConfirmSchedules(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
@@ -873,7 +873,59 @@ export class ManageAppointmentSchedulesServiceProxy {
         }));
     }
 
-    protected processConfirmRateFinal(response: HttpResponseBase): Observable<void> {
+    protected processConfirmSchedules(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cancelSchedules(body: CancelSchedulesDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/CancelSchedules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelSchedules(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelSchedules(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelSchedules(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1229,6 +1281,219 @@ export class ManageAppointmentSchedulesServiceProxy {
             }));
         }
         return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllScheduleSuccess(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllSchedulesDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/GetAllScheduleSuccess?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllScheduleSuccess(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllScheduleSuccess(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAllScheduleSuccess(response: HttpResponseBase): Observable<GetAllSchedulesDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAllSchedulesDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAllSchedulesDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllScheduleCancelByHost(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllSchedulesDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/GetAllScheduleCancelByHost?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllScheduleCancelByHost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllScheduleCancelByHost(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAllScheduleCancelByHost(response: HttpResponseBase): Observable<GetAllSchedulesDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAllSchedulesDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAllSchedulesDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllScheduleCancelByRenter(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetAllSchedulesDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/GetAllScheduleCancelByRenter?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllScheduleCancelByRenter(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllScheduleCancelByRenter(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetAllSchedulesDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAllScheduleCancelByRenter(response: HttpResponseBase): Observable<GetAllSchedulesDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetAllSchedulesDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetAllSchedulesDtoPagedResultDto>(null as any);
     }
 }
 
@@ -3696,14 +3961,15 @@ export interface IAuthenticateResultModel {
     userId: number;
 }
 
-export class BigInteger implements IBigInteger {
-    readonly isPowerOfTwo: boolean;
-    readonly isZero: boolean;
-    readonly isOne: boolean;
-    readonly isEven: boolean;
-    readonly sign: number;
+export class CancelSchedulesDto implements ICancelSchedulesDto {
+    id: number;
+    tenantId: number | undefined;
+    hostId: number;
+    creatorUserId: number;
+    cancel: boolean;
+    cancelById: number;
 
-    constructor(data?: IBigInteger) {
+    constructor(data?: ICancelSchedulesDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3714,45 +3980,48 @@ export class BigInteger implements IBigInteger {
 
     init(_data?: any) {
         if (_data) {
-            (<any>this).isPowerOfTwo = _data["isPowerOfTwo"];
-            (<any>this).isZero = _data["isZero"];
-            (<any>this).isOne = _data["isOne"];
-            (<any>this).isEven = _data["isEven"];
-            (<any>this).sign = _data["sign"];
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.hostId = _data["hostId"];
+            this.creatorUserId = _data["creatorUserId"];
+            this.cancel = _data["cancel"];
+            this.cancelById = _data["cancelById"];
         }
     }
 
-    static fromJS(data: any): BigInteger {
+    static fromJS(data: any): CancelSchedulesDto {
         data = typeof data === 'object' ? data : {};
-        let result = new BigInteger();
+        let result = new CancelSchedulesDto();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["isPowerOfTwo"] = this.isPowerOfTwo;
-        data["isZero"] = this.isZero;
-        data["isOne"] = this.isOne;
-        data["isEven"] = this.isEven;
-        data["sign"] = this.sign;
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["hostId"] = this.hostId;
+        data["creatorUserId"] = this.creatorUserId;
+        data["cancel"] = this.cancel;
+        data["cancelById"] = this.cancelById;
         return data;
     }
 
-    clone(): BigInteger {
+    clone(): CancelSchedulesDto {
         const json = this.toJSON();
-        let result = new BigInteger();
+        let result = new CancelSchedulesDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IBigInteger {
-    isPowerOfTwo: boolean;
-    isZero: boolean;
-    isOne: boolean;
-    isEven: boolean;
-    sign: number;
+export interface ICancelSchedulesDto {
+    id: number;
+    tenantId: number | undefined;
+    hostId: number;
+    creatorUserId: number;
+    cancel: boolean;
+    cancelById: number;
 }
 
 export class ChangePasswordDto implements IChangePasswordDto {
@@ -3889,8 +4158,10 @@ export interface IChangeUserLanguageDto {
 }
 
 export class ConfirmSchedulesDto implements IConfirmSchedulesDto {
+    id: number;
+    tenantId: number | undefined;
     hostId: number;
-    creatorUserId: BigInteger;
+    creatorUserId: number;
     confirm: boolean;
 
     constructor(data?: IConfirmSchedulesDto) {
@@ -3904,8 +4175,10 @@ export class ConfirmSchedulesDto implements IConfirmSchedulesDto {
 
     init(_data?: any) {
         if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
             this.hostId = _data["hostId"];
-            this.creatorUserId = _data["creatorUserId"] ? BigInteger.fromJS(_data["creatorUserId"]) : <any>undefined;
+            this.creatorUserId = _data["creatorUserId"];
             this.confirm = _data["confirm"];
         }
     }
@@ -3919,8 +4192,10 @@ export class ConfirmSchedulesDto implements IConfirmSchedulesDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
         data["hostId"] = this.hostId;
-        data["creatorUserId"] = this.creatorUserId ? this.creatorUserId.toJSON() : <any>undefined;
+        data["creatorUserId"] = this.creatorUserId;
         data["confirm"] = this.confirm;
         return data;
     }
@@ -3934,8 +4209,10 @@ export class ConfirmSchedulesDto implements IConfirmSchedulesDto {
 }
 
 export interface IConfirmSchedulesDto {
+    id: number;
+    tenantId: number | undefined;
     hostId: number;
-    creatorUserId: BigInteger;
+    creatorUserId: number;
     confirm: boolean;
 }
 
@@ -4555,6 +4832,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
     day: moment.Moment;
     hour: moment.Moment;
     confirm: boolean;
+    cancel: boolean;
 
     constructor(data?: IGetAllSchedulesDto) {
         if (data) {
@@ -4575,6 +4853,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
             this.day = _data["day"] ? moment(_data["day"].toString()) : <any>undefined;
             this.hour = _data["hour"] ? moment(_data["hour"].toString()) : <any>undefined;
             this.confirm = _data["confirm"];
+            this.cancel = _data["cancel"];
         }
     }
 
@@ -4595,6 +4874,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
         data["day"] = this.day ? this.day.toISOString() : <any>undefined;
         data["hour"] = this.hour ? this.hour.toISOString() : <any>undefined;
         data["confirm"] = this.confirm;
+        data["cancel"] = this.cancel;
         return data;
     }
 
@@ -4615,6 +4895,7 @@ export interface IGetAllSchedulesDto {
     day: moment.Moment;
     hour: moment.Moment;
     confirm: boolean;
+    cancel: boolean;
 }
 
 export class GetAllSchedulesDtoPagedResultDto implements IGetAllSchedulesDtoPagedResultDto {
@@ -5018,6 +5299,8 @@ export interface IGetRoleForEditOutput {
 export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
     createOrEditSchedulesDtos: CreateOrEditSchedulesDto;
     getAllSchedulesDtos: GetAllSchedulesDto;
+    confirmSchedulesDtos: ConfirmSchedulesDto;
+    cancelSchedulesDtos: CancelSchedulesDto;
 
     constructor(data?: IGetScheduleForEditOutput) {
         if (data) {
@@ -5032,6 +5315,8 @@ export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
         if (_data) {
             this.createOrEditSchedulesDtos = _data["createOrEditSchedulesDtos"] ? CreateOrEditSchedulesDto.fromJS(_data["createOrEditSchedulesDtos"]) : <any>undefined;
             this.getAllSchedulesDtos = _data["getAllSchedulesDtos"] ? GetAllSchedulesDto.fromJS(_data["getAllSchedulesDtos"]) : <any>undefined;
+            this.confirmSchedulesDtos = _data["confirmSchedulesDtos"] ? ConfirmSchedulesDto.fromJS(_data["confirmSchedulesDtos"]) : <any>undefined;
+            this.cancelSchedulesDtos = _data["cancelSchedulesDtos"] ? CancelSchedulesDto.fromJS(_data["cancelSchedulesDtos"]) : <any>undefined;
         }
     }
 
@@ -5046,6 +5331,8 @@ export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
         data = typeof data === 'object' ? data : {};
         data["createOrEditSchedulesDtos"] = this.createOrEditSchedulesDtos ? this.createOrEditSchedulesDtos.toJSON() : <any>undefined;
         data["getAllSchedulesDtos"] = this.getAllSchedulesDtos ? this.getAllSchedulesDtos.toJSON() : <any>undefined;
+        data["confirmSchedulesDtos"] = this.confirmSchedulesDtos ? this.confirmSchedulesDtos.toJSON() : <any>undefined;
+        data["cancelSchedulesDtos"] = this.cancelSchedulesDtos ? this.cancelSchedulesDtos.toJSON() : <any>undefined;
         return data;
     }
 
@@ -5060,6 +5347,8 @@ export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
 export interface IGetScheduleForEditOutput {
     createOrEditSchedulesDtos: CreateOrEditSchedulesDto;
     getAllSchedulesDtos: GetAllSchedulesDto;
+    confirmSchedulesDtos: ConfirmSchedulesDto;
+    cancelSchedulesDtos: CancelSchedulesDto;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {

@@ -18,8 +18,13 @@ namespace AccommodationSearchSystem.Helpers
         {
             configuration.CreateMap<Post, CreateOrEditIPostDto>().ReverseMap();
             configuration.CreateMap<Accommodate, CreateOrEditIPostDto>().ReverseMap();
+
             configuration.CreateMap<AppointmentSchedule, CreateOrEditSchedulesDto>().ReverseMap();
+            configuration.CreateMap<AppointmentSchedule, ConfirmSchedulesDto>().ReverseMap();
             configuration.CreateMap<AppointmentSchedule, GetAllSchedulesDto>().ReverseMap();
+            configuration.CreateMap<AppointmentSchedule, CancelSchedulesDto>().ReverseMap();
+
+
             configuration.CreateMap<PhotoPost, PhotoDto>().ReverseMap();
             //configuration.CreateMap<UserRole, UserRoleDto>().ReverseMap();
 

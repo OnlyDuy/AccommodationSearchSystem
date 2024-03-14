@@ -94,7 +94,11 @@
     <text name="On">Bật</text>
     <text name="Off">Tắt</text>
     <text name="AreYouSureWantToDelete">Bạn có chắc chắn muốn xóa {0} không?</text>
+    <text name="AreYouSureToCancelYourAppointment">Bạn có chắc chắn hủy lịch hẹn không?</text>
+    <text name="AppointmentHasBeenCancelled">Lịch hẹn đã được hủy</text>
+	    <text name="AreYouSureToConfirmYourAppointment">Bạn có chắc chắn đặt lịch hẹn không?</text>
     <text name="SuccessfullyDeleted">Đã xóa thành công</text>
+	<text name="SuccessfullyConfirm">Đặt lịch hẹn thành công</text>
     <text name="StartTyping">Bắt đầu nhập</text>
     <text name="Skins">Skins</text>
     <text name="Settings">Cài đặt</text>

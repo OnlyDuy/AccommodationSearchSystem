@@ -15,8 +15,12 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         Task UpdateSchedule(CreateOrEditSchedulesDto input);
         Task EditSchedule(CreateOrEditSchedulesDto input);
         Task<PagedResultDto<GetAllSchedulesDto>> GetAll(GetSchedulesInputDto input);
-        Task ConfirmRateFinal(ConfirmSchedulesDto input);
+        Task<PagedResultDto<GetAllSchedulesDto>> GetAllScheduleSuccess(GetSchedulesInputDto input);
+        Task ConfirmSchedules(ConfirmSchedulesDto input);
+        Task CancelSchedules(CancelSchedulesDto input);
         Task<GetScheduleForEditOutput> GetScheduleForEdit(EntityDto<long> input);
         Task DeleteSchedule(EntityDto<long> input);
+        Task<PagedResultDto<GetAllSchedulesDto>> GetAllScheduleCancelByHost(GetSchedulesInputDto input);
+        Task<PagedResultDto<GetAllSchedulesDto>> GetAllScheduleCancelByRenter(GetSchedulesInputDto input);
     }
 }

@@ -16,5 +16,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public DateTime Day { get; set; }
         public DateTime Hour { get; set; }
         public bool Confirm { get; set; }
+        public bool Cancel { get; set; }
     }
 }

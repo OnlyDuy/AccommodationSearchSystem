@@ -25,6 +25,8 @@ namespace AccommodationSearchSystem.Entity
         public int? TenantId { get; set; }
         public Post Posts { get; set; }
         public int PostId { get; set; } // Id bài đăng
+        public bool Cancel { get; set; }
+        public int CancelById { get; set; }
 
     }
 }

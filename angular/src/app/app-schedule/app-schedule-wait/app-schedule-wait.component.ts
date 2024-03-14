@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { PaginationParamsModel } from '@shared/commom/models/base.model';
-import { GetAllSchedulesDto, ManageAppointmentSchedulesServiceProxy } from '@shared/service-proxies/service-proxies';
+import { CancelSchedulesDto, ConfirmSchedulesDto, GetAllSchedulesDto, ManageAppointmentSchedulesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
 import { AppScheduleWaitUpdateComponent } from './app-schedule-wait-update/app-schedule-wait-update.component';
@@ -22,12 +22,18 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
   paginationParams: PaginationParamsModel;
   selectedSchedule: GetAllSchedulesDto[];
   schedule: GetAllSchedulesDto;
+  schedulesConfirm: ConfirmSchedulesDto = new ConfirmSchedulesDto();
+  schedulesCancel: CancelSchedulesDto = new CancelSchedulesDto();
   isLoading = false;
   maxResultCount: number = 20;
   rowData: GetAllSchedulesDto[];
+  rowDataHost: GetAllSchedulesDto[];
+  rowDataRenter: GetAllSchedulesDto[];
   selectedRow: any;
   visible: boolean = true;
   shownLogin: number;
+  active: boolean = false;
+  tenantId: number;
 
   constructor(
     injector: Injector,
@@ -44,6 +50,9 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
       this.isHost = false;
     }
     this.rowData = [];
+    this.rowDataHost = [];
+    this.rowDataRenter = [];
+
     this.paginationParams = { pageNum: 1, pageSize: 20, totalCount: 0 };
     this.getAll(this.paginationParams).subscribe(data => {
       console.log(data.items);
@@ -52,10 +61,45 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
       this.paginationParams.totalCount = data.totalCount;
     });
 
+    this.getAllCancelByHost(this.paginationParams).subscribe(data => {
+      console.log(data.items);
+      this.rowDataHost = data.items;
+      this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
+      this.paginationParams.totalCount = data.totalCount;
+    });
+
+    this.getAllCancelByRenter(this.paginationParams).subscribe(data => {
+      console.log(data.items);
+      this.rowDataRenter = data.items;
+      this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
+      this.paginationParams.totalCount = data.totalCount;
+    });
+
+
   }
 
   getAll(paginationParams: PaginationParamsModel) {
     return this._scheduleService.getAll(
+      this.filterText,
+      this.sorting ?? null,
+      paginationParams ? paginationParams.skipCount : 0,
+      paginationParams ? paginationParams.pageSize : 20,
+
+    );
+  }
+
+  getAllCancelByHost(paginationParams: PaginationParamsModel) {
+    return this._scheduleService.getAllScheduleCancelByHost(
+      this.filterText,
+      this.sorting ?? null,
+      paginationParams ? paginationParams.skipCount : 0,
+      paginationParams ? paginationParams.pageSize : 20,
+
+    );
+  }
+
+  getAllCancelByRenter(paginationParams: PaginationParamsModel) {
+    return this._scheduleService.getAllScheduleCancelByRenter(
       this.filterText,
       this.sorting ?? null,
       paginationParams ? paginationParams.skipCount : 0,
@@ -83,6 +127,74 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
   editSchedule() {
     this.AppScheduleWaitUpdate.show(this.selectedRow.id);
     console.log(this.selectedRow);
+  }
+
+  deleteSchedule() {
+    this.message.confirm('', this.l('AreYouSureToCancelYourAppointment'), (isConfirme) => {
+      if (isConfirme) {
+        this._scheduleService.deleteSchedule(this.selectedRow.id)
+          .subscribe(() => {
+            this.notify.success(this.l('SuccessfullyDeleted'));
+            this.updateTable();
+          })
+      }
+    })
+  }
+
+  // XÁC NHẬN LỊCH HẸN
+  confirmSchedules() {
+    this.getScheduleConfirm(this.selectedRow.id);
+    console.log(this.selectedRow);
+  }
+
+  getScheduleConfirm(ScheduleId?: number): void {
+    this._scheduleService
+        .getScheduleForEdit(ScheduleId)
+        .subscribe((result) => {
+          this.schedulesConfirm = result.confirmSchedulesDtos;
+          this.active = true;
+          this.confirm();
+        });
+  }
+
+  confirm(): void {
+    this.message.confirm('', this.l('AreYouSureToConfirmYourAppointment'), (isConfirme) => {
+      if (isConfirme) {
+        this.schedulesConfirm.tenantId = this.tenantId;
+        this._scheduleService.confirmSchedules(this.schedulesConfirm)
+          .subscribe(() => {
+            this.notify.success(this.l('SuccessfullyConfirm'));
+            this.updateTable();
+          })
+      }
+    })
+  }
+
+  // HỦY LỊCH HẸN
+  cancelSchedule() {
+    this.getScheduleCancel(this.selectedRow.id);
+    console.log(this.selectedRow);
+  }
+  getScheduleCancel(ScheduleId?: number): void {
+    this._scheduleService
+        .getScheduleForEdit(ScheduleId)
+        .subscribe((result) => {
+          this.schedulesCancel = result.cancelSchedulesDtos;
+          this.active = true;
+          this.cancel();
+        });
+  }
+  cancel(): void {
+    this.message.confirm('', this.l('AreYouSureToCancelYourAppointment'), (isConfirme) => {
+      if (isConfirme) {
+        this.schedulesCancel.tenantId = this.tenantId;
+        this._scheduleService.cancelSchedules(this.schedulesCancel)
+          .subscribe(() => {
+            this.notify.success(this.l('AppointmentHasBeenCancelled'));
+            this.updateTable();
+          })
+      }
+    })
   }
 
 }

@@ -10,5 +10,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
     {
         public CreateOrEditSchedulesDto CreateOrEditSchedulesDtos { get; set; }
         public GetAllSchedulesDto GetAllSchedulesDtos { get; set; }
+        public ConfirmSchedulesDto ConfirmSchedulesDtos { get; set; }
+        public CancelSchedulesDto CancelSchedulesDtos { get; set; }
+
     }
 }
