@@ -1,0 +1,7 @@
+.room-status.available {
+    color: green;
+}
+
+.room-status.not-available {
+    color: red;
+}

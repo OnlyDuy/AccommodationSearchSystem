@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
 import { EntityDto } from '@shared/paged-listing-component-base';
 import { CreateOrEditIPostDto, CreateOrEditSchedulesDto, GetPostForViewDto, ManageAppointmentSchedulesServiceProxy, SessionServiceProxy, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-post-view-detail',
@@ -14,6 +15,8 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   postId: number;
   post: GetPostForViewDto = new GetPostForViewDto();
   schedule: CreateOrEditSchedulesDto = new CreateOrEditSchedulesDto();
+  roomStatus:boolean = false;
+  buttonDisabled: boolean = false;
 
   constructor(
     injector: Injector,
@@ -33,8 +36,14 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   }
 
   getPostDetails(postId: number): void {
+    this.getStatusRoom();
     this._postService.getForEdit(postId).subscribe((result) => {
       this.post = result;
+      if (this.roomStatus == true) {
+        this.buttonDisabled = false;
+      } else {
+        this.buttonDisabled = true;
+      }
     });
   }
 
@@ -45,6 +54,13 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
       this.notify.success(this.l('YouAreScheduled'));
     })
   }
+
+  getStatusRoom() {
+    this._postService.statusRoom(this.postId).pipe(finalize(()=> {
+    })).subscribe((res=>{
+        this.roomStatus = res;
+    }))
+}
 
   favourite() {
 

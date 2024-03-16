@@ -7,7 +7,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { PostComponent } from '../post.component';
 import { finalize } from 'rxjs/operators';
 import { environment } from 'environments/environment';
-import { FileUploader, FileUploaderOptions } from 'ng2-file-upload';
+import { FileItem, FileUploader, FileUploaderOptions } from 'ng2-file-upload';
 
 @Component({
   selector: 'CreateOrEditPost',
@@ -56,7 +56,6 @@ export class CreateOrEditPostComponent extends AppComponentBase {
       this.posts.id = PostId;
       this.active = true;
       this.modal.show();
-
     } else {
       this._postService
         .getLoyaltyGiftItemForEdit(PostId)
@@ -94,7 +93,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     this.modal.hide();
   }
 
-  // initializeUploader() {
+  // initializeUploader(PostId?: number) {
   //   this.uploader = new FileUploader({
   //     headers: [
   //       { name: 'Accept', value: 'application/json' },
@@ -111,58 +110,42 @@ export class CreateOrEditPostComponent extends AppComponentBase {
 
   //   console.log(this.uploader);
 
-  //   this.uploader.onAfterAddingFile = (file) => {
-  //     file.withCredentials = false;
+  //   let uploadedFile: FileItem; // Tạo một biến để lưu trữ file
+
+  //   this.uploader.onAfterAddingFile = (fileItem) => {
+  //     fileItem.withCredentials = false;
   //     if (this.uploader.queue.length > 1) {
-  //       this.uploader.addToQueue([file._file]);
+  //       const file = new File([fileItem._file], fileItem.file.name, { type: fileItem.file.type });
+  //       this.uploader.addToQueue([file]);
+  //     } else {
+  //       fileItem.upload();
   //     }
-  //     // Thêm file vào hàng đợi để chuẩn bị gửi lên máy chủ
-  //     // file.upload(); // Hoặc có thể sử dụng this.uploader.uploadAll() nếu muốn gửi tất cả các file trong hàng đợi
   //   };
 
   //   this.uploader.onSuccessItem = (item, response, status, headers) => {
   //     if (response) {
-  //       const photoDto: any = JSON.parse(response);
+  //       if (!uploadedFile) {
+  //         console.error('No file uploaded');
+  //         return;
+  //       }
 
-  //       const postDto: CreateOrEditIPostDto = {
-  //         id: this.post.id,
-  //         postCode: this.posts.postCode,
-  //         tenantId: this.posts.tenantId,
-  //         title: this.post.title,
-  //         contentPost: this.post.contentPost,
-  //         photo: '',
-  //         roomPrice: this.post.roomPrice,
-  //         address: this.post.address,
-  //         area: this.post.area,
-  //         square: this.post.square,
-  //         roomStatus: this.posts.roomStatus,
-  //         priceCategory: this.post.priceCategory,
-  //         wifi: this.post.wifi,
-  //         parking: this.post.parking,
-  //         conditioner: this.post.conditioner,
-  //         photos: [photoDto],
-  //         init: function (_data?: any): void {
-  //           throw new Error('Function not implemented.');
-  //         },
-  //         toJSON: function (data?: any) {
-  //           throw new Error('Function not implemented.');
-  //         },
-  //         clone: function (): CreateOrEditIPostDto {
-  //           throw new Error('Function not implemented.');
-  //         }
-  //       };
+  //       this.posts = new CreateOrEditIPostDto();
+  //       this.posts.id = PostId;
 
-  //       this._postService.addPhoto(postDto)
-  //         .subscribe((photo) => {
+  //       // Gọi phương thức addPhoto của _postService với file và postId
+  //       this._postService.addPhoto(PostId, JSON.parse(response)).subscribe(
+  //         (photo) => {
   //           if (photo) {
   //             this.post.photos.push(photo);
   //             if (photo.isMain) {
   //               this.post.photoUrl = photo.url;
   //             }
   //           }
-  //         }, (error) => {
-  //           console.error("Error adding photo: ", error);
-  //         });
+  //         },
+  //         (error) => {
+  //           console.error('Error adding photo: ', error);
+  //         }
+  //       );
   //     }
   //   };
   // }

@@ -4,6 +4,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    partial class AccommodationSearchSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240316041411_DelePhotos")]
+    partial class DelePhotos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1817,57 +1819,6 @@ namespace AccommodationSearchSystem.Migrations
                     b.ToTable("NotificationDating");
                 });
 
-            modelBuilder.Entity("AccommodationSearchSystem.Entity.PhotoPost", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsMain")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("PostId1")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("PublicId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId1");
-
-                    b.ToTable("PhotoPost");
-                });
-
             modelBuilder.Entity("AccommodationSearchSystem.Entity.Post", b =>
                 {
                     b.Property<long>("Id")
@@ -2251,15 +2202,6 @@ namespace AccommodationSearchSystem.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("AccommodationSearchSystem.Entity.PhotoPost", b =>
-                {
-                    b.HasOne("AccommodationSearchSystem.Entity.Post", "Post")
-                        .WithMany("PhotoPosts")
-                        .HasForeignKey("PostId1");
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("AccommodationSearchSystem.MultiTenancy.Tenant", b =>
                 {
                     b.HasOne("AccommodationSearchSystem.Authorization.Users.User", "CreatorUser")
@@ -2361,8 +2303,6 @@ namespace AccommodationSearchSystem.Migrations
             modelBuilder.Entity("AccommodationSearchSystem.Entity.Post", b =>
                 {
                     b.Navigation("AppointmentSchedules");
-
-                    b.Navigation("PhotoPosts");
                 });
 #pragma warning restore 612, 618
         }

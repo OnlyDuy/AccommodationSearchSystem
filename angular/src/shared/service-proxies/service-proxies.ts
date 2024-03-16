@@ -3739,6 +3739,63 @@ export class ViewPostServiceProxy {
      * @param id (optional) 
      * @return Success
      */
+    statusRoom(id: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/StatusRoom?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStatusRoom(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStatusRoom(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processStatusRoom(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
     getLoyaltyGiftItemForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
         let url_ = this.baseUrl + "/api/services/app/ViewPost/GetLoyaltyGiftItemForEdit?";
         if (id === null)
@@ -5011,6 +5068,7 @@ export interface IGetCurrentLoginInformationsOutput {
 export class GetPostForEditOutput implements IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
     getPostForView: GetPostForViewDto;
+    photos: PhotoDto[] | undefined;
 
     constructor(data?: IGetPostForEditOutput) {
         if (data) {
@@ -5025,6 +5083,11 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
         if (_data) {
             this.createOrEditPost = _data["createOrEditPost"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditPost"]) : <any>undefined;
             this.getPostForView = _data["getPostForView"] ? GetPostForViewDto.fromJS(_data["getPostForView"]) : <any>undefined;
+            if (Array.isArray(_data["photos"])) {
+                this.photos = [] as any;
+                for (let item of _data["photos"])
+                    this.photos.push(PhotoDto.fromJS(item));
+            }
         }
     }
 
@@ -5039,6 +5102,11 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
         data = typeof data === 'object' ? data : {};
         data["createOrEditPost"] = this.createOrEditPost ? this.createOrEditPost.toJSON() : <any>undefined;
         data["getPostForView"] = this.getPostForView ? this.getPostForView.toJSON() : <any>undefined;
+        if (Array.isArray(this.photos)) {
+            data["photos"] = [];
+            for (let item of this.photos)
+                data["photos"].push(item.toJSON());
+        }
         return data;
     }
 
@@ -5053,6 +5121,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
 export interface IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
     getPostForView: GetPostForViewDto;
+    photos: PhotoDto[] | undefined;
 }
 
 export class GetPostForViewDto implements IGetPostForViewDto {
@@ -5591,9 +5660,10 @@ export interface IPermissionDtoListResultDto {
 }
 
 export class PhotoDto implements IPhotoDto {
-    id: number;
+    id: number | undefined;
     url: string | undefined;
     isMain: boolean;
+    postId: number;
 
     constructor(data?: IPhotoDto) {
         if (data) {
@@ -5609,6 +5679,7 @@ export class PhotoDto implements IPhotoDto {
             this.id = _data["id"];
             this.url = _data["url"];
             this.isMain = _data["isMain"];
+            this.postId = _data["postId"];
         }
     }
 
@@ -5624,6 +5695,7 @@ export class PhotoDto implements IPhotoDto {
         data["id"] = this.id;
         data["url"] = this.url;
         data["isMain"] = this.isMain;
+        data["postId"] = this.postId;
         return data;
     }
 
@@ -5636,9 +5708,10 @@ export class PhotoDto implements IPhotoDto {
 }
 
 export interface IPhotoDto {
-    id: number;
+    id: number | undefined;
     url: string | undefined;
     isMain: boolean;
+    postId: number;
 }
 
 export class RegisterInput implements IRegisterInput {

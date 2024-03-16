@@ -17,6 +17,9 @@ namespace AccommodationSearchSystem.Helpers
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<Post, CreateOrEditIPostDto>().ReverseMap();
+            configuration.CreateMap<Post, GetPostForViewDto>().ReverseMap();
+            configuration.CreateMap<Post, PhotoDto>().ReverseMap();
+
             configuration.CreateMap<Accommodate, CreateOrEditIPostDto>().ReverseMap();
 
             configuration.CreateMap<AppointmentSchedule, CreateOrEditSchedulesDto>().ReverseMap();
@@ -26,6 +29,8 @@ namespace AccommodationSearchSystem.Helpers
 
 
             configuration.CreateMap<PhotoPost, PhotoDto>().ReverseMap();
+            configuration.CreateMap<PhotoPost, GetPostForViewDto>().ReverseMap();
+
             //configuration.CreateMap<UserRole, UserRoleDto>().ReverseMap();
 
         }

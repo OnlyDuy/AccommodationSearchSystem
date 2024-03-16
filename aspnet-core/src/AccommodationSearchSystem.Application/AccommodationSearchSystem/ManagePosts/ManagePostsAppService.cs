@@ -23,22 +23,25 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
     public class ManagePostsAppService : ApplicationService, IManagePostsAppService
     {
         private readonly IRepository<Post, long> _repositoryPost;
-        private readonly IRepository<Tenant, int> _tenantRepo;
+        private readonly IRepository<AppointmentSchedule, long> _repositorySchedule;
+        private readonly IRepository<PhotoPost, long> _repositoryPhotoPost;
+
+        private readonly AccommodationSearchSystemDbContext _dbContext;
         private readonly IPhotoService _photoService;
-        private readonly AccommodationSearchSystemDbContext _context;
 
         public ManagePostsAppService(
-            IRepository<Post, long> repositoryPost, 
-            IRepository<Accommodate, long> repositoryAccommodate,
+            IRepository<Post, long> repositoryPost,
+            IRepository<AppointmentSchedule, long> repositorySchedule,
+            IRepository<PhotoPost, long> repositoryPhotoPost,
             IPhotoService photoService,
-            AccommodationSearchSystemDbContext context,
-            IRepository<Tenant, int> tenantRepo)
+            AccommodationSearchSystemDbContext dbContext)
 
         {
             _repositoryPost = repositoryPost;
-            _tenantRepo = tenantRepo;
+            _repositorySchedule = repositorySchedule;
             _photoService = photoService;
-            _context = context;
+            _dbContext = dbContext;
+            _repositoryPhotoPost = repositoryPhotoPost;
  
         }
         public async Task CreateOrEdit(CreateOrEditIPostDto input)
@@ -90,63 +93,80 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         {
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
-                        .Where(e => tenantId == e.TenantId)
-                        .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
-                                            || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
+            .Where(e => tenantId == e.TenantId)
+            .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
+                                || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
 
-                        //join acom in _repositoryAccommodate.GetAll()
-                        //on p.Id equals acom.Id
-                        //into results
-                        //from result in results.DefaultIfEmpty()
+                        join s in _repositorySchedule.GetAll().AsNoTracking() on p.Id equals s.PostId into sGroup
+                        from s in sGroup.DefaultIfEmpty()
+                        where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
 
-                        //join dealername in _tenantRepo.GetAll()
-                        //on p.TenantId equals dealername.Id
-                        //into values
-                        //from value in values.DefaultIfEmpty()
-
-                        select new GetPostForViewDto
-                        {
-                            Id = p.Id,
-                            PostCode = p.PostCode,
-                            Title = p.Title,
-                            ContentPost = p.ContentPost,
-                            Photo = p.Photo,
-                            RoomPrice = p.RoomPrice,
-                            Address = p.Address,
-                            Area = p.Area,
-                            Square = p.Square,
-                            PriceCategory = p.PriceCategory,
-                            Wifi = p.Wifi,
-                            Parking = p.Parking,
-                            Conditioner = p.Conditioner,
-                            RoomStatus = p.RoomStatus,
-                            TenantId = tenantId
-                        };
+                        select new { Post = p, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
-            return new PagedResultDto<GetPostForViewDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
+
+            var result = await pagedAndFilteredPost.ToListAsync();
+
+            var postDtos = result.Select(item => new GetPostForViewDto
+            {
+                Id = item.Post.Id,
+                PostCode = item.Post.PostCode,
+                Title = item.Post.Title,
+                ContentPost = item.Post.ContentPost,
+                Photo = item.Post.Photo,
+                RoomPrice = item.Post.RoomPrice,
+                Address = item.Post.Address,
+                Area = item.Post.Area,
+                Square = item.Post.Square,
+                PriceCategory = item.Post.PriceCategory,
+                Wifi = item.Post.Wifi,
+                Parking = item.Post.Parking,
+                Conditioner = item.Post.Conditioner,
+                RoomStatus = item.Post.RoomStatus,
+                TenantId = tenantId,
+                Photos = item.Photos.Select(photo => new PhotoDto
+                {
+                    Id = photo.Id,
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId
+                }).ToList(),
+            }).ToList();
+
+            return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
+
         }
 
         public async Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
         {
             var datapost = await _repositoryPost.FirstOrDefaultAsync(input.Id);
-
+            var photoData = await _repositoryPhotoPost.GetAllListAsync(e => e.PostId == input.Id);
             var output = new GetPostForEditOutput
             {
                 CreateOrEditPost = ObjectMapper.Map<CreateOrEditIPostDto>(datapost),
+                // Khởi tạo danh sách hình ảnh
+                Photos = new List<PhotoDto>()
             };
+            // Nếu có thông tin về hình ảnh
+            if (photoData != null)
+            {
+                output.Photos = photoData.Select(photo => new PhotoDto
+                {
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId,
+                    Id = photo.Id
+                }).ToList();
+            }
 
             return output;
         }
 
-        public async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file, long Id)
+        public async Task<ActionResult<PhotoDto>> AddPhoto(long Id, IFormFile file)
         {
-            // Nhận bài đăng theo postId
             var post = await _repositoryPost.FirstOrDefaultAsync(Id);
-
-            // Kết quả là một dịch vụ ảnh
             var result = await _photoService.AddPhotoAsync(file);
 
             // Kiểm tra lỗi
@@ -163,31 +183,25 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
 
             var photo = new PhotoPost
             {
-                // Url an toàn và tuyệt đối
                 Url = result.SecureUrl.AbsoluteUri,
-                // Id công khai
                 PublicId = result.PublicId,
                 PostId = (int)post.Id
             };
 
-            // Kiểm tra liệu người dùng có bất kỳ bức ảnh nào vào lúc này hay không
             if (post.PhotoPosts.Count == 0)
             {
-                // Nếu không có thì đây là bức ảnh đầu tiên được tải lên và nó là ảnh chính   
                 photo.IsMain = true;
             }
-
-            // Thêm hình ảnh
             post.PhotoPosts.Add(photo);
 
             // Lưu cấc thay đổi
-            return new CreatedAtRouteResult("GetLoyaltyGiftItemForEdit", new { id = post.Id }, ObjectMapper.Map<PhotoDto>(photo));
-            //throw new UserFriendlyException(00, L("ThisItemAlreadyExists"));
+            return new CreatedAtRouteResult( new { id = post.Id }, ObjectMapper.Map<PhotoDto>(photo));
+  
         }
 
         public Task<GetPostForViewDto> GetForEdit(EntityDto<long> input)
         {
-            throw new System.NotImplementedException();
+            throw new System.NotImplementedException(); 
         }
     }
 }

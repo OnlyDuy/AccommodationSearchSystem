@@ -58,6 +58,17 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
 
                     // Lưu thay đổi vào cơ sở dữ liệu
                     await _repositorySchedule.UpdateAsync(schedule);
+                    // Lấy thông tin từ _repositoryPost và cập nhật RoomStatus
+                    var post = await (from s in _repositorySchedule.GetAll()
+                                      join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                                      where s.Id == input.Id
+                                      select p).FirstOrDefaultAsync();
+
+                    if (post != null)
+                    {
+                        post.RoomStatus = false;
+                        await _repositoryPost.UpdateAsync(post);
+                    }
                 }
             }
         }
@@ -148,7 +159,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                               }).FirstOrDefaultAsync();
             var postCount = await (from s in _repositorySchedule.GetAll()
                                    join user in _repositoryUser.GetAll() on s.CreatorUserId equals user.Id
-                                   where s.PostId == input.Id && s.TenantId == tenantId 
+                                   where s.PostId == input.Id && s.TenantId == tenantId && s.Cancel == false
                                    select s).CountAsync();
 
             if (postCount >= 1)

@@ -21,12 +21,15 @@
                       </ng-template>
                       <strong>Title:</strong> {{ post.title }} <br>
                       <p>
-                          {{ post.contentPost }}
-                      </p>
-                      <p>
                           <!-- Content of the card -->
-                          <strong>Room Price:</strong> {{ post.roomPrice }} <br>
-                          <strong>Room Status:</strong> {{ post.roomStatus ? 'Available' : 'Not Available' }} <br>
+                          <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
+                          <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                          <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
+                          <strong>Room Status:</strong>
+                            <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
+                              {{ post.roomStatus ? 'Còn phòng' : 'Đã hết' }}
+                            </span>
+                          <br>
                       </p>
                       <ng-template pTemplate="footer">
                         <p-button label="View" [routerLink]="['./', post.id]"></p-button>
