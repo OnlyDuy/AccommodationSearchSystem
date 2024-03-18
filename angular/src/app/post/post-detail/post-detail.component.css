@@ -1,0 +1,11 @@
+.post-image {
+  width: auto;
+  height: 200px;
+}
+
+.ngx-gallery {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+

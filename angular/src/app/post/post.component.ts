@@ -51,7 +51,7 @@ export class PostComponent extends AppComponentBase {
   }
 
   getAll(paginationParams: PaginationParamsModel) {
-    return this._postService.getAll(
+    return this._postService.getAllForHost(
       this.filterText,
       this.sorting ?? null,
       paginationParams ? paginationParams.skipCount : 0,

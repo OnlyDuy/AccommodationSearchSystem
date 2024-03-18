@@ -4,4 +4,16 @@
     font-weight: 600;
 }
 
+.room-status.available {
+    color: green;
+}
+
+.room-status.not-available {
+    color: red;
+}
+
+.post-image {
+    width: 235px; /* Đặt chiều rộng mong muốn */
+    height: 200px; /* Đặt chiều cao tự động để giữ tỷ lệ khung hình */
+  }
 

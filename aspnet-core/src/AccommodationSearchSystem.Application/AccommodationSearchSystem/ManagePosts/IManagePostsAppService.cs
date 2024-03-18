@@ -13,6 +13,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
     {
         Task CreateOrEdit(CreateOrEditIPostDto input);
         Task<PagedResultDto<GetPostForViewDto>> GetAll(GetPostInputDto input);
+        Task<PagedResultDto<GetPostForViewDto>> GetAllForHost(GetPostInputDto input);
         Task DeletePost(EntityDto<long> input);
         Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input);
         Task<GetPostForViewDto> GetForEdit(EntityDto<long> input);

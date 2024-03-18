@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    [Migration("20240308075727_DeleteTableSchedule")]
-    partial class DeleteTableSchedule
+    [Migration("20240318025549_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1638,6 +1638,86 @@ namespace AccommodationSearchSystem.Migrations
                     b.ToTable("Accommodate");
                 });
 
+            modelBuilder.Entity("AccommodationSearchSystem.Entity.AppointmentSchedule", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("Cancel")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CancelById")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Confirm")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Day")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HostName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HostPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Hour")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("PostsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RenterHostName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RenterHostPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TenantId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("UsersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostsId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("AppointmentSchedule");
+                });
+
             modelBuilder.Entity("AccommodationSearchSystem.Entity.Notification", b =>
                 {
                     b.Property<long>("Id")
@@ -1741,14 +1821,35 @@ namespace AccommodationSearchSystem.Migrations
 
             modelBuilder.Entity("AccommodationSearchSystem.Entity.PhotoPost", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsMain")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -2137,6 +2238,21 @@ namespace AccommodationSearchSystem.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
+            modelBuilder.Entity("AccommodationSearchSystem.Entity.AppointmentSchedule", b =>
+                {
+                    b.HasOne("AccommodationSearchSystem.Entity.Post", "Posts")
+                        .WithMany("AppointmentSchedules")
+                        .HasForeignKey("PostsId");
+
+                    b.HasOne("AccommodationSearchSystem.Authorization.Users.User", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("AccommodationSearchSystem.Entity.PhotoPost", b =>
                 {
                     b.HasOne("AccommodationSearchSystem.Entity.Post", "Post")
@@ -2246,6 +2362,8 @@ namespace AccommodationSearchSystem.Migrations
 
             modelBuilder.Entity("AccommodationSearchSystem.Entity.Post", b =>
                 {
+                    b.Navigation("AppointmentSchedules");
+
                     b.Navigation("PhotoPosts");
                 });
 #pragma warning restore 612, 618

@@ -131,9 +131,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
 
-                        join s in _repositorySchedule.GetAll().AsNoTracking() on p.Id equals s.PostId into sGroup
-                        from s in sGroup.DefaultIfEmpty()
-                        where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
+                        //join s in _repositorySchedule.GetAll().AsNoTracking() on p.Id equals s.PostId into sGroup
+                        //from s in sGroup.DefaultIfEmpty()
+                        //where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
 
                         select new { Post = p, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
@@ -185,6 +185,11 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
         }
 
         public Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedResultDto<GetPostForViewDto>> GetAllForHost(GetPostInputDto input)
         {
             throw new NotImplementedException();
         }

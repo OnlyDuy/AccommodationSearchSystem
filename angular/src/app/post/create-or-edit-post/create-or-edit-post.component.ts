@@ -47,7 +47,6 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     this._sessionService.getCurrentLoginInformations().subscribe((res) => {
       this.tenantId = res.tenant.id;
     });
-    // this.initializeUploader();
   }
 
   show(PostId?: number): void {
@@ -64,6 +63,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
           this.active = true
           this.modal.show();
         });
+      this.initializeUploader(PostId);
     }
   }
 
@@ -93,62 +93,57 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     this.modal.hide();
   }
 
-  // initializeUploader(PostId?: number) {
-  //   this.uploader = new FileUploader({
-  //     headers: [
-  //       { name: 'Accept', value: 'application/json' },
-  //       { name: 'Content-Type', value: 'application/json' }
-  //     ],
-  //     url: this.baseUrl + 'api/services/app/ManagePosts/AddPhoto',
-  //     isHTML5: true,
-  //     authToken: 'Bearer ' + abp.auth.getToken(),
-  //     allowedFileType: ['image'],
-  //     removeAfterUpload: true,
-  //     autoUpload: false,
-  //     maxFileSize: 10 * 1024 * 1024
-  //   });
+  initializeUploader(postId: number) {
+    const urlWithPostId = `${this.baseUrl}api/services/app/ManagePosts/AddPhoto?Id=${postId}`;
 
-  //   console.log(this.uploader);
+    this.uploader = new FileUploader({
+      url: urlWithPostId, // Sử dụng url với postId
+      isHTML5: true,
+      authToken: 'Bearer ' + abp.auth.getToken(),
+      authTokenHeader: 'Authorization',
+      allowedFileType: ['image'],
+      removeAfterUpload: true,
+      autoUpload: false,
+      maxFileSize: 10 * 1024 * 1024
+    });
 
-  //   let uploadedFile: FileItem; // Tạo một biến để lưu trữ file
+    console.log(this.uploader);
+    // Sau khi tải thêm tệp sẽ chuyển tệp dưới dạng tham số
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    }
 
-  //   this.uploader.onAfterAddingFile = (fileItem) => {
-  //     fileItem.withCredentials = false;
-  //     if (this.uploader.queue.length > 1) {
-  //       const file = new File([fileItem._file], fileItem.file.name, { type: fileItem.file.type });
-  //       this.uploader.addToQueue([file]);
-  //     } else {
-  //       fileItem.upload();
-  //     }
-  //   };
+    this.uploader.onSuccessItem = (item, response, status, headers) => {
+      if (response) {
+        const photo = JSON.parse(response);
+        // this.posts.photos.push(photo);
+        if (photo.isMain) {
+          this.posts.photos = photo.url;
+        }
+      }
+    }
 
-  //   this.uploader.onSuccessItem = (item, response, status, headers) => {
-  //     if (response) {
-  //       if (!uploadedFile) {
-  //         console.error('No file uploaded');
-  //         return;
-  //       }
 
-  //       this.posts = new CreateOrEditIPostDto();
-  //       this.posts.id = PostId;
+    // this.uploader.onAfterAddingFile = (file) => {
+    //   file.withCredentials = false;
+    // }
 
-  //       // Gọi phương thức addPhoto của _postService với file và postId
-  //       this._postService.addPhoto(PostId, JSON.parse(response)).subscribe(
-  //         (photo) => {
-  //           if (photo) {
-  //             this.post.photos.push(photo);
-  //             if (photo.isMain) {
-  //               this.post.photoUrl = photo.url;
-  //             }
-  //           }
-  //         },
-  //         (error) => {
-  //           console.error('Error adding photo: ', error);
-  //         }
-  //       );
-  //     }
-  //   };
-  // }
+    // this.uploader.onSuccessItem = (item, response, status, headers) => {
+    //   if (response) {
+    //     const photo = JSON.parse(response);
+    //     // Gọi phương thức addPhoto của _postService với file và postId
+    //     this._postService.addPhoto(postId, photo).subscribe(
+    //         (result) => {
+    //           this.posts.photos.push(result);
+    //           if (result.isMain) {
+    //             this.posts.photoUrl = result.url;
+    //           }
+    //         }
+    //       );
+    //     }
+    //   };
+    // }
+    }
 
 
   deletePhoto() {

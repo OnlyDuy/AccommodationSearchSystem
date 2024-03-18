@@ -132,7 +132,7 @@
               </div>
             </tab>
 
-            <!-- <tab [heading]="'PostsDetails' | localize" class="pt-3 px-2">
+            <tab *ngIf="posts.id" [heading]="'PostsDetails' | localize" class="pt-3 px-2">
               <div class="row mt-3">
 
                 <div class="col-md-3">
@@ -199,7 +199,7 @@
                 </div>
 
               </div>
-            </tab> -->
+            </tab>
           </tabset>
         </div>
         <div class="modal-footer">

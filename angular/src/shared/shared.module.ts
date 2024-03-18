@@ -31,6 +31,8 @@ import { CalendarModule } from 'primeng/calendar';
 
 import { FileUploadModule } from 'ng2-file-upload';
 
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -45,7 +47,8 @@ import { FileUploadModule } from 'ng2-file-upload';
         DataViewModule,
         CardModule,
         PaginatorModule,
-        CalendarModule
+        CalendarModule,
+        NgxGalleryModule
     ],
 
     declarations: [
@@ -75,7 +78,8 @@ import { FileUploadModule } from 'ng2-file-upload';
         CardModule,
         CalendarModule,
         NgxPaginationModule,
-        PaginatorModule
+        PaginatorModule,
+        NgxGalleryModule
     ]
 })
 export class SharedModule {
