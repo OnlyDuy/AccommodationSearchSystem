@@ -43,6 +43,49 @@
                   <abp-validation-summary [control]="addressModel" [controlEl]="addressEl"></abp-validation-summary>
                 </div>
               </div>
+              <div class="row">
+                <div class="col-6 ">
+                  <div class="form-group col required">
+                    <label class="col-form-label" for="city">
+                      {{ "Thành phố" | localize }}
+                    </label>
+                    <div class="">
+                      <select type="text" class="form-control" name="city" id="city" required
+                        [(ngModel)]="posts.city" #cityModel="ngModel" #cityEl >
+                        <option selected>Hà Nội</option></select>
+                      <abp-validation-summary [control]="cityModel"
+                        [controlEl]="cityEl"></abp-validation-summary>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group col required">
+                    <label class="col-form-label" for="district">
+                      {{ "Quận" | localize }}
+                    </label>
+                    <div class="">
+                      <select type="text" class="form-control" name="district" id="district" required
+                        [(ngModel)]="posts.district" #districtModel="ngModel" #districtEl>
+                        <option value="Ba Đình">Ba Đình</option>
+                        <option value="Cầu Giấy">Cầu Giấy</option>
+                        <option value="Đống Đa">Đống Đa</option>
+                        <option value="Hai Bà Trưng">Hai Bà Trưng</option>
+                        <option value="Hoàn Kiếm">Hoàn Kiếm</option>
+                        <option value="Thanh Xuân">Thanh Xuân</option>
+                        <option value="Hoàng Mai">Hoàng Mai</option>
+                        <option value="Long Biên">Long Biên</option>
+                        <option value="Hà Đông">Hà Đông</option>
+                        <option value="Tây Hồ">Tây Hồ</option>
+                        <option value="Nam Từ Liêm">Nam Từ Liêm</option>
+                        <option value="Bắc Từ Liêm">Bắc Từ Liêm</option></select>
+
+                      <abp-validation-summary [control]="districtModel"
+                        [controlEl]="districtEl"></abp-validation-summary>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-group row required">
                 <label class="col-md-3 col-form-label" for="priceCategory">
                   {{ "PriceCategory" | localize }}
@@ -57,6 +100,39 @@
                     [controlEl]="priceCategoryEl"></abp-validation-summary>
                 </div>
               </div>
+              <!-- <div class="row">
+                <div class="col-6 ">
+                  <div class="form-group col required">
+                    <label class="col-form-label" for="ward">
+                      {{ "Phường/xã" | localize }}
+                    </label>
+                    <div class="">
+                      <select type="text" class="form-control" name="city" id="city" required
+                        [(ngModel)]="posts.city" #cityModel="ngModel" #cityEl >
+                        <option selected>Hà Nội</option>
+                        <option value="Hà Nội">Hà Nội</option></select>
+                      <abp-validation-summary [control]="cityModel"
+                        [controlEl]="cityEl"></abp-validation-summary>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group col required">
+                    <label class="col-form-label" for="priceCategory">
+                      {{ "PriceCategory" | localize }}
+                    </label>
+                    <div class="">
+                      <select type="text" class="form-control" name="priceCategory" id="priceCategory" required
+                        [(ngModel)]="posts.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl >
+                        <option selected>Phòng đơn</option>
+                        <option value="Chung cư mini">Chung cư mini</option>
+                        <option value="2 người trở lên">2 người trở lên</option></select>
+                      <abp-validation-summary [control]="priceCategoryModel"
+                        [controlEl]="priceCategoryEl"></abp-validation-summary>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
               <div class="col" style="margin-left: -9px;">
                   <label class="">
                     {{ "Tiện ích" | localize }}

@@ -11,6 +11,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
     {
         public CreateOrEditIPostDto CreateOrEditPost { get; set; }
         public GetPostForViewDto GetPostForView { get; set; }
+        public ConfirmPostByAdminDto ConfirmPostByAdmins { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
     }
 }

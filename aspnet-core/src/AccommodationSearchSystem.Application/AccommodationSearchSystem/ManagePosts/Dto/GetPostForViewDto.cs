@@ -19,6 +19,12 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public decimal RoomPrice { get; set; } // Giá phòng
         public string Address { get; set; }
         [StringLength(4000)]
+        public string District { get; set; }
+        [StringLength(4000)]
+        public string City { get; set; }
+        [StringLength(4000)]
+        public string Ward { get; set; }
+        [StringLength(4000)]
         public string Area { get; set; }
         public decimal Square { get; set; }
         public string PriceCategory { get; set; } // Loại phòng
@@ -29,5 +35,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public ICollection<PhotoDto> Photos { get; set; }
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
+        public bool ConfirmAdmin { get; set; }
     }
 }

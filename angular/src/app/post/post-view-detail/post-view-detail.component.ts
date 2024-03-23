@@ -1,9 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { AppComponentBase } from '@shared/app-component-base';
 import { CreateOrEditIPostDto, CreateOrEditSchedulesDto, GetPostForViewDto, ManageAppointmentSchedulesServiceProxy, PhotoDto, SessionServiceProxy, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
+import { AgmMap, MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-post-view-detail',
@@ -11,7 +12,7 @@ import { finalize } from 'rxjs/operators';
   styleUrls: ['./post-view-detail.component.css'],
   providers: [ViewPostServiceProxy, ManageAppointmentSchedulesServiceProxy]
 })
-export class PostViewDetailComponent extends AppComponentBase implements OnInit {
+export class PostViewDetailComponent extends AppComponentBase implements OnInit  {
   postId: number;
   post: GetPostForViewDto = new GetPostForViewDto();
   schedule: CreateOrEditSchedulesDto = new CreateOrEditSchedulesDto();
@@ -22,17 +23,36 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   galleryOptions: NgxGalleryOptions[] = [];
   galleryImages: NgxGalleryImage[] = [];
 
+  directionsActive: boolean = false;
+
+  // Biến lưu vị trí bài đăng
+  postLat: number;
+  postLng: number;
+  // Biến lưu vị trí hiện tại
+  lat: number;
+  lng: number;
+  zoom = 15;
+  locationChosen = false;
+  locationName: string;
+  locationNamePost: string;
+  map: google.maps.Map;
+  @ViewChild(AgmMap, { static: true }) agmMap: AgmMap;
+
+  directionsService: any;
+  directionsRenderer: any;
+
   constructor(
     injector: Injector,
     public _postService: ViewPostServiceProxy,
     public _postScheduleService: ManageAppointmentSchedulesServiceProxy,
     private _sessionService: SessionServiceProxy,
-    private route: ActivatedRoute
-  ) {
-    super(injector);
-  }
+    private route: ActivatedRoute,
+    private _mapsAPILoader: MapsAPILoader
+    ) {
+      super(injector);
+    }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.route.params.subscribe(params => {
       this.postId = +params['id'];
       this.getPostDetails(this.postId);
@@ -55,6 +75,188 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
         // previewZoomMin: 0.5 // Giới hạn zoom tối thiểu
       },
     ];
+    this.getCurrentLocation();
+  }
+
+  // Lấy vị trí hiện tại của người dùng
+  getCurrentLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.lat = position.coords.latitude;
+          this.lng = position.coords.longitude;
+          console.log('Your Lat:', this.lat);
+          console.log('Your Lng:', this.lng);
+          // Lấy tên địa điểm từ tọa độ
+          this.getLocationName(this.lat, this.lng);
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
+  }
+
+  getLocationName(lat: number, lng: number) {
+    this._mapsAPILoader.load().then(() => {
+      const geocoder = new google.maps.Geocoder();
+      const latlng = new google.maps.LatLng(lat, lng);
+      geocoder.geocode({ 'location': latlng }, (results, status) => {
+        if (status === 'OK') {
+          if (results[0]) {
+            this.locationName = results[0].formatted_address;
+          } else {
+            console.error('No results found');
+          }
+        } else {
+          console.error('Geocoder failed due to: ' + status);
+        }
+      });
+    });
+  }
+
+  // onMarkerClick() {
+  //   this.getLocationName(this.lat, this.lng);
+  // }
+
+  getLocationForPost(address: string): void {
+    this._mapsAPILoader.load().then(() => {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': address }, (results, status) => {
+        if (status === 'OK') {
+          if (results[0]) {
+            this.postLat = results[0].geometry.location.lat();
+            this.postLng = results[0].geometry.location.lng();
+            this.getLocationNamePost(this.postLat, this.postLng);
+            // Thiết lập vị trí của bản đồ tới vị trí của bài đăng
+            this.map.setCenter({ lat: this.postLat, lng: this.postLng });
+            this.map.setZoom(15);
+          } else {
+            console.error('No results found');
+          }
+        } else {
+          console.error('Geocoder failed due to: ' + status);
+        }
+      });
+    });
+  }
+
+  getLocationNamePost(postLat: number, postLng: number) {
+    this._mapsAPILoader.load().then(() => {
+      const geocoder = new google.maps.Geocoder();
+      const latlng = new google.maps.LatLng(postLat, postLng);
+      geocoder.geocode({ 'location': latlng }, (results, status) => {
+        if (status === 'OK') {
+          if (results[0]) {
+            this.locationNamePost = results[0].formatted_address;
+          } else {
+            console.error('No results found');
+          }
+        } else {
+          console.error('Geocoder failed due to: ' + status);
+        }
+      });
+    });
+  }
+  // Lấy vị trí của bài đăng
+  showPostLocation(): void {
+    if (this.post.address + ', ' + this.post.district + ', ' + this.post.city) {
+      this.getLocationForPost(this.post.address + ', ' + this.post.district + ', ' + this.post.city);
+    } else {
+      console.error('Post address is not available');
+    }
+  }
+  // onMarkerPostClick() {
+  //   this.getLocationNamePost(this.post.address + ', ' + this.post.district + ', ' + this.post.city);
+  // }
+
+  // Xử lý chỉ đường đi bằng phương thức đi bộ
+  onMapReady(map: google.maps.Map) {
+    this.map = map;
+  }
+
+  getDriving() {
+    if (!this.map) {
+      console.error('Map is not initialized yet');
+      return;
+    }
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    this.directionsRenderer.setMap(this.map);
+    const request: google.maps.DirectionsRequest = {
+      origin: new google.maps.LatLng(this.lat, this.lng),
+      destination: new google.maps.LatLng(this.postLat, this.postLng),
+      // destination: this.post.address + ', ' + this.post.district + ', ' + this.post.city,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+
+    this.directionsService.route(request, (response, status) => {
+      if (status == 'OK') {
+        this.directionsRenderer.setDirections(response);
+        // this.getLocationNamePost(this.post.address + ', ' + this.post.district + ', ' + this.post.city);
+      } else {
+        console.error('Directions request failed due to ' + status);
+      }
+    });
+  }
+
+  getTransit() {
+    if (!this.map) {
+      console.error('Map is not initialized yet');
+      return;
+    }
+    this.directionsService = new google.maps.DirectionsService();
+    this.directionsRenderer = new google.maps.DirectionsRenderer();
+    this.directionsRenderer.setMap(this.map);
+    const request: google.maps.DirectionsRequest = {
+      origin: new google.maps.LatLng(this.lat, this.lng),
+      destination: new google.maps.LatLng(this.postLat, this.postLng),
+      // destination: this.post.address + ', ' + this.post.district + ', ' + this.post.city,
+      travelMode: google.maps.TravelMode.TRANSIT
+    };
+
+    this.directionsService.route(request, (response, status) => {
+      if (status == 'OK') {
+        this.directionsRenderer.setDirections(response);
+        // this.getLocationNamePost(this.post.address + ', ' + this.post.district + ', ' + this.post.city);
+      } else {
+        console.error('Directions request failed due to ' + status);
+      }
+    });
+  }
+
+  toggleTransit() {
+    if (this.directionsActive) {
+      this.clearDirections();
+    } else{
+      this.startTransit();
+    }
+  }
+
+  toggleDrive() {
+    if (this.directionsActive) {
+      this.clearDirections();
+    } else{
+      this.startDrive();;
+    }
+  }
+
+  startTransit() {
+    this.getTransit();
+    this.directionsActive = true;
+  }
+
+  startDrive() {
+    this.getDriving();
+    this.directionsActive = true;
+  }
+
+  clearDirections() {
+    // Xoá chỉ đường khỏi bản đồ
+    this.directionsRenderer.setMap(null);
+    this.directionsActive = false;
   }
 
   getImages(): NgxGalleryImage[] {

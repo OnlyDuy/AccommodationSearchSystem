@@ -8,3 +8,7 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+agm-map {
+  height: 400px;
+}

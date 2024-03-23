@@ -44,7 +44,12 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
 
   ngOnInit(): void {
     this.shownLogin = this.appSession.getShownLoginRoleId();
-    if (this.shownLogin == 6 || this.shownLogin == 5) {
+    // if (this.shownLogin == 6 || this.shownLogin == 5) {
+    //   this.isHost = true;
+    // } else {
+    //   this.isHost = false;
+    // }
+    if (this.shownLogin == 4 || this.shownLogin == 3) {
       this.isHost = true;
     } else {
       this.isHost = false;

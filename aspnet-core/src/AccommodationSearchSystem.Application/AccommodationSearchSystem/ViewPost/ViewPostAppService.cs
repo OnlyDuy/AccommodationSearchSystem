@@ -100,6 +100,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 Photo = post.Photo,
                 RoomPrice = post.RoomPrice,
                 Address = post.Address,
+                District = post.District,
+                City = post.City,
+                Ward = post.Ward,
                 Area = post.Area,
                 Square = post.Square,
                 PriceCategory = post.PriceCategory,
@@ -126,7 +129,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
         {
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
-            .Where(e => tenantId == e.TenantId)
+            .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
@@ -151,6 +154,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 Photo = item.Post.Photo,
                 RoomPrice = item.Post.RoomPrice,
                 Address = item.Post.Address,
+                District = item.Post.District,
+                City = item.Post.City,
+                Ward = item.Post.Ward,
                 Area = item.Post.Area,
                 Square = item.Post.Square,
                 PriceCategory = item.Post.PriceCategory,
@@ -190,6 +196,16 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
         }
 
         public Task<PagedResultDto<GetPostForViewDto>> GetAllForHost(GetPostInputDto input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedResultDto<GetPostForViewDto>> GetAllForAdmin(GetPostInputDto input)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task ConfirmPostAD(ConfirmPostByAdminDto input)
         {
             throw new NotImplementedException();
         }

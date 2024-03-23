@@ -39,6 +39,30 @@
             <tab class="" [heading]="'Thông tin hình ảnh'">
                 <ngx-gallery [options]="this.galleryOptions" [images]="this.galleryImages" class="ngx-gallery"></ngx-gallery>
             </tab>
+            <tab class="" [heading]="'Vị trí trên bản đồ'">
+                <div class="map-container">
+                    <agm-map
+                      [latitude]="lat"
+                      [longitude]="lng"
+                      [zoom]="zoom"
+                      [scrollwheel]="true"
+                      (mapReady)="onMapReady($event)">
+                      <!-- <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker> -->
+                      <agm-marker *ngIf="post.address" [latitude]="postLat" [longitude]="postLng"></agm-marker>
+                    </agm-map>
+                  </div>
+
+                  <div class="m-lg-3">
+                    <button class="btn btn-outline-info mr-2" (click)="showPostLocation()">Xem vị trí phòng trọ</button>
+                    <button class="btn btn-outline-secondary mr-2" (click)="toggleDrive()">Lái xe</button>
+                    <button class="btn btn-outline-dark" (click)="toggleTransit()">Phương tiện công cộng</button>
+
+                  </div>
+
+                  <!-- Hiển thị tên của vị trí của người dùng và vị trí của phòng trọ -->
+                  <div *ngIf="locationName">Your Location: {{ locationName }}</div>
+                  <div *ngIf="locationNamePost">Post Location: {{ locationNamePost }}</div>
+            </tab>
 
         </tabset>
     </div>

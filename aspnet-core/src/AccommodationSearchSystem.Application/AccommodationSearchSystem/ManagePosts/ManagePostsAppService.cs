@@ -68,8 +68,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 throw new UserFriendlyException(00, L("ThisItemAlreadyExists"));
             } else
             {
-                var post = ObjectMapper.Map<Post>(input);;
+                var post = ObjectMapper.Map<Post>(input);
                 post.TenantId = tenantId;
+                post.ConfirmAdmin = false;
                 await _repositoryPost.InsertAsync(post);
             }
         }
@@ -95,7 +96,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         {
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
-            .Where(e => tenantId == e.TenantId)
+            .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
@@ -120,6 +121,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 Photo = item.Post.Photo,
                 RoomPrice = item.Post.RoomPrice,
                 Address = item.Post.Address,
+                District = item.Post.District,
+                City = item.Post.City,
+                Ward= item.Post.Ward,
                 Area = item.Post.Area,
                 Square = item.Post.Square,
                 PriceCategory = item.Post.PriceCategory,
@@ -144,10 +148,12 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         public async Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
         {
             var datapost = await _repositoryPost.FirstOrDefaultAsync(input.Id);
+            var dataConfirmAdmin = await _repositoryPost.FirstOrDefaultAsync(input.Id);
             var photoData = await _repositoryPhotoPost.GetAllListAsync(e => e.PostId == input.Id);
             var output = new GetPostForEditOutput
             {
                 CreateOrEditPost = ObjectMapper.Map<CreateOrEditIPostDto>(datapost),
+                ConfirmPostByAdmins = ObjectMapper.Map<ConfirmPostByAdminDto>(dataConfirmAdmin),
                 // Khởi tạo danh sách hình ảnh
                 Photos = new List<PhotoDto>()
             };
@@ -286,6 +292,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 Photo = item.Post.Photo,
                 RoomPrice = item.Post.RoomPrice,
                 Address = item.Post.Address,
+                District = item.Post.District,
+                City = item.Post.City,
+                Ward = item.Post.Ward,
                 Area = item.Post.Area,
                 Square = item.Post.Square,
                 PriceCategory = item.Post.PriceCategory,
@@ -304,6 +313,77 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             }).ToList();
 
             return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
+        }
+
+        public async Task<PagedResultDto<GetPostForViewDto>> GetAllForAdmin(GetPostInputDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var query = from p in _repositoryPost.GetAll()
+            .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == false)
+            .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
+                                || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
+                        orderby p.Id descending
+
+                        //join s in _repositorySchedule.GetAll().AsNoTracking() on p.Id equals s.PostId into sGroup
+                        //from s in sGroup.DefaultIfEmpty()
+                        //where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
+
+                        select new { Post = p, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredPost = query.PageBy(input);
+
+            var result = await pagedAndFilteredPost.ToListAsync();
+
+            var postDtos = result.Select(item => new GetPostForViewDto
+            {
+                Id = item.Post.Id,
+                PostCode = item.Post.PostCode,
+                Title = item.Post.Title,
+                ContentPost = item.Post.ContentPost,
+                Photo = item.Post.Photo,
+                RoomPrice = item.Post.RoomPrice,
+                Address = item.Post.Address,
+                District = item.Post.District,
+                City = item.Post.City,
+                Ward = item.Post.Ward,
+                Area = item.Post.Area,
+                Square = item.Post.Square,
+                PriceCategory = item.Post.PriceCategory,
+                Wifi = item.Post.Wifi,
+                Parking = item.Post.Parking,
+                Conditioner = item.Post.Conditioner,
+                RoomStatus = item.Post.RoomStatus,
+                TenantId = tenantId,
+                Photos = item.Photos.Select(photo => new PhotoDto
+                {
+                    Id = photo.Id,
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId
+                }).ToList(),
+            }).ToList();
+
+            return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
+
+        }
+
+        public async Task ConfirmPostAD(ConfirmPostByAdminDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+            var dataCheck = await _repositoryPost.FirstOrDefaultAsync(e => e.ConfirmAdmin == true
+                                    && e.Id == input.Id && tenantId == e.TenantId);
+            if (dataCheck != null)
+            {
+                throw new UserFriendlyException(400, "Bài đăng đã được phê duyệt");
+            }
+            else
+            {
+                var post = await _repositoryPost.FirstOrDefaultAsync(e => e.Id == input.Id);
+                post.ConfirmAdmin = true;
+                await _repositoryPost.UpdateAsync(post);
+            }
         }
     }
 }

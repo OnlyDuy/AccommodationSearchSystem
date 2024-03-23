@@ -21,7 +21,6 @@ import { BusyDirective } from './directives/busy.directive';
 import { EqualValidator } from './directives/equal-validator.directive';
 
 import { ButtonModule } from 'primeng/button';
-// import { FileUpload, FileUploadModule } from 'primeng/fileupload';
 import { TableModule } from 'primeng/table';
 import { OrderListModule } from 'primeng/orderlist';
 import { PaginatorModule } from 'primeng/paginator';
@@ -32,7 +31,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { FileUploadModule } from 'ng2-file-upload';
 
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
-
+import { AgmCoreModule } from '@agm/core';
+import { GoogleMapsModule  } from '@angular/google-maps';
 @NgModule({
     imports: [
         CommonModule,
@@ -40,6 +40,9 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
         NgxPaginationModule,
         BsDatepickerModule.forRoot(),
         TimepickerModule.forRoot(),
+        AgmCoreModule.forRoot({
+            apiKey: 'AIzaSyDLAhuls4jE1NxgFb6tj5Bd3D81UHJlY-0'
+        }),
         ButtonModule,
         FileUploadModule,
         TableModule,
@@ -48,6 +51,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
         CardModule,
         PaginatorModule,
         CalendarModule,
+        GoogleMapsModule,
         NgxGalleryModule
     ],
 
@@ -68,6 +72,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
         LocalizePipe,
         BusyDirective,
         EqualValidator,
+        AgmCoreModule,
         FileUploadModule,
         ButtonModule,
         TableModule,
@@ -75,6 +80,7 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
         TimepickerModule,
         OrderListModule,
         DataViewModule,
+        GoogleMapsModule,
         CardModule,
         CalendarModule,
         NgxPaginationModule,

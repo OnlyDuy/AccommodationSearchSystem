@@ -1929,6 +1929,129 @@ export class ManagePostsServiceProxy {
         }
         return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
     }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllForAdmin(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAllForAdmin?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllForAdmin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllForAdmin(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForViewDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForViewDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAllForAdmin(response: HttpResponseBase): Observable<GetPostForViewDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForViewDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    confirmPostAD(body: ConfirmPostByAdminDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/ConfirmPostAD";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirmPostAD(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirmPostAD(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processConfirmPostAD(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
 }
 
 @Injectable()
@@ -3989,6 +4112,129 @@ export class ViewPostServiceProxy {
         }
         return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
     }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllForAdmin(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetAllForAdmin?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllForAdmin(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllForAdmin(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForViewDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForViewDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAllForAdmin(response: HttpResponseBase): Observable<GetPostForViewDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForViewDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForViewDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    confirmPostAD(body: ConfirmPostByAdminDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/ConfirmPostAD";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirmPostAD(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirmPostAD(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processConfirmPostAD(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
 }
 
 export class ApplicationInfoDto implements IApplicationInfoDto {
@@ -4356,6 +4602,61 @@ export interface IChangeUserLanguageDto {
     languageName: string;
 }
 
+export class ConfirmPostByAdminDto implements IConfirmPostByAdminDto {
+    id: number;
+    tenantId: number | undefined;
+    creatorUserId: number;
+    confirmAdmin: boolean;
+
+    constructor(data?: IConfirmPostByAdminDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.creatorUserId = _data["creatorUserId"];
+            this.confirmAdmin = _data["confirmAdmin"];
+        }
+    }
+
+    static fromJS(data: any): ConfirmPostByAdminDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ConfirmPostByAdminDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["creatorUserId"] = this.creatorUserId;
+        data["confirmAdmin"] = this.confirmAdmin;
+        return data;
+    }
+
+    clone(): ConfirmPostByAdminDto {
+        const json = this.toJSON();
+        let result = new ConfirmPostByAdminDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IConfirmPostByAdminDto {
+    id: number;
+    tenantId: number | undefined;
+    creatorUserId: number;
+    confirmAdmin: boolean;
+}
+
 export class ConfirmSchedulesDto implements IConfirmSchedulesDto {
     id: number;
     tenantId: number | undefined;
@@ -4424,6 +4725,9 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     photo: string | undefined;
     roomPrice: number;
     address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
     area: string | undefined;
     square: number;
     roomStatus: boolean;
@@ -4432,6 +4736,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
     parking: boolean;
     conditioner: boolean;
     photos: PhotoDto[] | undefined;
+    confirmAdmin: boolean;
 
     constructor(data?: ICreateOrEditIPostDto) {
         if (data) {
@@ -4452,6 +4757,9 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
             this.photo = _data["photo"];
             this.roomPrice = _data["roomPrice"];
             this.address = _data["address"];
+            this.district = _data["district"];
+            this.city = _data["city"];
+            this.ward = _data["ward"];
             this.area = _data["area"];
             this.square = _data["square"];
             this.roomStatus = _data["roomStatus"];
@@ -4464,6 +4772,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
                 for (let item of _data["photos"])
                     this.photos.push(PhotoDto.fromJS(item));
             }
+            this.confirmAdmin = _data["confirmAdmin"];
         }
     }
 
@@ -4484,6 +4793,9 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
         data["photo"] = this.photo;
         data["roomPrice"] = this.roomPrice;
         data["address"] = this.address;
+        data["district"] = this.district;
+        data["city"] = this.city;
+        data["ward"] = this.ward;
         data["area"] = this.area;
         data["square"] = this.square;
         data["roomStatus"] = this.roomStatus;
@@ -4496,6 +4808,7 @@ export class CreateOrEditIPostDto implements ICreateOrEditIPostDto {
             for (let item of this.photos)
                 data["photos"].push(item.toJSON());
         }
+        data["confirmAdmin"] = this.confirmAdmin;
         return data;
     }
 
@@ -4516,6 +4829,9 @@ export interface ICreateOrEditIPostDto {
     photo: string | undefined;
     roomPrice: number;
     address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
     area: string | undefined;
     square: number;
     roomStatus: boolean;
@@ -4524,6 +4840,7 @@ export interface ICreateOrEditIPostDto {
     parking: boolean;
     conditioner: boolean;
     photos: PhotoDto[] | undefined;
+    confirmAdmin: boolean;
 }
 
 export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
@@ -5210,6 +5527,7 @@ export interface IGetCurrentLoginInformationsOutput {
 export class GetPostForEditOutput implements IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
     getPostForView: GetPostForViewDto;
+    confirmPostByAdmins: ConfirmPostByAdminDto;
     photos: PhotoDto[] | undefined;
 
     constructor(data?: IGetPostForEditOutput) {
@@ -5225,6 +5543,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
         if (_data) {
             this.createOrEditPost = _data["createOrEditPost"] ? CreateOrEditIPostDto.fromJS(_data["createOrEditPost"]) : <any>undefined;
             this.getPostForView = _data["getPostForView"] ? GetPostForViewDto.fromJS(_data["getPostForView"]) : <any>undefined;
+            this.confirmPostByAdmins = _data["confirmPostByAdmins"] ? ConfirmPostByAdminDto.fromJS(_data["confirmPostByAdmins"]) : <any>undefined;
             if (Array.isArray(_data["photos"])) {
                 this.photos = [] as any;
                 for (let item of _data["photos"])
@@ -5244,6 +5563,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
         data = typeof data === 'object' ? data : {};
         data["createOrEditPost"] = this.createOrEditPost ? this.createOrEditPost.toJSON() : <any>undefined;
         data["getPostForView"] = this.getPostForView ? this.getPostForView.toJSON() : <any>undefined;
+        data["confirmPostByAdmins"] = this.confirmPostByAdmins ? this.confirmPostByAdmins.toJSON() : <any>undefined;
         if (Array.isArray(this.photos)) {
             data["photos"] = [];
             for (let item of this.photos)
@@ -5263,6 +5583,7 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
 export interface IGetPostForEditOutput {
     createOrEditPost: CreateOrEditIPostDto;
     getPostForView: GetPostForViewDto;
+    confirmPostByAdmins: ConfirmPostByAdminDto;
     photos: PhotoDto[] | undefined;
 }
 
@@ -5275,6 +5596,9 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     photo: string | undefined;
     roomPrice: number;
     address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
     area: string | undefined;
     square: number;
     priceCategory: string | undefined;
@@ -5285,6 +5609,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     photos: PhotoDto[] | undefined;
     emailAddress: string | undefined;
     phoneNumber: string | undefined;
+    confirmAdmin: boolean;
 
     constructor(data?: IGetPostForViewDto) {
         if (data) {
@@ -5305,6 +5630,9 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             this.photo = _data["photo"];
             this.roomPrice = _data["roomPrice"];
             this.address = _data["address"];
+            this.district = _data["district"];
+            this.city = _data["city"];
+            this.ward = _data["ward"];
             this.area = _data["area"];
             this.square = _data["square"];
             this.priceCategory = _data["priceCategory"];
@@ -5319,6 +5647,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             }
             this.emailAddress = _data["emailAddress"];
             this.phoneNumber = _data["phoneNumber"];
+            this.confirmAdmin = _data["confirmAdmin"];
         }
     }
 
@@ -5339,6 +5668,9 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         data["photo"] = this.photo;
         data["roomPrice"] = this.roomPrice;
         data["address"] = this.address;
+        data["district"] = this.district;
+        data["city"] = this.city;
+        data["ward"] = this.ward;
         data["area"] = this.area;
         data["square"] = this.square;
         data["priceCategory"] = this.priceCategory;
@@ -5353,6 +5685,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         }
         data["emailAddress"] = this.emailAddress;
         data["phoneNumber"] = this.phoneNumber;
+        data["confirmAdmin"] = this.confirmAdmin;
         return data;
     }
 
@@ -5373,6 +5706,9 @@ export interface IGetPostForViewDto {
     photo: string | undefined;
     roomPrice: number;
     address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
     area: string | undefined;
     square: number;
     priceCategory: string | undefined;
@@ -5383,6 +5719,7 @@ export interface IGetPostForViewDto {
     photos: PhotoDto[] | undefined;
     emailAddress: string | undefined;
     phoneNumber: string | undefined;
+    confirmAdmin: boolean;
 }
 
 export class GetPostForViewDtoPagedResultDto implements IGetPostForViewDtoPagedResultDto {
