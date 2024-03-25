@@ -29,6 +29,7 @@ import { AgmMap, MapsAPILoader } from "@agm/core";
 export class PostDetailComponent extends AppComponentBase implements OnInit {
   postId: number;
   post: CreateOrEditIPostDto = new CreateOrEditIPostDto();
+  postUser: GetPostForEditOutput = new GetPostForEditOutput();
   postPhoto: PhotoDto;
   postPhotos: PhotoDto[] = [];
 
@@ -297,6 +298,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
   getPostDetails(postId: number): void {
     this._postService.getLoyaltyGiftItemForEdit(postId).subscribe((result) => {
       this.post = result.createOrEditPost;
+      this.postUser = result;
       // this.postP.photos = result.photos;
       //Xử lý danh sách ảnh
       this.postPhotos = result.photos;

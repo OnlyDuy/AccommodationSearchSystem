@@ -13,5 +13,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public GetPostForViewDto GetPostForView { get; set; }
         public ConfirmPostByAdminDto ConfirmPostByAdmins { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
+
+
     }
 }

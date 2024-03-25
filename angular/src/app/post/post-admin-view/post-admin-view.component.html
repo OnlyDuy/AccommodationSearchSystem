@@ -1,0 +1,180 @@
+<div bsModal #postAdminViewModal="bs-modal" class="modal fade" aria-labelledby="postAdminViewModal" aria-hidden="true"
+  [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-md modal-lg">
+    <div class="modal-content">
+        <form class="form-horizontal" autocomplete="off" #postAdminModal="ngForm" *ngIf="active">
+
+          <abp-modal-header *ngIf="post.id" [title]="'Thông tin'"
+            (onCloseClick)="modal.hide()"></abp-modal-header>
+
+          <div class="modal-body">
+            <tabset>
+              <tab [heading]="'PostsDetails' | localize" class="pt-3 px-2">
+                <div class="form-group row required">
+                  <label class="col-md-3 col-form-label" for="title">
+                    {{ "Title" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" name="title" id="title" required [(ngModel)]="post.title"
+                      #titleModel="ngModel" #titleEl [disabled] = "true"/>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label class="col-md-3 col-form-label" for="contentPost">
+                    {{ "ContentPost" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <textarea type="text" class="form-control" name="contentPost" id="contentPost" required
+                      [(ngModel)]="post.contentPost" #contentPostModel="ngModel" #contentPostEl [disabled] = "true"> </textarea>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label class="col-md-3 col-form-label" for="address">
+                    {{ "Address" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" name="address" id="address" required
+                      [(ngModel)]="post.address" ngModel #addressModel="ngModel" #addressEl [disabled] = "true"/>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-6 ">
+                    <div class="form-group col required">
+                      <label class="col-form-label" for="city">
+                        {{ "Thành phố" | localize }}
+                      </label>
+                      <div class="">
+                        <select type="text" class="form-control" name="city" id="city" required
+                          [(ngModel)]="post.city" #cityModel="ngModel" #cityEl [disabled] = "true">
+                          <option selected>Hà Nội</option></select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="form-group col required">
+                      <label class="col-form-label" for="district">
+                        {{ "Quận" | localize }}
+                      </label>
+                      <div class="">
+                        <select type="text" class="form-control" name="district" id="district" required
+                          [(ngModel)]="post.district" #districtModel="ngModel" #districtEl [disabled] = "true">
+                          <option value="Ba Đình">Ba Đình</option>
+                          <option value="Cầu Giấy">Cầu Giấy</option>
+                          <option value="Đống Đa">Đống Đa</option>
+                          <option value="Hai Bà Trưng">Hai Bà Trưng</option>
+                          <option value="Hoàn Kiếm">Hoàn Kiếm</option>
+                          <option value="Thanh Xuân">Thanh Xuân</option>
+                          <option value="Hoàng Mai">Hoàng Mai</option>
+                          <option value="Long Biên">Long Biên</option>
+                          <option value="Hà Đông">Hà Đông</option>
+                          <option value="Tây Hồ">Tây Hồ</option>
+                          <option value="Nam Từ Liêm">Nam Từ Liêm</option>
+                          <option value="Bắc Từ Liêm">Bắc Từ Liêm</option></select>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label class="col-md-3 col-form-label" for="priceCategory">
+                    {{ "PriceCategory" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <select type="text" class="form-control" name="priceCategory" id="priceCategory" required
+                      [(ngModel)]="post.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl [disabled] = "true">
+                      <option selected>Phòng đơn</option>
+                      <option value="Chung cư mini">Chung cư mini</option>
+                      <option value="2 người trở lên">2 người trở lên</option></select>
+                  </div>
+                </div>
+
+                <div class="col" style="margin-left: -9px;">
+                    <label class="">
+                      {{ "Tiện ích" | localize }}
+                    </label>
+                    <div class="row ml-4">
+                      <div class="col-12 col-sm-4">
+                        <div class="form-group">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="conditioner" id="conditioner"
+                              [(ngModel)]="post.conditioner" [disabled] = "true"/>
+                            <label class="custom-control-label" style="font-weight: normal;" for="conditioner">{{ "Điều hóa" | localize }}</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-4">
+                        <div class="form-group">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="parking" id="parking"
+                              [(ngModel)]="post.parking" [disabled] = "true"/>
+                            <label class="custom-control-label" style="font-weight: normal;" for="parking">{{ "Chỗ để xe" | localize }}</label>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-12 col-sm-4">
+                        <div class="form-group">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="wifi" id="wifi"
+                              [(ngModel)]="post.wifi" [disabled] = "true"/>
+                            <label class="custom-control-label" style="font-weight: normal;" for="wifi">{{ "Internet" | localize }}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-6 ">
+                    <div class="form-group col required">
+                      <label class="col-form-label" for="roomPrice">
+                        {{ "RoomPrice" | localize }}
+                      </label>
+                      <div class="">
+                        <input type="text" class="form-control" name="roomPrice" id="roomPrice" required
+                          [(ngModel)]="post.roomPrice" #roomPriceModel="ngModel" #roomPriceEl [disabled] = "true"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group col required">
+                      <label class="col-form-label" for="square">
+                        {{ "Square" | localize }}
+                      </label>
+                      <div class="">
+                        <input type="text" class="form-control" name="square" id="square" required
+                          [(ngModel)]="post.square" #squareModel="ngModel" #squareEl [disabled] = "true"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row mb-0">
+                  <label class="col-md-3 col-form-label">
+                    {{ "RoomStatus" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="roomStatus" id="roomStatus"
+                        [(ngModel)]="post.roomStatus" [disabled] = "true"/>
+                      <label class="custom-control-label mt-2" for="roomStatus"></label>
+                    </div>
+                  </div>
+                </div>
+              </tab>
+              <tab class="pt-3 px-2" [heading]="'Thông tin hình ảnh'">
+                <ngx-gallery [options]="this.galleryOptions" [images]="this.galleryImages" class="ngx-gallery"></ngx-gallery>
+              </tab>
+              <tab class="" [heading]="'Người đăng bài'">
+                <h4>Thông tin người đăng bài</h4>
+                <p>{{post.emailAddress}}</p>
+                <br>
+                <p>{{post.phoneNumber}}</p>
+            </tab>
+            </tabset>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </form>
+      </div>
+  </div>
+</div>

@@ -55,6 +55,7 @@ import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success
 import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-schedule-wait.component';
 import { FormDatePipe } from './_forms/form-date.pipe';
 import { AppScheduleWaitUpdateComponent } from './app-schedule/app-schedule-wait/app-schedule-wait-update/app-schedule-wait-update.component';
+import { PostAdminViewComponent } from './post/post-admin-view/post-admin-view.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,7 +101,8 @@ import { AppScheduleWaitUpdateComponent } from './app-schedule/app-schedule-wait
     AppScheduleSuccessComponent,
     AppScheduleWaitComponent,
     FormDatePipe,
-    AppScheduleWaitUpdateComponent
+    AppScheduleWaitUpdateComponent,
+    PostAdminViewComponent
    ],
   imports: [
     CommonModule,
@@ -129,7 +131,8 @@ import { AppScheduleWaitUpdateComponent } from './app-schedule/app-schedule-wait
     CreateUserDialogComponent,
     EditUserDialogComponent,
     ResetPasswordDialogComponent,
-    CreateOrEditPostComponent
+    CreateOrEditPostComponent,
+    PostAdminViewComponent
   ],
 })
 export class AppModule {}

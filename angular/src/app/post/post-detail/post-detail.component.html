@@ -63,7 +63,12 @@
                   <div *ngIf="locationName">Your Location: {{ locationName }}</div>
                   <div *ngIf="locationNamePost">Post Location: {{ locationNamePost }}</div>
             </tab>
-
+            <tab class="" [heading]="'Người đăng bài'">
+                <h4>Thông tin người đăng bài</h4>
+                <p>{{postUser.emailAddress}}</p>
+                <br>
+                <p>{{postUser.phoneNumber}}</p>
+            </tab>
         </tabset>
     </div>
 </div>

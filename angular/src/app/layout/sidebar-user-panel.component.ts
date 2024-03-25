@@ -14,6 +14,9 @@ import { AppComponentBase } from '@shared/app-component-base';
 export class SidebarUserPanelComponent extends AppComponentBase
   implements OnInit {
   shownLoginName = '';
+  shownLoginRoleId: number;
+  shownLoginNameRole = '';
+
 
   constructor(injector: Injector) {
     super(injector);
@@ -21,5 +24,13 @@ export class SidebarUserPanelComponent extends AppComponentBase
 
   ngOnInit() {
     this.shownLoginName = this.appSession.getShownLoginName();
+    this.shownLoginRoleId = this.appSession.getShownLoginRoleId();
+    if (this.shownLoginRoleId == 4 ) {
+      this.shownLoginNameRole = 'Chủ trọ';
+    } else if (this.shownLoginRoleId == 5) {
+      this.shownLoginNameRole = 'Người thuê trọ';
+    } else {
+      this.shownLoginNameRole = 'Admin'
+    }
   }
 }

@@ -5,6 +5,7 @@ import { GetPostForViewDto, ManagePostsServiceProxy, ConfirmPostByAdminDto } fro
 import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
 import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-post.component';
+import { PostAdminViewComponent } from './post-admin-view/post-admin-view.component';
 
 @Component({
   selector: 'app-post',
@@ -17,6 +18,7 @@ export class PostComponent extends AppComponentBase {
   // isHost: boolean = false;
 
   @ViewChild('CreateOrEditPost') CreateOrEditPost: CreateOrEditPostComponent;
+  @ViewChild('PostAdminView') PostAdminView: PostAdminViewComponent;
 
   filterText;
   sorting: string = "";
@@ -161,6 +163,10 @@ export class PostComponent extends AppComponentBase {
           })
       }
     })
+  }
+
+  viewAdminPost() {
+    this.PostAdminView.show(this.selectedRow.id);
   }
 }
 

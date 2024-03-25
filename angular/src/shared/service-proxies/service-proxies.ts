@@ -5529,6 +5529,8 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
     getPostForView: GetPostForViewDto;
     confirmPostByAdmins: ConfirmPostByAdminDto;
     photos: PhotoDto[] | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
 
     constructor(data?: IGetPostForEditOutput) {
         if (data) {
@@ -5549,6 +5551,8 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
                 for (let item of _data["photos"])
                     this.photos.push(PhotoDto.fromJS(item));
             }
+            this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
         }
     }
 
@@ -5569,6 +5573,8 @@ export class GetPostForEditOutput implements IGetPostForEditOutput {
             for (let item of this.photos)
                 data["photos"].push(item.toJSON());
         }
+        data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
         return data;
     }
 
@@ -5585,6 +5591,8 @@ export interface IGetPostForEditOutput {
     getPostForView: GetPostForViewDto;
     confirmPostByAdmins: ConfirmPostByAdminDto;
     photos: PhotoDto[] | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
 }
 
 export class GetPostForViewDto implements IGetPostForViewDto {

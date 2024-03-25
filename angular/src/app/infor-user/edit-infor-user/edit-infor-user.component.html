@@ -39,7 +39,7 @@
           </label>
           <div class="col-md-9">
             <input class="form-control" name="phoneNumber" id="phoneNumber" required maxlength="11" pattern="^0\d{9}$"
-              [(ngModel)]="user.phoneNumber" #phoneNumberModel="ngModel" #phoneNumberEl />
+              [(ngModel)]="user.phoneNumber" #phoneNumberModel="ngModel" #phoneNumberEl [disabled] = "true"/>
             <abp-validation-summary [control]="phoneNumberModel" [controlEl]="phoneNumberEl"></abp-validation-summary>
           </div>
         </div>
@@ -50,7 +50,7 @@
           <div class="col-md-9">
             <input type="email" class="form-control" name="emailAddress" id="emailAddress" required maxlength="256"
               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$" [(ngModel)]="user.emailAddress"
-              #emailAddressModel="ngModel" #emailAddressEl />
+              #emailAddressModel="ngModel" #emailAddressEl [disabled] = "true"/>
             <abp-validation-summary [control]="emailAddressModel" [controlEl]="emailAddressEl"></abp-validation-summary>
           </div>
         </div>

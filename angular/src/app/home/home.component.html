@@ -48,6 +48,8 @@
               <p>
                 <!-- Content of the card -->
                 <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
+                <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                 <strong>Trạng thái:</strong>
                   <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
                       {{ post.roomStatus ? 'Còn phòng' : 'Đã hết' }}
@@ -56,9 +58,9 @@
 
               </p>
               <ng-template pTemplate="footer">
-                <p-button label="View" [routerLink]="['./', post.id]"></p-button>
-                <p-button label="Cancel" [disabled]="true" styleClass="p-button-secondary"
-                  [style]="{ 'margin-left': '.5em' }"></p-button>
+                <p-button label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button>
+                <!-- <p-button label="Cancel" [disabled]="true" styleClass="p-button-secondary"
+                  [style]="{ 'margin-left': '.5em' }"></p-button> -->
               </ng-template>
 
             </p-card>

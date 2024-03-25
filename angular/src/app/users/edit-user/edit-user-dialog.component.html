@@ -93,6 +93,7 @@
               [(ngModel)]="user.phoneNumber"
               #phoneNumberModel="ngModel"
               #phoneNumberEl
+              [disabled] = "true"
             />
             <abp-validation-summary
               [control]="phoneNumberModel"
@@ -115,6 +116,7 @@
               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,})+$"
               [(ngModel)]="user.emailAddress"
               #emailAddressModel="ngModel"
+              [disabled] = "true"
               #emailAddressEl
             />
             <abp-validation-summary

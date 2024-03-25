@@ -63,20 +63,20 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
                 'fas fa-users',
                 'Pages.Users'
             ),
-            new MenuItem("Thông tin cá nhân", "/app/infor-user", "fas fa-circle", "Pages.Personal.Information", [
+            new MenuItem("Thông tin cá nhân", "/app/infor-user", "fas fa-user", "Pages.Personal.Information", [
             ]),
-            new MenuItem("Bài đăng", "", "fas fa-circle", "Pages.View.Posts", [
-                new MenuItem("Bài đăng", "/app/post/post-view", "far fa-circle", "Pages.View.Posts" ),
-                new MenuItem("Bài đăng mới nhất", "", "far fa-circle"),
+            new MenuItem("Bài đăng", "", "fas fa-book", "Pages.View.Posts", [
+                new MenuItem("Bài đăng", "/app/post/post-view", "fas fa-circle", "Pages.View.Posts" ),
+                new MenuItem("Bài đăng mới nhất", "", "fas fa-circle"),
             ]),
-            new MenuItem("Quản lý bài đăng", "", "fas fa-circle", "Pages.Posts", [
-                new MenuItem("Bài đăng", "/app/post", "far fa-circle", "Pages.Posts" ),
-                new MenuItem("Bài viết đã đăng", "", "far fa-circle"),
-                new MenuItem("Bài đăng mới nhất", "", "far fa-circle"),
+            new MenuItem("Quản lý bài đăng", "", "fas fa-book-open", "Pages.Posts", [
+                new MenuItem("Bài đăng", "/app/post", "fas fa-circle", "Pages.Posts" ),
+                new MenuItem("Bài viết đã đăng", "", "fas fa-circle"),
+                new MenuItem("Bài đăng mới nhất", "", "fas fa-circle"),
             ]),
-            new MenuItem("Quản lý lịch hẹn", "", "fas fa-circle", "Pages.Manage.Appointment.Schedules", [
-                new MenuItem("Lịch hẹn thành công", "/app/app-schedule/app-schedule-success", "far fa-circle"),
-                new MenuItem("Lịch hẹn chờ xác nhận", "/app/app-schedule/app-schedule-wait", "far fa-circle"),
+            new MenuItem("Quản lý lịch hẹn", "", "fas fa-calendar", "Pages.Manage.Appointment.Schedules", [
+                new MenuItem("Lịch hẹn thành công", "/app/app-schedule/app-schedule-success", "fas fa-circle"),
+                new MenuItem("Lịch hẹn chờ xác nhận", "/app/app-schedule/app-schedule-wait", "fas fa-circle"),
             ]),
         ];
     }
