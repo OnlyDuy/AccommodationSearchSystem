@@ -5,6 +5,7 @@ import { CancelSchedulesDto, ConfirmSchedulesDto, GetAllSchedulesDto, ManageAppo
 import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
 import { AppScheduleWaitUpdateComponent } from './app-schedule-wait-update/app-schedule-wait-update.component';
+import { AppScheduleWaitViewPostComponent } from './app-schedule-wait-view-post/app-schedule-wait-view-post.component';
 
 @Component({
   selector: 'app-app-schedule-wait',
@@ -14,6 +15,8 @@ import { AppScheduleWaitUpdateComponent } from './app-schedule-wait-update/app-s
 })
 export class AppScheduleWaitComponent extends AppComponentBase implements OnInit {
   @ViewChild('AppScheduleWaitUpdate') AppScheduleWaitUpdate: AppScheduleWaitUpdateComponent;
+  @ViewChild('AppScheduleWaitView') AppScheduleWaitView: AppScheduleWaitViewPostComponent;
+
 
   isHost: boolean = false;
 
@@ -131,6 +134,11 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
 
   editSchedule() {
     this.AppScheduleWaitUpdate.show(this.selectedRow.id);
+    console.log(this.selectedRow);
+  }
+
+  viewSchedules() {
+    this.AppScheduleWaitView.show(this.selectedRow.id);
     console.log(this.selectedRow);
   }
 

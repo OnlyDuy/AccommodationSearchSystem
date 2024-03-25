@@ -13,6 +13,10 @@
                                 <i class="fa fa-plus-square"></i>
                                 Xác nhận
                             </button>
+                            <button class="btn bg-gray mr-2" [disabled]="!selectedRow" (click)="viewSchedules()" >
+                                <i class="fas fa-info"></i>
+                                Chi tiết
+                            </button>
                             <button class="btn bg-success mr-2" [disabled]="!selectedRow" (click)="editSchedule()">
                                 <i class="fas fa-pencil-alt"></i>
                                 {{ "Edit" | localize }}
@@ -680,6 +684,10 @@
 
     </tabset>
 </div>
+
+<AppScheduleWaitView #AppScheduleWaitView>
+
+</AppScheduleWaitView>
 
 <AppScheduleWaitUpdate #AppScheduleWaitUpdate>
 

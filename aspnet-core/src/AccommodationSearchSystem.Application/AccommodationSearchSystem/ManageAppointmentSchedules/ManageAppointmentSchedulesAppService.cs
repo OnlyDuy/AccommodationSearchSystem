@@ -15,6 +15,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,17 +26,20 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
     {
         private readonly IRepository<AppointmentSchedule, long> _repositorySchedule;
         private readonly IRepository<User, long> _repositoryUser;
+        private readonly IRepository<PhotoPost, long> _repositoryPhotoPost;
         private readonly IRepository<Post, long> _repositoryPost;
  
         public ManageAppointmentSchedulesAppService(
            IRepository<AppointmentSchedule, long> repositorySchedule,
            IRepository<Post, long> repositoryPost,
+           IRepository<PhotoPost, long> repositoryPhotoPost,
            IRepository<User, long> repositoryUser)
 
         {
             _repositorySchedule = repositorySchedule;
             _repositoryUser = repositoryUser;
             _repositoryPost = repositoryPost;
+            _repositoryPhotoPost = repositoryPhotoPost;
         }
 
         public async Task ConfirmSchedules(ConfirmSchedulesDto input)
@@ -201,17 +205,64 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
 
         public async Task<GetScheduleForEditOutput> GetScheduleForEdit(EntityDto<long> input)
         {
+            var tenantId = AbpSession.TenantId;
             var dataschedule = await _repositorySchedule.FirstOrDefaultAsync(input.Id);
             var datascheduleConfirm = await _repositorySchedule.FirstOrDefaultAsync(input.Id);
             var datascheduleCancel = await _repositorySchedule.FirstOrDefaultAsync(input.Id);
 
+            var datapostView = from s in _repositorySchedule.GetAll()
+           .Where(e => tenantId == e.TenantId && e.Id == input.Id)
+                               orderby s.Id descending
+                               join p in _repositoryPost.GetAll().AsNoTracking() on s.PostId equals p.Id
+                               join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id
+                               where u.TenantId == p.TenantId
+                               select new
+                               {
+                                   Post = p,
+                                   User = u
+                               };
+            var result = await datapostView.FirstOrDefaultAsync();
 
+            if (result == null)
+            {
+                throw new UserFriendlyException("Bài đăng không tồn tại hoặc bạn không có quyền truy cập.");
+            }
+
+            var post = result.Post;
+            var user = result.User;
+            var photoData = await _repositoryPhotoPost.GetAllListAsync(e => e.PostId == post.Id);
             var output = new GetScheduleForEditOutput
             {
                 CreateOrEditSchedulesDtos = ObjectMapper.Map<CreateOrEditSchedulesDto>(dataschedule),
                 ConfirmSchedulesDtos = ObjectMapper.Map<ConfirmSchedulesDto>(datascheduleConfirm),
                 CancelSchedulesDtos = ObjectMapper.Map<CancelSchedulesDto>(datascheduleCancel),
+                Photos = new List<PhotoDto>(),
+                Title = post.Title,
+                ContentPost = post.ContentPost,
+                RoomPrice = post.RoomPrice,
+                Address = post.Address,
+                District = post.District,
+                City = post.City,
+                Ward = post.Ward,
+                Square = post.Square,
+                PriceCategory = post.PriceCategory,
+                Wifi = post.Wifi,
+                Parking = post.Parking,
+                Conditioner = post.Conditioner,
+                RoomStatus = post.RoomStatus,
             };
+
+            // Nếu có thông tin về hình ảnh
+            if (photoData != null)
+            {
+                output.Photos = photoData.Select(photo => new PhotoDto
+                {
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId,
+                    Id = photo.Id
+                }).ToList();
+            }
 
             return output;
         }

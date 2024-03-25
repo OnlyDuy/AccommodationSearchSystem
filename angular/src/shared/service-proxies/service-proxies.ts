@@ -5615,6 +5615,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     conditioner: boolean;
     roomStatus: boolean;
     photos: PhotoDto[] | undefined;
+    createByName: string | undefined;
     emailAddress: string | undefined;
     phoneNumber: string | undefined;
     confirmAdmin: boolean;
@@ -5653,6 +5654,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
                 for (let item of _data["photos"])
                     this.photos.push(PhotoDto.fromJS(item));
             }
+            this.createByName = _data["createByName"];
             this.emailAddress = _data["emailAddress"];
             this.phoneNumber = _data["phoneNumber"];
             this.confirmAdmin = _data["confirmAdmin"];
@@ -5691,6 +5693,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             for (let item of this.photos)
                 data["photos"].push(item.toJSON());
         }
+        data["createByName"] = this.createByName;
         data["emailAddress"] = this.emailAddress;
         data["phoneNumber"] = this.phoneNumber;
         data["confirmAdmin"] = this.confirmAdmin;
@@ -5725,6 +5728,7 @@ export interface IGetPostForViewDto {
     conditioner: boolean;
     roomStatus: boolean;
     photos: PhotoDto[] | undefined;
+    createByName: string | undefined;
     emailAddress: string | undefined;
     phoneNumber: string | undefined;
     confirmAdmin: boolean;
@@ -5854,9 +5858,22 @@ export interface IGetRoleForEditOutput {
 
 export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
     createOrEditSchedulesDtos: CreateOrEditSchedulesDto;
-    getAllSchedulesDtos: GetAllSchedulesDto;
     confirmSchedulesDtos: ConfirmSchedulesDto;
     cancelSchedulesDtos: CancelSchedulesDto;
+    photos: PhotoDto[] | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
+    square: number;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+    roomStatus: boolean;
 
     constructor(data?: IGetScheduleForEditOutput) {
         if (data) {
@@ -5870,9 +5887,26 @@ export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
     init(_data?: any) {
         if (_data) {
             this.createOrEditSchedulesDtos = _data["createOrEditSchedulesDtos"] ? CreateOrEditSchedulesDto.fromJS(_data["createOrEditSchedulesDtos"]) : <any>undefined;
-            this.getAllSchedulesDtos = _data["getAllSchedulesDtos"] ? GetAllSchedulesDto.fromJS(_data["getAllSchedulesDtos"]) : <any>undefined;
             this.confirmSchedulesDtos = _data["confirmSchedulesDtos"] ? ConfirmSchedulesDto.fromJS(_data["confirmSchedulesDtos"]) : <any>undefined;
             this.cancelSchedulesDtos = _data["cancelSchedulesDtos"] ? CancelSchedulesDto.fromJS(_data["cancelSchedulesDtos"]) : <any>undefined;
+            if (Array.isArray(_data["photos"])) {
+                this.photos = [] as any;
+                for (let item of _data["photos"])
+                    this.photos.push(PhotoDto.fromJS(item));
+            }
+            this.title = _data["title"];
+            this.contentPost = _data["contentPost"];
+            this.roomPrice = _data["roomPrice"];
+            this.address = _data["address"];
+            this.district = _data["district"];
+            this.city = _data["city"];
+            this.ward = _data["ward"];
+            this.square = _data["square"];
+            this.priceCategory = _data["priceCategory"];
+            this.wifi = _data["wifi"];
+            this.parking = _data["parking"];
+            this.conditioner = _data["conditioner"];
+            this.roomStatus = _data["roomStatus"];
         }
     }
 
@@ -5886,9 +5920,26 @@ export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["createOrEditSchedulesDtos"] = this.createOrEditSchedulesDtos ? this.createOrEditSchedulesDtos.toJSON() : <any>undefined;
-        data["getAllSchedulesDtos"] = this.getAllSchedulesDtos ? this.getAllSchedulesDtos.toJSON() : <any>undefined;
         data["confirmSchedulesDtos"] = this.confirmSchedulesDtos ? this.confirmSchedulesDtos.toJSON() : <any>undefined;
         data["cancelSchedulesDtos"] = this.cancelSchedulesDtos ? this.cancelSchedulesDtos.toJSON() : <any>undefined;
+        if (Array.isArray(this.photos)) {
+            data["photos"] = [];
+            for (let item of this.photos)
+                data["photos"].push(item.toJSON());
+        }
+        data["title"] = this.title;
+        data["contentPost"] = this.contentPost;
+        data["roomPrice"] = this.roomPrice;
+        data["address"] = this.address;
+        data["district"] = this.district;
+        data["city"] = this.city;
+        data["ward"] = this.ward;
+        data["square"] = this.square;
+        data["priceCategory"] = this.priceCategory;
+        data["wifi"] = this.wifi;
+        data["parking"] = this.parking;
+        data["conditioner"] = this.conditioner;
+        data["roomStatus"] = this.roomStatus;
         return data;
     }
 
@@ -5902,9 +5953,22 @@ export class GetScheduleForEditOutput implements IGetScheduleForEditOutput {
 
 export interface IGetScheduleForEditOutput {
     createOrEditSchedulesDtos: CreateOrEditSchedulesDto;
-    getAllSchedulesDtos: GetAllSchedulesDto;
     confirmSchedulesDtos: ConfirmSchedulesDto;
     cancelSchedulesDtos: CancelSchedulesDto;
+    photos: PhotoDto[] | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
+    square: number;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+    roomStatus: boolean;
 }
 
 export class Int64EntityDto implements IInt64EntityDto {
