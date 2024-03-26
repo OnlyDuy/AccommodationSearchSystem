@@ -1,0 +1,119 @@
+<div *ngIf="isAdmin">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>Quản lý gói đăng bài</h1>
+                </div>
+                <!-- <div class="col-6 text-right">
+                    <button class="btn bg-blue mr-2" (click)="confirmPostAdmin()" [disabled]="!selectedRow">
+                        <i class="fa fa-plus-square"></i>
+                        Xác nhận
+                    </button>
+                    <button class="btn bg-success mr-2" (click)="viewAdminPost()" [disabled]="!selectedRow">
+                        <i class="fas fa-pencil-alt"></i>
+                        Xem chi tiết
+                    </button>
+                    <button class="btn bg-danger" (click)="deletePost()" [disabled]="!selectedRow">
+                        <i class="fas fa-trash-alt"></i>
+                        Hủy bỏ
+                    </button>
+                </div> -->
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+<div *ngIf="!isAdmin">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>Các gói đăng bài</h1>
+                </div>
+                <div class="col-6 text-right">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <section class="container my-4">
+                        <div class="mb-4 p-4 bg-light rounded shadow">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <h2>Gói VIP Pro</h2>
+                                    <p><strong>Giá: 399.000 VNĐ</strong> </p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p><strong>Bao gồm:</strong> </p>
+                                    <ul>
+                                        <li>Có thời hạn đăng bài trong 6 tháng</li>
+                                        <li>Bài được đăng sẽ ở mục Tin nổi bật</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3 d-flex justify-content-center">
+                                <button type="button" class="btn btn-lg bg-primary" (click)="createPackageVIPpro()">
+                                    <i class="fa fa-plus-square"></i>
+                                   Chi tiết </button>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <section class="container my-4">
+                        <div class="mb-4 p-4 bg-light rounded shadow">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <h2>Gói VIP</h2>
+                                    <p><strong>Giá: 199.000 VNĐ</strong> </p>
+                                </div>
+                                <div class="col-md-8">
+                                    <p><strong>Bao gồm:</strong> </p>
+                                    <ul>
+                                        <li>Có thời hạn đăng bài trong 3 tháng</li>
+                                        <li>Bài được đăng sẽ ở mục Tin mới</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3 d-flex justify-content-center">
+                                <button type="button" class="btn btn-lg bg-primary" (click)="createPackageVIP()">
+                                    <i class="fa fa-plus-square"></i>
+                                   Chi tiết </button>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <AppPackagePostsVipPro #AppPackagePostsVipPro>
+
+    </AppPackagePostsVipPro>
+    <AppPackagePostsVip #AppPackagePostsVip>
+
+    </AppPackagePostsVip>
+</div>
+

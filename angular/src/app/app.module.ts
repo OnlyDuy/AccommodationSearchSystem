@@ -57,6 +57,10 @@ import { FormDatePipe } from './_forms/form-date.pipe';
 import { AppScheduleWaitUpdateComponent } from './app-schedule/app-schedule-wait/app-schedule-wait-update/app-schedule-wait-update.component';
 import { PostAdminViewComponent } from './post/post-admin-view/post-admin-view.component';
 import { AppScheduleWaitViewPostComponent } from './app-schedule/app-schedule-wait/app-schedule-wait-view-post/app-schedule-wait-view-post.component';
+import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.component';
+import { AppPackagePostsVipProComponent } from './app-package-posts/app-package-posts-vip-pro/app-package-posts-vip-pro.component';
+import { AppPackagePostsVipComponent } from './app-package-posts/app-package-posts-vip/app-package-posts-vip.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -102,9 +106,16 @@ import { AppScheduleWaitViewPostComponent } from './app-schedule/app-schedule-wa
     AppScheduleSuccessComponent,
     AppScheduleWaitComponent,
     FormDatePipe,
+
+    // schedule
     AppScheduleWaitUpdateComponent,
     PostAdminViewComponent,
-    AppScheduleWaitViewPostComponent
+    AppScheduleWaitViewPostComponent,
+
+    // package
+    AppPackagePostsComponent,
+    AppPackagePostsVipProComponent,
+    AppPackagePostsVipComponent
    ],
   imports: [
     CommonModule,

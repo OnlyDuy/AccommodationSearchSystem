@@ -65,6 +65,8 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
             ),
             new MenuItem("Thông tin cá nhân", "/app/infor-user", "fas fa-user", "Pages.Personal.Information", [
             ]),
+            new MenuItem("Quản lý gói đăng bài", "/app/app-package-posts", "fab fa-shopify", "", [
+            ]),
             new MenuItem("Bài đăng", "", "fas fa-book", "Pages.View.Posts", [
                 new MenuItem("Bài đăng", "/app/post/post-view", "fas fa-circle", "Pages.View.Posts" ),
                 new MenuItem("Bài đăng mới nhất", "", "fas fa-circle"),

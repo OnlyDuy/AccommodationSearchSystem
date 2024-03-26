@@ -2055,6 +2055,278 @@ export class ManagePostsServiceProxy {
 }
 
 @Injectable()
+export class PackagePostsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    cancelPackage(body: CancelPostDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/CancelPackage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCancelPackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCancelPackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCancelPackage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    confirmPackage(body: ConfirmPackageDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/ConfirmPackage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processConfirmPackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processConfirmPackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processConfirmPackage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    createPackage(body: PackagePostDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/CreatePackage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreatePackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreatePackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreatePackage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    statusCreate(): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/StatusCreate";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStatusCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStatusCreate(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processStatusCreate(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    deletePackage(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/DeletePackage?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeletePackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeletePackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeletePackage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+}
+
+@Injectable()
 export class RoleServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -4406,6 +4678,65 @@ export interface IAuthenticateResultModel {
     userId: number;
 }
 
+export class CancelPostDto implements ICancelPostDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    creatorUserId: number;
+    cancel: boolean;
+
+    constructor(data?: ICancelPostDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.hostId = _data["hostId"];
+            this.creatorUserId = _data["creatorUserId"];
+            this.cancel = _data["cancel"];
+        }
+    }
+
+    static fromJS(data: any): CancelPostDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CancelPostDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["hostId"] = this.hostId;
+        data["creatorUserId"] = this.creatorUserId;
+        data["cancel"] = this.cancel;
+        return data;
+    }
+
+    clone(): CancelPostDto {
+        const json = this.toJSON();
+        let result = new CancelPostDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICancelPostDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    creatorUserId: number;
+    cancel: boolean;
+}
+
 export class CancelSchedulesDto implements ICancelSchedulesDto {
     id: number;
     tenantId: number | undefined;
@@ -4600,6 +4931,65 @@ export class ChangeUserLanguageDto implements IChangeUserLanguageDto {
 
 export interface IChangeUserLanguageDto {
     languageName: string;
+}
+
+export class ConfirmPackageDto implements IConfirmPackageDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    creatorUserId: number;
+    confirm: boolean;
+
+    constructor(data?: IConfirmPackageDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.hostId = _data["hostId"];
+            this.creatorUserId = _data["creatorUserId"];
+            this.confirm = _data["confirm"];
+        }
+    }
+
+    static fromJS(data: any): ConfirmPackageDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ConfirmPackageDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["hostId"] = this.hostId;
+        data["creatorUserId"] = this.creatorUserId;
+        data["confirm"] = this.confirm;
+        return data;
+    }
+
+    clone(): ConfirmPackageDto {
+        const json = this.toJSON();
+        let result = new ConfirmPackageDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IConfirmPackageDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    creatorUserId: number;
+    confirm: boolean;
 }
 
 export class ConfirmPostByAdminDto implements IConfirmPostByAdminDto {
@@ -6102,6 +6492,89 @@ export class IsTenantAvailableOutput implements IIsTenantAvailableOutput {
 export interface IIsTenantAvailableOutput {
     state: TenantAvailabilityState;
     tenantId: number | undefined;
+}
+
+export class PackagePostDto implements IPackagePostDto {
+    id: number | undefined;
+    hostId: number;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    packageType: string | undefined;
+    packageDetail: string | undefined;
+    expirationDate: moment.Moment;
+    confirm: boolean;
+    tenantId: number | undefined;
+    cancel: boolean;
+    postId: number;
+
+    constructor(data?: IPackagePostDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.hostId = _data["hostId"];
+            this.hostName = _data["hostName"];
+            this.hostPhoneNumber = _data["hostPhoneNumber"];
+            this.packageType = _data["packageType"];
+            this.packageDetail = _data["packageDetail"];
+            this.expirationDate = _data["expirationDate"] ? moment(_data["expirationDate"].toString()) : <any>undefined;
+            this.confirm = _data["confirm"];
+            this.tenantId = _data["tenantId"];
+            this.cancel = _data["cancel"];
+            this.postId = _data["postId"];
+        }
+    }
+
+    static fromJS(data: any): PackagePostDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PackagePostDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["hostId"] = this.hostId;
+        data["hostName"] = this.hostName;
+        data["hostPhoneNumber"] = this.hostPhoneNumber;
+        data["packageType"] = this.packageType;
+        data["packageDetail"] = this.packageDetail;
+        data["expirationDate"] = this.expirationDate ? this.expirationDate.toISOString() : <any>undefined;
+        data["confirm"] = this.confirm;
+        data["tenantId"] = this.tenantId;
+        data["cancel"] = this.cancel;
+        data["postId"] = this.postId;
+        return data;
+    }
+
+    clone(): PackagePostDto {
+        const json = this.toJSON();
+        let result = new PackagePostDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPackagePostDto {
+    id: number | undefined;
+    hostId: number;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    packageType: string | undefined;
+    packageDetail: string | undefined;
+    expirationDate: moment.Moment;
+    confirm: boolean;
+    tenantId: number | undefined;
+    cancel: boolean;
+    postId: number;
 }
 
 export class PermissionDto implements IPermissionDto {

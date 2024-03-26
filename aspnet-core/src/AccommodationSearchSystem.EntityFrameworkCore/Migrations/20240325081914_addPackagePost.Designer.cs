@@ -4,6 +4,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    partial class AccommodationSearchSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240325081914_addPackagePost")]
+    partial class addPackagePost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1863,9 +1865,6 @@ namespace AccommodationSearchSystem.Migrations
 
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("PackageDetail")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PackageType")
                         .HasColumnType("nvarchar(max)");
