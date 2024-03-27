@@ -60,6 +60,7 @@ import { AppScheduleWaitViewPostComponent } from './app-schedule/app-schedule-wa
 import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.component';
 import { AppPackagePostsVipProComponent } from './app-package-posts/app-package-posts-vip-pro/app-package-posts-vip-pro.component';
 import { AppPackagePostsVipComponent } from './app-package-posts/app-package-posts-vip/app-package-posts-vip.component';
+import { AppPackagePostsEditComponent } from './app-package-posts/app-package-posts-edit/app-package-posts-edit.component';
 
 @NgModule({
   declarations: [
@@ -115,7 +116,8 @@ import { AppPackagePostsVipComponent } from './app-package-posts/app-package-pos
     // package
     AppPackagePostsComponent,
     AppPackagePostsVipProComponent,
-    AppPackagePostsVipComponent
+    AppPackagePostsVipComponent,
+    AppPackagePostsEditComponent
    ],
   imports: [
     CommonModule,

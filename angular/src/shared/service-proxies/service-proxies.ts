@@ -2324,6 +2324,185 @@ export class PackagePostsServiceProxy {
         }
         return _observableOf<void>(null as any);
     }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAll(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPackageViewDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/GetAll?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPackageViewDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPackageViewDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<GetPackageViewDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPackageViewDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPackageViewDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getPackageForEdit(id: number | undefined): Observable<GetPackageForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/GetPackageForEdit?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPackageForEdit(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPackageForEdit(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPackageForEditOutput>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPackageForEditOutput>;
+        }));
+    }
+
+    protected processGetPackageForEdit(response: HttpResponseBase): Observable<GetPackageForEditOutput> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPackageForEditOutput.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPackageForEditOutput>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    editPackage(body: GetPackageViewDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/PackagePosts/EditPackage";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEditPackage(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEditPackage(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processEditPackage(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
 }
 
 @Injectable()
@@ -5912,6 +6091,195 @@ export interface IGetCurrentLoginInformationsOutput {
     user: UserLoginInfoDto;
     tenant: TenantLoginInfoDto;
     userRole: RoleUserLoginDto;
+}
+
+export class GetPackageForEditOutput implements IGetPackageForEditOutput {
+    getPackageViewDtos: GetPackageViewDto;
+    confirmPackageDtos: ConfirmPackageDto;
+    cancelPostDtos: CancelPostDto;
+
+    constructor(data?: IGetPackageForEditOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.getPackageViewDtos = _data["getPackageViewDtos"] ? GetPackageViewDto.fromJS(_data["getPackageViewDtos"]) : <any>undefined;
+            this.confirmPackageDtos = _data["confirmPackageDtos"] ? ConfirmPackageDto.fromJS(_data["confirmPackageDtos"]) : <any>undefined;
+            this.cancelPostDtos = _data["cancelPostDtos"] ? CancelPostDto.fromJS(_data["cancelPostDtos"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetPackageForEditOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPackageForEditOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["getPackageViewDtos"] = this.getPackageViewDtos ? this.getPackageViewDtos.toJSON() : <any>undefined;
+        data["confirmPackageDtos"] = this.confirmPackageDtos ? this.confirmPackageDtos.toJSON() : <any>undefined;
+        data["cancelPostDtos"] = this.cancelPostDtos ? this.cancelPostDtos.toJSON() : <any>undefined;
+        return data;
+    }
+
+    clone(): GetPackageForEditOutput {
+        const json = this.toJSON();
+        let result = new GetPackageForEditOutput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPackageForEditOutput {
+    getPackageViewDtos: GetPackageViewDto;
+    confirmPackageDtos: ConfirmPackageDto;
+    cancelPostDtos: CancelPostDto;
+}
+
+export class GetPackageViewDto implements IGetPackageViewDto {
+    id: number | undefined;
+    hostId: number;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    packageType: string | undefined;
+    packageDetail: string | undefined;
+    expirationDate: moment.Moment;
+    confirm: boolean;
+    tenantId: number | undefined;
+    cancel: boolean;
+    postId: number;
+
+    constructor(data?: IGetPackageViewDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.hostId = _data["hostId"];
+            this.hostName = _data["hostName"];
+            this.hostPhoneNumber = _data["hostPhoneNumber"];
+            this.packageType = _data["packageType"];
+            this.packageDetail = _data["packageDetail"];
+            this.expirationDate = _data["expirationDate"] ? moment(_data["expirationDate"].toString()) : <any>undefined;
+            this.confirm = _data["confirm"];
+            this.tenantId = _data["tenantId"];
+            this.cancel = _data["cancel"];
+            this.postId = _data["postId"];
+        }
+    }
+
+    static fromJS(data: any): GetPackageViewDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPackageViewDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["hostId"] = this.hostId;
+        data["hostName"] = this.hostName;
+        data["hostPhoneNumber"] = this.hostPhoneNumber;
+        data["packageType"] = this.packageType;
+        data["packageDetail"] = this.packageDetail;
+        data["expirationDate"] = this.expirationDate ? this.expirationDate.toISOString() : <any>undefined;
+        data["confirm"] = this.confirm;
+        data["tenantId"] = this.tenantId;
+        data["cancel"] = this.cancel;
+        data["postId"] = this.postId;
+        return data;
+    }
+
+    clone(): GetPackageViewDto {
+        const json = this.toJSON();
+        let result = new GetPackageViewDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPackageViewDto {
+    id: number | undefined;
+    hostId: number;
+    hostName: string | undefined;
+    hostPhoneNumber: string | undefined;
+    packageType: string | undefined;
+    packageDetail: string | undefined;
+    expirationDate: moment.Moment;
+    confirm: boolean;
+    tenantId: number | undefined;
+    cancel: boolean;
+    postId: number;
+}
+
+export class GetPackageViewDtoPagedResultDto implements IGetPackageViewDtoPagedResultDto {
+    items: GetPackageViewDto[] | undefined;
+    totalCount: number;
+
+    constructor(data?: IGetPackageViewDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(GetPackageViewDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): GetPackageViewDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPackageViewDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+
+    clone(): GetPackageViewDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new GetPackageViewDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPackageViewDtoPagedResultDto {
+    items: GetPackageViewDto[] | undefined;
+    totalCount: number;
 }
 
 export class GetPostForEditOutput implements IGetPostForEditOutput {

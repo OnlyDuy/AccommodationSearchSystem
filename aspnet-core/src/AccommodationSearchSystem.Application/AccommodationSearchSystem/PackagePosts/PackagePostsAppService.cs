@@ -1,10 +1,9 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
-using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules;
-using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
 using AccommodationSearchSystem.Authorization.Users;
@@ -38,15 +37,15 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
         {
             var tenantId = AbpSession.TenantId;
             var UserId = AbpSession.UserId;
-            var dataCheck = await _repositoryPackagePost.FirstOrDefaultAsync(e => UserId == e.HostId && e.Cancel == false
-                                    && e.Id == input.Id && tenantId == e.TenantId);
+            var dataCheck = await _repositoryPackagePost.FirstOrDefaultAsync(e => tenantId == e.TenantId && e.Cancel == true
+                                    && e.Id == input.Id);
             if (dataCheck != null)
             {
                 throw new UserFriendlyException(400, "Gói đã được hủy");
             }
             else
             {
-                var package = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Id == input.Id && UserId == e.HostId);
+                var package = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Id == input.Id && tenantId == e.TenantId);
                 if (package != null)
                 {
                     package.Cancel = true;
@@ -60,7 +59,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
         {
             var tenantId = AbpSession.TenantId;
             var UserId = AbpSession.UserId;
-            var dataCheck = await _repositoryPackagePost.FirstOrDefaultAsync(e => UserId == e.HostId && e.Confirm == true
+            var dataCheck = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Confirm == true
                                     && e.Id == input.Id && tenantId == e.TenantId);
             if (dataCheck != null)
             {
@@ -68,7 +67,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
             }
             else
             {
-                var package = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Id == input.Id && UserId == e.HostId);
+                var package = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Id == input.Id && tenantId == e.TenantId);
                 if (package != null)
                 {
                     package.Confirm = true;
@@ -100,7 +99,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
                 package.Confirm = false;
                 package.HostName = user.FullName;
                 package.HostPhoneNumber = user.PhoneNumber;
-                await _repositoryPackagePost.InsertAsync(package);
+                package.ExpirationDate = DateTime.Now.Date;
+            await _repositoryPackagePost.InsertAsync(package);
             //}
 
         }
@@ -109,7 +109,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
         {
             var tenantId = AbpSession.TenantId;
             var hostId = AbpSession.UserId;
-            var packageCount = _repositoryPackagePost.GetAll().Where(e => e.TenantId == tenantId && e.HostId == hostId).Count();
+            var packageCount = _repositoryPackagePost.GetAll().Where(e => e.TenantId == tenantId && e.HostId == hostId && e.Cancel == false).Count();
             if (packageCount >= 1)
             {
                 return true;
@@ -122,18 +122,18 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
 
         public async Task DeletePackage(EntityDto<long> input)
         {
-            var postId = (long)input.Id;
-            var post = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Id == (long)input.Id);
-            post.IsDeleted = true;
+            var packageId = (long)input.Id;
+            var package = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Id == packageId);
+            package.IsDeleted = true;
 
-            await _repositoryPackagePost.DeleteAsync(post.Id);
+            await _repositoryPackagePost.DeleteAsync(package.Id);
         }
 
         public async Task<PagedResultDto<GetPackageViewDto>> GetAll(GetPackageInputDto input)
         {
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPackagePost.GetAll()
-                        .Where(e => (tenantId == e.TenantId && e.Confirm == false && e.Confirm == false))
+                        .Where(e => tenantId == e.TenantId && e.Cancel == false)
                         .Where(e => input.filterText == null || e.PackageType.Equals(input.filterText))
                         orderby p.Id descending
 
@@ -153,6 +153,29 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
             return new PagedResultDto<GetPackageViewDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
+        }
+
+        public async Task<GetPackageForEditOutput> GetPackageForEdit(EntityDto<long> input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var dataPackage = await _repositoryPackagePost.FirstOrDefaultAsync(input.Id);
+            var dataConfirmAdmin = await _repositoryPackagePost.FirstOrDefaultAsync(input.Id);
+            var dataCancelAdmin = await _repositoryPackagePost.FirstOrDefaultAsync(input.Id);
+
+            var output = new GetPackageForEditOutput
+            {
+                GetPackageViewDtos = ObjectMapper.Map<GetPackageViewDto>(dataPackage),
+                ConfirmPackageDtos = ObjectMapper.Map<ConfirmPackageDto>(dataConfirmAdmin),
+                CancelPostDtos = ObjectMapper.Map<CancelPostDto>(dataCancelAdmin),
+            };
+            return output;
+        }
+
+        public async Task EditPackage(GetPackageViewDto input)
+        {
+            var package = await _repositoryPackagePost.FirstOrDefaultAsync((long)input.Id);
+            // Cập nhật các trường dữ liệu của bài đăng từ input
+            ObjectMapper.Map(input, package);
         }
     }
 }

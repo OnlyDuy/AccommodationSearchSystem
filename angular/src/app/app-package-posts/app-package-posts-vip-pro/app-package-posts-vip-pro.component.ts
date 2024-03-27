@@ -56,6 +56,7 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
 
   save(): void {
     this.saving = true;
+    this.packages.tenantId = this.tenantId;
     this.getStatus();
     if (this.statusPackage) {
       this.notify.warn("Bạn đã đăng ký gói đăng bài trước đó");

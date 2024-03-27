@@ -15,8 +15,10 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
     {
         Task<PagedResultDto<GetPackageViewDto>> GetAll(GetPackageInputDto input);
         Task CreatePackage(PackagePostDto input);
+        Task EditPackage(GetPackageViewDto input);
         Task CancelPackage(CancelPostDto input);
         Task ConfirmPackage(ConfirmPackageDto input);
         Task DeletePackage(EntityDto<long> input);
+        Task<GetPackageForEditOutput> GetPackageForEdit(EntityDto<long> input);
     }
 }
