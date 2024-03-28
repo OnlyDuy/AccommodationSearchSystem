@@ -1,11 +1,13 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using Abp.Authorization;
 using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
+using AccommodationSearchSystem.Authorization;
 using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,7 @@ using System.Threading.Tasks;
 
 namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
 {
+    [AbpAuthorize(PermissionNames.Pages_Posting_Packages)]
     public class PackagePostsAppService : ApplicationService, IPackagePostsAppService
     {
         private readonly IRepository<User, long> _repositoryUser;
@@ -134,6 +137,33 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPackagePost.GetAll()
                         .Where(e => tenantId == e.TenantId && e.Cancel == false)
+                        .Where(e => input.filterText == null || e.PackageType.Equals(input.filterText))
+                        orderby p.Id descending
+
+                        select new GetPackageViewDto
+                        {
+                            Id = p.Id,
+                            HostId = p.HostId,
+                            HostName = p.HostName,
+                            HostPhoneNumber = p.HostPhoneNumber,
+                            PackageType = p.PackageType,
+                            PackageDetail = p.PackageDetail,
+                            ExpirationDate = p.ExpirationDate,
+                            Confirm = p.Confirm,
+                            Cancel = p.Cancel
+                        };
+
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredPost = query.PageBy(input);
+            return new PagedResultDto<GetPackageViewDto>(totalCount, await pagedAndFilteredPost.ToListAsync());
+        }
+
+        public async Task<PagedResultDto<GetPackageViewDto>> GetAllForHost(GetPackageInputDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var hostId = AbpSession.UserId;
+            var query = from p in _repositoryPackagePost.GetAll()
+                        .Where(e => tenantId == e.TenantId && e.Cancel == false && e.CreatorUserId == hostId)
                         .Where(e => input.filterText == null || e.PackageType.Equals(input.filterText))
                         orderby p.Id descending
 

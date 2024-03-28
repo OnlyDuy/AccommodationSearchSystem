@@ -119,10 +119,19 @@
                                     {{ rowDataConfirm.priceCategory }}
                                 </td>
 
-                                <td class="text-center" style="min-width:10rem">
+                                <!-- <td class="text-center" style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowDataConfirm.confirmAdmin === true, 'text-red-500 pi-times-circle': rowDataConfirm.confirmAdmin === false } "></i>
+                                </td> -->
+                                <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="rowDataConfirm.confirmAdmin; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Xác nhận</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-yellow-500 font-bold">Đang chờ</span>
+                                    </ng-template>
                                 </td>
+
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
@@ -264,9 +273,15 @@
                                 </td>
 
                                 <td class="text-center" style="min-width:10rem">
-                                    <i class="pi"
-                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowData.roomStatus === true, 'text-red-500 pi-times-circle': rowData.roomStatus === false } "></i>
+                                    <ng-container *ngIf="rowData.roomStatus; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Còn phòng</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-red-500 font-bold">Đã hết</span>
+                                    </ng-template>
                                 </td>
+
+                                <!-- <td class="text-center" style="min-width:10rem"><p-tag [value]="rowData.roomStatus" [severity]="getSeverity(rowData.roomStatus)"></p-tag></td> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">

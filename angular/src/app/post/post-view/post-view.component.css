@@ -1,3 +1,10 @@
+
+.font__title {
+    font-size: 24px;
+    font-style: bold;
+    font-weight: 600;
+}
+
 .room-status.available {
     color: green;
 }
@@ -7,6 +14,23 @@
 }
 
 .post-image {
-    width: 235px; /* Đặt chiều rộng mong muốn */
-    height: 200px; /* Đặt chiều cao tự động để giữ tỷ lệ khung hình */
-  }
+    max-width: 100%; /* Hình ảnh không vượt quá chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ khung hình */
+}
+
+.post-image-v {
+    width: 253px;
+    height: 186px;
+}
+
+.content-posts {
+    font-size: 14px;
+}
+
+.img-content {
+    margin: 5px;
+}
+
+.header-posts {
+    padding-bottom: 4px;
+}

@@ -119,13 +119,30 @@
                                 <td style="min-width:10rem">
                                     {{ rowDataPackage.expirationDate | date: 'dd/MM/YYYY' }}
                                 </td>
-                                <td class="text-center" style="min-width:10rem">
+                                <!-- <td class="text-center" style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowDataPackage.confirm === true, 'text-red-500 pi-times-circle': rowDataPackage.confirm === false } "></i>
+                                </td> -->
+                                <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="rowDataPackage.confirm; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Đã xác nhận</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-yellow-500 font-bold">Chưa xác nhận</span>
+                                    </ng-template>
                                 </td>
+<!--
                                 <td class="text-center" style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowDataPackage.cancel === true, 'text-red-500 pi-times-circle': rowDataPackage.cancel === false } "></i>
+                                </td> -->
+                                <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="!rowDataPackage.cancel; else Confirmed">
+                                        <span class="text-green-500 font-bold">Chưa hủy</span>
+                                    </ng-container>
+                                    <ng-template #Confirmed>
+                                        <span class="text-red-500 font-bold">Đã hủy</span>
+                                    </ng-template>
                                 </td>
                             </tr>
                         </ng-template>
@@ -256,7 +273,7 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body">
-                            <p-table #dt1 [value]="rowDataPackage" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
@@ -308,25 +325,25 @@
                                         </th>
                                     </tr>
                                 </ng-template>
-                                <ng-template pTemplate="body" let-rowDataPackage let-rowIndex="rowIndex">
+                                <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                                     <tr [class.p-odd]="rowIndex % 2 === 0" [class.p-even]="rowIndex % 2 !== 0"
-                                        [pSelectableRow]="rowDataPackage" (click)="selectedPackage = rowDataPackage">
+                                        [pSelectableRow]="rowData" (click)="selectedPackage = rowData">
                                         <td style="min-width:5rem" pFrozenColumn>
-                                            {{ rowDataPackage.id }}
+                                            {{ rowData.id }}
                                         </td>
                                         <td style="min-width:10rem">
-                                            {{ rowDataPackage.packageType }}
+                                            {{ rowData.packageType }}
                                         </td>
                                         <td style="min-width:10rem">
-                                            {{ rowDataPackage.expirationDate | date: 'dd/MM/YYYY' }}
+                                            {{ rowData.expirationDate | date: 'dd/MM/YYYY' }}
                                         </td>
                                         <td class="text-center" style="min-width:10rem">
                                             <i class="pi"
-                                                [ngClass]="{ 'text-green-500 pi-check-circle': rowDataPackage.confirm === true, 'text-red-500 pi-times-circle': rowDataPackage.confirm === false } "></i>
+                                                [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
                                         </td>
                                         <td class="text-center" style="min-width:10rem">
                                             <i class="pi"
-                                                [ngClass]="{ 'text-green-500 pi-check-circle': rowDataPackage.cancel === true, 'text-red-500 pi-times-circle': rowDataPackage.cancel === false } "></i>
+                                                [ngClass]="{ 'text-green-500 pi-check-circle': rowData.cancel === true, 'text-red-500 pi-times-circle': rowData.cancel === false } "></i>
                                         </td>
                                     </tr>
                                 </ng-template>

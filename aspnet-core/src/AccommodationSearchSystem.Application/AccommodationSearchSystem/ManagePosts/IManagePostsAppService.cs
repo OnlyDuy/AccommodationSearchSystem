@@ -19,5 +19,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input);
         Task<GetPostForViewDto> GetForEdit(EntityDto<long> input);
         Task<PagedResultDto<GetPostForViewDto>> GetAllForAdmin(GetPostInputDto input);
+        Task<PagedResultDto<GetPostForViewDto>> GetAllForHostVIP(GetPostInputDto input);
     }
 }

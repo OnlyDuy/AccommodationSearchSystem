@@ -29,6 +29,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         private readonly IRepository<AppointmentSchedule, long> _repositorySchedule;
         private readonly IRepository<PhotoPost, long> _repositoryPhotoPost;
         private readonly IRepository<User, long> _repositoryUser;
+        private readonly IRepository<PackagePost, long> _repositoryPackagePost;
 
         private readonly AccommodationSearchSystemDbContext _dbContext;
         private readonly IPhotoService _photoService;
@@ -38,6 +39,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             IRepository<AppointmentSchedule, long> repositorySchedule,
             IRepository<PhotoPost, long> repositoryPhotoPost,
             IRepository<User, long> repositoryUser,
+            IRepository<PackagePost, long> repositoryPackagePost,
             IPhotoService photoService,
             AccommodationSearchSystemDbContext dbContext)
 
@@ -48,7 +50,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             _repositoryUser = repositoryUser;
             _dbContext = dbContext;
             _repositoryPhotoPost = repositoryPhotoPost;
- 
+            _repositoryPackagePost = repositoryPackagePost;
+
         }
         public async Task CreateOrEdit(CreateOrEditIPostDto input)
         {
@@ -103,13 +106,17 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
-                        orderby p.Id descending
-
+                        //orderby p.Id descending
+                        join pk in _repositoryPackagePost.GetAll().AsNoTracking() on p.CreatorUserId equals pk.CreatorUserId into pkGroup
+                        from pk in pkGroup.DefaultIfEmpty()
+                        where pk == null || (pk.Cancel == false && pk.Confirm == true && pk.PackageType == "Gói VIP")
+                        orderby pk.PackageType == null ? 0 : 1 descending, p.Id descending
                         //join s in _repositorySchedule.GetAll().AsNoTracking() on p.Id equals s.PostId into sGroup
                         //from s in sGroup.DefaultIfEmpty()
                         //where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
 
-                        select new { Post = p, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+                        //select new { Post = p, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+                        select new { Post = p, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
@@ -136,6 +143,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 Conditioner = item.Post.Conditioner,
                 RoomStatus = item.Post.RoomStatus,
                 TenantId = tenantId,
+                PackageType = item.PackagePost != null ? item.PackagePost.PackageType : "Gói thường",
                 Photos = item.Photos.Select(photo => new PhotoDto
                 {
                     Id = photo.Id,
@@ -348,6 +356,60 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             };
 
             return output;
+        }
+
+        public async Task<PagedResultDto<GetPostForViewDto>> GetAllForHostVIP(GetPostInputDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+            var query = from p in _repositoryPost.GetAll()
+            .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
+            .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
+                                || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
+                        orderby p.Id descending
+
+                        join pk in _repositoryPackagePost.GetAll().AsNoTracking() on p.CreatorUserId equals pk.CreatorUserId into pkGroup
+                        from pk in pkGroup.DefaultIfEmpty()
+                        where pk.Cancel == false && pk.Confirm == true && pk.PackageType == "Gói VIP pro"
+
+                        select new { Post = p, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+
+            var totalCount = await query.CountAsync();
+            var pagedAndFilteredPost = query.PageBy(input);
+
+            var result = await pagedAndFilteredPost.ToListAsync();
+
+            var postDtos = result.Select(item => new GetPostForViewDto
+            {
+                Id = item.Post.Id,
+                PostCode = item.Post.PostCode,
+                Title = item.Post.Title,
+                ContentPost = item.Post.ContentPost,
+                Photo = item.Post.Photo,
+                RoomPrice = item.Post.RoomPrice,
+                Address = item.Post.Address,
+                District = item.Post.District,
+                City = item.Post.City,
+                Ward = item.Post.Ward,
+                Area = item.Post.Area,
+                Square = item.Post.Square,
+                PriceCategory = item.Post.PriceCategory,
+                Wifi = item.Post.Wifi,
+                Parking = item.Post.Parking,
+                Conditioner = item.Post.Conditioner,
+                RoomStatus = item.Post.RoomStatus,
+                TenantId = tenantId,
+                PackageType = item.PackagePost != null ? item.PackagePost.PackageType : null,
+                Photos = item.Photos.Select(photo => new PhotoDto
+                {
+                    Id = photo.Id,
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId
+                }).ToList(),
+            }).ToList();
+
+            return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
         }
 
         public async Task<PagedResultDto<GetPostForViewDto>> GetAllForHost(GetPostInputDto input)

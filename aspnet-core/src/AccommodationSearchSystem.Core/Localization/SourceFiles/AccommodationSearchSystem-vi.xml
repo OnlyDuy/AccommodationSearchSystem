@@ -130,6 +130,8 @@
 
 	  <text name="PersonalInformation">Thông tin cá nhân</text>
 	  <text name="ManageAppointmentSchedules">Quản lý lịch hẹn</text>
+	  <text name="PostingPackage">Quản lý gói đăng bài</text>
+	  
 	  <text name="NewPost">Bài đăng mới</text>
   	  <text name="Host">Chủ nhà</text>
 	  <text name="Admin">Quản trị viên</text>

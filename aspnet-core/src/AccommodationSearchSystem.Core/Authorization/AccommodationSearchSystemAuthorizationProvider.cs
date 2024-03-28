@@ -15,6 +15,7 @@ namespace AccommodationSearchSystem.Authorization
             context.CreatePermission(PermissionNames.Pages_View_Posts, L("ViewPosts"));
             context.CreatePermission(PermissionNames.Pages_Personal_Information, L("PersonalInformation"));
             context.CreatePermission(PermissionNames.Pages_Manage_Appointment_Schedules, L("ManageAppointmentSchedules"));
+            context.CreatePermission(PermissionNames.Pages_Posting_Packages, L("PostingPackage"));
             context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
         }
 

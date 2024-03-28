@@ -25,9 +25,11 @@ export class AppPackagePostsComponent extends AppComponentBase implements OnInit
   isAdmin: boolean = false;
   shownLogin: number;
   rowDataPackage: GetPackageViewDto[];
+  rowData: GetPackageViewDto[];
   filterText;
   sorting: string = "";
   paginationParams: PaginationParamsModel;
+  pagination: PaginationParamsModel;
   selectedPackage:any;
   maxResultCount: number = 20;
   packageConfirm: ConfirmPackageDto = new ConfirmPackageDto();
@@ -64,6 +66,16 @@ export class AppPackagePostsComponent extends AppComponentBase implements OnInit
 
   getAll(paginationParams: PaginationParamsModel) {
     return this._packageService.getAll(
+      this.filterText,
+      this.sorting ?? null,
+      paginationParams ? paginationParams.skipCount : 0,
+      paginationParams ? paginationParams.pageSize : 20,
+
+    );
+  }
+
+  getAllForHost(paginationParams: PaginationParamsModel) {
+    return this._packageService.getAllForHost(
       this.filterText,
       this.sorting ?? null,
       paginationParams ? paginationParams.skipCount : 0,
@@ -151,6 +163,15 @@ export class AppPackagePostsComponent extends AppComponentBase implements OnInit
       this.rowDataPackage = data.items;
       this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
       this.paginationParams.totalCount = data.totalCount;
+      this.isLoading = false;
+    });
+    this.rowData = [];
+    this.pagination = { pageNum: 1, pageSize: 20, totalCount: 0 };
+    this.getAllForHost(this.pagination).subscribe(data => {
+      console.log(data.items);
+      this.rowData = data.items;
+      this.pagination.totalPage = ceil(data.totalCount / this.maxResultCount);
+      this.pagination.totalCount = data.totalCount;
       this.isLoading = false;
     });
   }

@@ -16,5 +16,7 @@
         public const string Pages_Personal_Information = "Pages.Personal.Information";
 
         public const string Pages_Manage_Appointment_Schedules = "Pages.Manage.Appointment.Schedules";
+
+        public const string Pages_Posting_Packages = "Pages.Posting.Packages";
     }
 }

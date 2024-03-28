@@ -168,5 +168,14 @@ export class PostComponent extends AppComponentBase {
   viewAdminPost() {
     this.PostAdminView.show(this.selectedRow.id);
   }
+
+  getSeverity(status: boolean) {
+    switch (status) {
+        case true:
+            return 'success';
+        case false:
+            return 'dangger';
+    }
+}
 }
 

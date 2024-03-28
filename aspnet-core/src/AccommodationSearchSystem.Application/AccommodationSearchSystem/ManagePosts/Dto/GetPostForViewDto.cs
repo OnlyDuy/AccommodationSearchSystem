@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Domain.Entities;
+using AccommodationSearchSystem.Entity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,5 +38,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public bool ConfirmAdmin { get; set; }
+        public string PackageType { get; set; }
     }
 }

@@ -14,11 +14,14 @@ export class PostViewComponent extends AppComponentBase {
   filterText;
   sorting: string = "";
   paginationParams: PaginationParamsModel;
+  paginationParamsVip: PaginationParamsModel;
+
   selectedPost: GetPostForViewDto[];
   post: GetPostForViewDto;
   isLoading = false;
   maxResultCount: number = 20;
   data: GetPostForViewDto[];
+  dataVip: GetPostForViewDto[];
   selectedRow: any;
   visible: boolean = true;
 
@@ -27,12 +30,32 @@ export class PostViewComponent extends AppComponentBase {
   }
 
   ngOnInit() {
-    this.paginationParams = { pageNum: 1, pageSize: 8, totalCount: 0 };
+    this.paginationParams = { pageNum: 1, pageSize: 4, totalCount: 0 };
+    this.getAll(this.paginationParams).subscribe((data) => {
+      this.data = data.items;
+      console.log(this.data);
+    });
     this.onPageChange({ page: this.paginationParams.pageNum - 1, rows: this.paginationParams.pageSize });
+    this.paginationParamsVip = { pageNum: 1, pageSize: 3, totalCount: 0 };
+    this.getAllVip(this.paginationParamsVip).subscribe((data) => {
+      this.dataVip = data.items;
+      console.log(this.dataVip);
+    });
+    this.onPageChangeVip({ page: this.paginationParamsVip.pageNum - 1, rows: this.paginationParamsVip.pageSize });
   }
 
   getAll(paginationParams: PaginationParamsModel) {
     return this._postService.getAll(
+      this.filterText,
+      this.sorting ?? null,
+      (paginationParams.pageNum - 1) * paginationParams.pageSize, // Chuyển đổi số trang thành skipCount
+      paginationParams.pageSize
+
+    );
+  }
+
+  getAllVip(paginationParams: PaginationParamsModel) {
+    return this._postService.getAllForHostVIP(
       this.filterText,
       this.sorting ?? null,
       (paginationParams.pageNum - 1) * paginationParams.pageSize, // Chuyển đổi số trang thành skipCount
@@ -50,6 +73,17 @@ export class PostViewComponent extends AppComponentBase {
       this.paginationParams.totalPage = Math.ceil(data.totalCount / this.maxResultCount);
     });
   }
+
+  onPageChangeVip(event: any) {
+    this.paginationParamsVip.pageNum = event.page + 1;
+    this.paginationParamsVip.pageSize = event.rows;
+    this.getAllVip(this.paginationParamsVip).subscribe((data) => {
+      this.dataVip = data.items;
+      this.paginationParamsVip.totalCount = data.totalCount;
+      this.paginationParamsVip.totalPage = Math.ceil(data.totalCount / this.maxResultCount);
+    });
+  }
+
 
   hasMainPhoto(post: GetPostForViewDto): boolean {
     return post.photos && post.photos.some(photo => photo.isMain == true);
