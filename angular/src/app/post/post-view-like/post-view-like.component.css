@@ -1,0 +1,36 @@
+
+.font__title {
+    font-size: 24px;
+    font-style: bold;
+    font-weight: 600;
+}
+
+.room-status.available {
+    color: green;
+}
+
+.room-status.not-available {
+    color: red;
+}
+
+.post-image {
+    max-width: 100%; /* Hình ảnh không vượt quá chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ khung hình */
+}
+
+.post-image-v {
+    width: 253px;
+    height: 186px;
+}
+
+.content-posts {
+    font-size: 14px;
+}
+
+.img-content {
+    margin: 5px;
+}
+
+.header-posts {
+    padding-bottom: 4px;
+}

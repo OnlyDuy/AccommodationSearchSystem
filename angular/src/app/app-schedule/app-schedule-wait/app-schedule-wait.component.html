@@ -21,9 +21,13 @@
                                 <i class="fas fa-pencil-alt"></i>
                                 {{ "Edit" | localize }}
                             </button>
-                            <button class="btn bg-danger" [disabled]="!selectedRow" (click)="cancelSchedule()">
+                            <button class="btn bg-danger mr-2" [disabled]="!selectedRow" (click)="cancelSchedule()">
                                 <i class="fas fa-trash-alt"></i>
                                 Hủy lịch
+                            </button>
+                            <button class="btn btn-info" (click)="updateTable()">
+                                <i class="pi pi-undo"></i>
+                                {{ "Reset" | localize }}
                             </button>
                         </div>
                     </div>
@@ -40,31 +44,7 @@
                                 [selection]="selectedSchedule"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
-                                <ng-template pTemplate="caption">
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button class="btn btn-outline-info" (click)="clear(dt1)">
-                                                    <i class="pi pi-undo"></i>
-                                                    {{ "Reset" | localize }}
-                                                </button>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!-- <div class="form-outline mb-2" data-mdb-input-init>
 
-                                                    <input pInputText class="form-control" type="search"
-                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                        placeholder="Search keyword" />
-
-                                                </div> -->
-                                                <!-- <span class="p-input-icon-left ml-5">
-                                                  <i class="pi pi-search"></i>
-                                                  <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
-                                              </span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th style="min-width:10rem" pFrozenColumn>
@@ -133,7 +113,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -148,31 +128,7 @@
                                 [selection]="selectedSchedule"
                                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
-                                <ng-template pTemplate="caption">
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button class="btn btn-outline-info" (click)="clear(dt1)">
-                                                    <i class="pi pi-undo"></i>
-                                                    {{ "Reset" | localize }}
-                                                </button>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!-- <div class="form-outline mb-2" data-mdb-input-init>
 
-                                                    <input pInputText class="form-control" type="search"
-                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                        placeholder="Search keyword" />
-
-                                                </div> -->
-                                                <!-- <span class="p-input-icon-left ml-5">
-                                                  <i class="pi pi-search"></i>
-                                                  <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
-                                              </span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th style="min-width:10rem" pFrozenColumn>
@@ -233,7 +189,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -355,7 +311,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -455,7 +411,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -577,7 +533,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -677,7 +633,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 

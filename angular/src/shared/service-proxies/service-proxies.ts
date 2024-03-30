@@ -2123,6 +2123,62 @@ export class ManagePostsServiceProxy {
         }
         return _observableOf<void>(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    likePosts(body: Int64EntityDto | undefined): Observable<PostLikeDto> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/LikePosts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLikePosts(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLikePosts(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PostLikeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PostLikeDto>;
+        }));
+    }
+
+    protected processLikePosts(response: HttpResponseBase): Observable<PostLikeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PostLikeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PostLikeDto>(null as any);
+    }
 }
 
 @Injectable()
@@ -4899,6 +4955,242 @@ export class ViewPostServiceProxy {
         }
         return _observableOf<void>(null as any);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    likePosts(body: Int64EntityDto | undefined): Observable<PostLikeDto> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/LikePosts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLikePosts(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLikePosts(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PostLikeDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PostLikeDto>;
+        }));
+    }
+
+    protected processLikePosts(response: HttpResponseBase): Observable<PostLikeDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PostLikeDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PostLikeDto>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    statusRoomLike(id: number | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/StatusRoomLike?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStatusRoomLike(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStatusRoomLike(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processStatusRoomLike(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+
+    /**
+     * @param filterText (optional) 
+     * @param sorting (optional) 
+     * @param skipCount (optional) 
+     * @param maxResultCount (optional) 
+     * @return Success
+     */
+    getAllLike(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForLikeDtoPagedResultDto> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetAllLike?";
+        if (filterText === null)
+            throw new Error("The parameter 'filterText' cannot be null.");
+        else if (filterText !== undefined)
+            url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (sorting === null)
+            throw new Error("The parameter 'sorting' cannot be null.");
+        else if (sorting !== undefined)
+            url_ += "Sorting=" + encodeURIComponent("" + sorting) + "&";
+        if (skipCount === null)
+            throw new Error("The parameter 'skipCount' cannot be null.");
+        else if (skipCount !== undefined)
+            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
+        if (maxResultCount === null)
+            throw new Error("The parameter 'maxResultCount' cannot be null.");
+        else if (maxResultCount !== undefined)
+            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllLike(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllLike(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<GetPostForLikeDtoPagedResultDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<GetPostForLikeDtoPagedResultDto>;
+        }));
+    }
+
+    protected processGetAllLike(response: HttpResponseBase): Observable<GetPostForLikeDtoPagedResultDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetPostForLikeDtoPagedResultDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<GetPostForLikeDtoPagedResultDto>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    deletePostLike(id: number | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/DeletePostLike?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeletePostLike(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeletePostLike(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeletePostLike(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
 }
 
 export class ApplicationInfoDto implements IApplicationInfoDto {
@@ -6566,6 +6858,204 @@ export interface IGetPostForEditOutput {
     phoneNumber: string | undefined;
 }
 
+export class GetPostForLikeDto implements IGetPostForLikeDto {
+    id: number | undefined;
+    likeId: number;
+    hostId: number;
+    postId: number;
+    like: boolean;
+    tenantId: number | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
+    square: number;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+    roomStatus: boolean;
+    photos: PhotoDto[] | undefined;
+    createByName: string | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
+    packageType: string | undefined;
+
+    constructor(data?: IGetPostForLikeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.likeId = _data["likeId"];
+            this.hostId = _data["hostId"];
+            this.postId = _data["postId"];
+            this.like = _data["like"];
+            this.tenantId = _data["tenantId"];
+            this.title = _data["title"];
+            this.contentPost = _data["contentPost"];
+            this.roomPrice = _data["roomPrice"];
+            this.address = _data["address"];
+            this.district = _data["district"];
+            this.city = _data["city"];
+            this.ward = _data["ward"];
+            this.square = _data["square"];
+            this.priceCategory = _data["priceCategory"];
+            this.wifi = _data["wifi"];
+            this.parking = _data["parking"];
+            this.conditioner = _data["conditioner"];
+            this.roomStatus = _data["roomStatus"];
+            if (Array.isArray(_data["photos"])) {
+                this.photos = [] as any;
+                for (let item of _data["photos"])
+                    this.photos.push(PhotoDto.fromJS(item));
+            }
+            this.createByName = _data["createByName"];
+            this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.packageType = _data["packageType"];
+        }
+    }
+
+    static fromJS(data: any): GetPostForLikeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostForLikeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["likeId"] = this.likeId;
+        data["hostId"] = this.hostId;
+        data["postId"] = this.postId;
+        data["like"] = this.like;
+        data["tenantId"] = this.tenantId;
+        data["title"] = this.title;
+        data["contentPost"] = this.contentPost;
+        data["roomPrice"] = this.roomPrice;
+        data["address"] = this.address;
+        data["district"] = this.district;
+        data["city"] = this.city;
+        data["ward"] = this.ward;
+        data["square"] = this.square;
+        data["priceCategory"] = this.priceCategory;
+        data["wifi"] = this.wifi;
+        data["parking"] = this.parking;
+        data["conditioner"] = this.conditioner;
+        data["roomStatus"] = this.roomStatus;
+        if (Array.isArray(this.photos)) {
+            data["photos"] = [];
+            for (let item of this.photos)
+                data["photos"].push(item.toJSON());
+        }
+        data["createByName"] = this.createByName;
+        data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
+        data["packageType"] = this.packageType;
+        return data;
+    }
+
+    clone(): GetPostForLikeDto {
+        const json = this.toJSON();
+        let result = new GetPostForLikeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPostForLikeDto {
+    id: number | undefined;
+    likeId: number;
+    hostId: number;
+    postId: number;
+    like: boolean;
+    tenantId: number | undefined;
+    title: string | undefined;
+    contentPost: string | undefined;
+    roomPrice: number;
+    address: string | undefined;
+    district: string | undefined;
+    city: string | undefined;
+    ward: string | undefined;
+    square: number;
+    priceCategory: string | undefined;
+    wifi: boolean;
+    parking: boolean;
+    conditioner: boolean;
+    roomStatus: boolean;
+    photos: PhotoDto[] | undefined;
+    createByName: string | undefined;
+    emailAddress: string | undefined;
+    phoneNumber: string | undefined;
+    packageType: string | undefined;
+}
+
+export class GetPostForLikeDtoPagedResultDto implements IGetPostForLikeDtoPagedResultDto {
+    items: GetPostForLikeDto[] | undefined;
+    totalCount: number;
+
+    constructor(data?: IGetPostForLikeDtoPagedResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(GetPostForLikeDto.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+        }
+    }
+
+    static fromJS(data: any): GetPostForLikeDtoPagedResultDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetPostForLikeDtoPagedResultDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        return data;
+    }
+
+    clone(): GetPostForLikeDtoPagedResultDto {
+        const json = this.toJSON();
+        let result = new GetPostForLikeDtoPagedResultDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetPostForLikeDtoPagedResultDto {
+    items: GetPostForLikeDto[] | undefined;
+    totalCount: number;
+}
+
 export class GetPostForViewDto implements IGetPostForViewDto {
     id: number | undefined;
     postCode: string | undefined;
@@ -7321,6 +7811,65 @@ export interface IPhotoDto {
     url: string | undefined;
     isMain: boolean;
     postId: number;
+}
+
+export class PostLikeDto implements IPostLikeDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    postId: number;
+    like: boolean;
+
+    constructor(data?: IPostLikeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.tenantId = _data["tenantId"];
+            this.hostId = _data["hostId"];
+            this.postId = _data["postId"];
+            this.like = _data["like"];
+        }
+    }
+
+    static fromJS(data: any): PostLikeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostLikeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["tenantId"] = this.tenantId;
+        data["hostId"] = this.hostId;
+        data["postId"] = this.postId;
+        data["like"] = this.like;
+        return data;
+    }
+
+    clone(): PostLikeDto {
+        const json = this.toJSON();
+        let result = new PostLikeDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPostLikeDto {
+    id: number | undefined;
+    tenantId: number | undefined;
+    hostId: number;
+    postId: number;
+    like: boolean;
 }
 
 export class RegisterInput implements IRegisterInput {

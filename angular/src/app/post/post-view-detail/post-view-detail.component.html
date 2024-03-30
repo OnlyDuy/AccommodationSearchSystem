@@ -22,8 +22,8 @@
             </div>
             <div class="card-footer">
                 <div class="btn-group d-flex">
-                    <button class="btn bg-success mr-2" (click)="favourite()" >
-                        <i class="fas fa-pencil-alt"></i>
+                    <button class="btn bg-pink mr-2" (click)="favourite(post.id)" >
+                        <i class="fas fa-heart"></i>
                         Yêu thích
                     </button>
                     <button class="btn bg-primary" (click)="booking(post.id)" [disabled]="buttonDisabled">

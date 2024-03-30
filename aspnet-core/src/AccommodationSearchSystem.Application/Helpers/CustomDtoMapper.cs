@@ -37,6 +37,11 @@ namespace AccommodationSearchSystem.Helpers
             configuration.CreateMap<PackagePost, PackagePostDto>().ReverseMap();
             configuration.CreateMap<PackagePost, GetPackageViewDto>().ReverseMap();
 
+            configuration.CreateMap<UserLikePost, PostLikeDto>().ReverseMap();
+            configuration.CreateMap<UserLikePost, GetPostForLikeDto>().ReverseMap();
+
+
+
 
             //configuration.CreateMap<UserRole, UserRoleDto>().ReverseMap();
 

@@ -538,5 +538,10 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 await _repositoryPost.UpdateAsync(post);
             }
         }
+
+        public Task<PostLikeDto> LikePosts(EntityDto<long> input)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

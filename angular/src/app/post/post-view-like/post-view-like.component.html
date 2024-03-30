@@ -1,0 +1,61 @@
+<div>
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="font__title">Tin yêu thích</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-2">
+      <div class="container-fluid">
+        <div *ngIf="!dataLike || dataLike.length === 0">
+          <p class="col-md-4 mb-3">Không có dữ liệu nào</p>
+        </div>
+        <div *ngIf="dataLike">
+          <div class="row">
+            <!-- Loop through rowData and display each item as a card -->
+            <div class="col-md-4 mb-3" *ngFor="let post of dataLike">
+              <p-card>
+                <div class="row">
+                  <div class="col-md-5">
+                    <!-- You can customize the header here -->
+                    <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
+
+                  </div>
+                  <div class="col-md-7 content-posts">
+                    <strong>{{ post.title }}</strong>
+                    <p>
+                      <!-- Content of the card -->
+                      <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
+                      <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                      <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
+                      <strong>Trạng thái:</strong>
+                      <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
+                        {{ post.roomStatus ? 'Còn phòng' : 'Đã hết' }}
+                      </span>
+                      <br>
+                    </p>
+                  </div>
+                </div>
+                <ng-template pTemplate="footer">
+                  <div class="d-flex justify-content-between">
+                    <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button>
+                    <button class="btn btn-sm btn-icon justify-content-end" (click)="deletePost(post.likeId)">
+                      <i class="pi pi-times"></i>
+                    </button>
+                  </div>
+                  <!-- <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button> -->
+                </ng-template>
+              </p-card>
+            </div>
+          </div>
+          <div class="card flex justify-content-center">
+            <p-paginator [rows]="3" [totalRecords]="paginationParams.totalCount" [rowsPerPageOptions]="[3, 6, 9]"
+              (onPageChange)="onPageChange($event)"></p-paginator>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

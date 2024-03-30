@@ -8,6 +8,25 @@
             </div>
         </div>
     </section>
+    <section class="">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <!-- <h1>Quản lý lịch hẹn</h1> -->
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn bg-gray mr-2" [disabled]="!selectedRow" (click)="viewSchedules()" >
+                        <i class="fas fa-info"></i>
+                        Chi tiết
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="content px-2">
         <div class="container-fluid">
             <div class="card">
@@ -104,7 +123,7 @@
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="5">No customers found.</td>
+                                <td colspan="5">Không có dữ liệu nào.</td>
                             </tr>
                         </ng-template>
 
@@ -212,7 +231,7 @@
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="5">No customers found.</td>
+                                <td colspan="5">Không có dữ liệu nào.</td>
                             </tr>
                         </ng-template>
 
@@ -224,5 +243,9 @@
         </div>
     </section>
 </div>
+
+<AppScheduleWaitView #AppScheduleWaitView>
+
+</AppScheduleWaitView>
 
 

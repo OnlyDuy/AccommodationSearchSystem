@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services;
 using Abp.Application.Services.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         Task<GetPostForViewDto> GetForEdit(EntityDto<long> input);
         Task<PagedResultDto<GetPostForViewDto>> GetAllForAdmin(GetPostInputDto input);
         Task<PagedResultDto<GetPostForViewDto>> GetAllForHostVIP(GetPostInputDto input);
+
+        // Yêu thích bài đăng
+        Task<PostLikeDto> LikePosts(EntityDto<long> input);
     }
 }

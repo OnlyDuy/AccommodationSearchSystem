@@ -16,6 +16,7 @@ import { PostViewDetailComponent } from './post/post-view-detail/post-view-detai
 import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-schedule-wait.component';
 import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success/app-schedule-success.component';
 import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.component';
+import { PostViewLikeComponent } from './post/post-view-like/post-view-like.component';
 
 @NgModule({
     imports: [
@@ -31,6 +32,9 @@ import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.
                     { path: 'post', component: PostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
                     { path: 'post/post-view', component: PostViewComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
                     { path: 'post/post-view/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' },  canActivate: [AppRouteGuard] },
+                    { path: 'post/post-view-like', component: PostViewLikeComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
+                    { path: 'post/post-view-like/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
+
 
                     { path: 'infor-user', component: InforUserComponent, data: { permission: 'Pages.Personal.Information' },  canActivate: [AppRouteGuard] },
                     // { path: 'edit-user', component: EditUserComponent, data: { permission: 'Pages.Personal.Information' }, canActivate: [AppRouteGuard] },
