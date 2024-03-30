@@ -58,7 +58,12 @@
                 </div>
               </div>
               <ng-template pTemplate="footer">
-                <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button>
+                <div class="d-flex justify-content-between">
+                  <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
+                  <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                    Xem chi tiết </button>
+                  <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Nhắn Zalo</button>
+                </div>
                 <!-- <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button> -->
               </ng-template>
 
@@ -127,7 +132,12 @@
                     <br>
                   </p>
                 </div>
-                <a class="btn bg-primary" [routerLink]="['./', post.id]">xem chi tiết</a>
+                <div class="d-flex justify-content-between">
+                  <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
+                  <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                    Xem chi tiết </button>
+                  <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Nhắn Zalo</button>
+                </div>
               </div>
             </div>
           </div>

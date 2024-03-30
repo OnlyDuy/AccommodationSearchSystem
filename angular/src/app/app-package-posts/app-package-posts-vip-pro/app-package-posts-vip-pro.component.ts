@@ -20,6 +20,7 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
   tenantId: number;
   packages: PackagePostDto = new PackagePostDto();
   statusPackage: boolean = false;
+  showQR: boolean = false;
 
   constructor(
     injector: Injector,
@@ -54,25 +55,31 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
     this.modal.show();
   }
 
+
+
   save(): void {
     this.saving = true;
     this.packages.tenantId = this.tenantId;
     this.getStatus();
-    if (this.statusPackage) {
-      this.notify.warn("Bạn đã đăng ký gói đăng bài trước đó");
-      this.close();
-    } else {
-      this._packageService
-        .createPackage(this.packages)
-        .subscribe(() => {
-          this.notify.info(this.l("SavedSuccessfully"));
+    this.message.confirm('', 'Bạn muốn đăng ký gói đăng bài này ?', (isConfirme) => {
+      if (isConfirme) {
+        if (this.statusPackage) {
+          this.notify.warn("Bạn đã đăng ký gói đăng bài trước đó");
           this.close();
+        } else {
+          this._packageService
+            .createPackage(this.packages)
+            .subscribe(() => {
+              this.notify.info(this.l("SavedSuccessfully"));
+              this.close();
 
-          this.modalSave.emit();
-          this.packages = null;
+              this.modalSave.emit();
+              this.packages = null;
 
-        });
-    }
+            });
+        }
+      }
+    })
   }
 
   close(): void {
@@ -81,5 +88,8 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
     this.modal.hide();
   }
 
+  showQRCode(): void {
+    this.showQR = !this.showQR; // Khi nhấn nút, đảo ngược trạng thái hiển thị QR code
+  }
 
 }

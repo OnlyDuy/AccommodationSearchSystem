@@ -17,6 +17,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static AccommodationSearchSystem.Authorization.Roles.StaticRoleNames;
 
@@ -106,7 +107,11 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
-                        //orderby p.Id descending
+                            //orderby p.Id descending
+                        join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id into uGroup
+                        from u in uGroup.DefaultIfEmpty()
+                        where u.TenantId == p.TenantId
+
                         join pk in _repositoryPackagePost.GetAll().AsNoTracking() on p.CreatorUserId equals pk.CreatorUserId into pkGroup
                         from pk in pkGroup.DefaultIfEmpty()
                         where pk == null || (pk.Cancel == false && pk.Confirm == true && pk.PackageType == "Gói VIP")
@@ -116,7 +121,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                         //where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
 
                         //select new { Post = p, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
-                        select new { Post = p, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+                        select new { Post = p, User = u, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
@@ -144,6 +149,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 RoomStatus = item.Post.RoomStatus,
                 TenantId = tenantId,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : "Gói thường",
+                EmailAddress = item.User.EmailAddress,
+                PhoneNumber = item.User.PhoneNumber,
                 Photos = item.Photos.Select(photo => new PhotoDto
                 {
                     Id = photo.Id,
@@ -361,18 +368,21 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         public async Task<PagedResultDto<GetPostForViewDto>> GetAllForHostVIP(GetPostInputDto input)
         {
             var tenantId = AbpSession.TenantId;
-            var UserId = AbpSession.UserId;
             var query = from p in _repositoryPost.GetAll()
             .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
 
+                        join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id into uGroup
+                        from u in uGroup.DefaultIfEmpty()
+                        where u.TenantId == p.TenantId
+
                         join pk in _repositoryPackagePost.GetAll().AsNoTracking() on p.CreatorUserId equals pk.CreatorUserId into pkGroup
                         from pk in pkGroup.DefaultIfEmpty()
                         where pk.Cancel == false && pk.Confirm == true && pk.PackageType == "Gói VIP pro"
 
-                        select new { Post = p, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+                        select new { Post = p, User = u, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
@@ -399,6 +409,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 Conditioner = item.Post.Conditioner,
                 RoomStatus = item.Post.RoomStatus,
                 TenantId = tenantId,
+                EmailAddress = item.User.EmailAddress,
+                PhoneNumber = item.User.PhoneNumber,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : null,
                 Photos = item.Photos.Select(photo => new PhotoDto
                 {

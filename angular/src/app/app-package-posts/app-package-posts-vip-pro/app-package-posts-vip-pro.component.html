@@ -38,6 +38,12 @@
                         <li>From: Admin Timtro24h</li>
                         <li>Số ngân hàng: MBbank 388999270602</li>
                         <li>Nội dung chuyển khoản: XNGVIPPRO(số điện thoại)</li>
+                        <li>
+                          <button class="btn btn-link" type="button" (click)="showQRCode()">Hiển thị QR Code</button>
+                        </li>
+                        <li class="d-flex justify-content-center" >
+                          <img *ngIf="showQR" src="assets/img/QRcode.png" alt="QR Code">
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -46,7 +52,7 @@
             </tabset>
           </div>
           <div class="modal-footer">
-            <abp-modal-footer [cancelDisabled]="saving"
+            <abp-modal-footer
             (onCancelClick)="modal.hide()"></abp-modal-footer>
           </div>
         </form>
