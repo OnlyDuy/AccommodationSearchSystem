@@ -10,23 +10,23 @@
         </div>
         <div class="col-9">
           <div class="row">
-             <!-- Lọc theo loại phòng-->
-             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataPriceCategory">
+            <!-- Lọc theo loại phòng-->
+            <div class="col-md-2">
+              <select class="form-control custom-select" [(ngModel)]="dataPriceCategory">
                 <option value="all">Tất cả</option>
                 <option *ngFor="let priceCategory of priceCategoris" [value]="priceCategory">{{ priceCategory }}</option>
               </select>
             </div>
-             <!-- Lọc theo địa chỉ-->
+            <!-- Lọc theo địa chỉ-->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataDistrict">
+              <select class="form-control custom-select" [(ngModel)]="dataDistrict">
                 <option value="all">Tất cả</option>
                 <option *ngFor="let district of districts" [value]="district">{{ district }}</option>
               </select>
             </div>
-             <!-- Lọc theo giá-->
+            <!-- Lọc theo giá-->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataRoomPrice">
+              <select class="form-control custom-select" [(ngModel)]="dataRoomPrice">
                 <option value="all">Tất cả</option>
                 <option value="1">Dưới 1 triệu đồng</option>
                 <option value="2">Từ 1 đến 2 triệu đồng</option>
@@ -37,7 +37,7 @@
             </div>
             <!-- Lọc theo diện tích -->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataSquare">
+              <select class="form-control custom-select" [(ngModel)]="dataSquare">
                 <option value="all">Tất cả</option>
                 <option value="1">Dưới 20m2</option>
                 <option value="2">Từ 20m2 đến 30m2</option>
@@ -47,7 +47,7 @@
             </div>
             <!-- Search button -->
             <div class="col-md-2">
-              <button class="btn btn-outline-secondary" (click)="search()">Tìm kiếm</button>
+              <button class="btn btn-outline-secondary btn-search" (click)="search()">Tìm kiếm</button>
             </div>
           </div>
         </div>
@@ -72,19 +72,19 @@
               <div class="col-md-4 mb-3" *ngFor="let post of dataVip">
                 <p-card>
                   <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-5 cursor-pointer"  [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
-                      <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
+                      <img  class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image" *ngIf="!hasMainPhoto(post)"
                       src="data:image/jpeg;base64,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"
                       alt="Default Photo">
                     </div>
                     <div class="col-md-7 content-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong>  <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -96,12 +96,14 @@
                   </div>
                   <ng-template pTemplate="footer">
                     <div class="d-flex justify-content-between">
-                      <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ Zalo</button>
                     </div>
-                    <!-- <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button> -->
                   </ng-template>
 
                 </p-card>
@@ -133,9 +135,9 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="header-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                     </div>
-                    <div class="mb-3 justify-content-center">
+                    <div class="mb-3 justify-content-center cursor-pointer" [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image-v" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image-v" *ngIf="!hasMainPhoto(post)"
@@ -145,8 +147,8 @@
                     <div class="content-posts">
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong> <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -157,8 +159,12 @@
                     </div>
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                        <div class="post-author">
+                          <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                          <span class="author-name">{{post.createByName}}</span>
+                        </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ Zalo</button>
                     </div>
                   </div>
@@ -192,7 +198,7 @@
               <div class="col-md-4 mb-3" *ngFor="let post of filteredDataVip">
                 <p-card>
                   <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-5 cursor-pointer"  [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image" *ngIf="!hasMainPhoto(post)"
@@ -200,11 +206,11 @@
                       alt="Default Photo">
                     </div>
                     <div class="col-md-7 content-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong> <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -217,8 +223,12 @@
                   <ng-template pTemplate="footer">
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ Zalo</button>
                     </div>
                     <!-- <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button> -->
@@ -253,9 +263,9 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="header-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                     </div>
-                    <div class="mb-3 justify-content-center">
+                    <div class="mb-3 justify-content-center cursor-pointer" [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image-v" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image-v" *ngIf="!hasMainPhoto(post)"
@@ -265,8 +275,8 @@
                     <div class="content-posts">
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong> <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -277,8 +287,12 @@
                     </div>
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ Zalo</button>
                     </div>
                   </div>

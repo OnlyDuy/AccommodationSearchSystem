@@ -71,9 +71,28 @@
             </tab>
             <tab class="" [heading]="'Người đăng bài'">
                 <h4>Thông tin người đăng bài</h4>
-                <p>{{post.emailAddress}}</p>
-                <br>
-                <p>{{post.phoneNumber}}</p>
+                <div class="container justify-content-center">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table class="table table-striped">
+                          <tbody>
+                            <tr>
+                              <td>Liên hệ:</td>
+                              <td>{{post.createByName}}</td>
+                            </tr>
+                            <tr>
+                              <td>Điện thoại:</td>
+                              <td>{{post.phoneNumber}}</td>
+                            </tr>
+                            <tr>
+                              <td>Email:</td>
+                              <td>{{post.emailAddress}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
             </tab>
         </tabset>
     </div>

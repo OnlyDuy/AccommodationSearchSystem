@@ -37,7 +37,13 @@
                 <p>{{post.contentPost}}</p>
             </tab>
             <tab class="" [heading]="'Thông tin hình ảnh'">
-                <ngx-gallery [options]="this.galleryOptions" [images]="this.galleryImages" class="ngx-gallery"></ngx-gallery>
+                <div class="container d-flex justify-content-center">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <ngx-gallery [options]="this.galleryOptions" [images]="this.galleryImages" class="ngx-gallery"></ngx-gallery>
+                      </div>
+                    </div>
+                </div>
             </tab>
             <tab class="" [heading]="'Vị trí trên bản đồ'">
                 <div class="map-container">
@@ -65,9 +71,28 @@
             </tab>
             <tab class="" [heading]="'Người đăng bài'">
                 <h4>Thông tin người đăng bài</h4>
-                <p>{{postUser.emailAddress}}</p>
-                <br>
-                <p>{{postUser.phoneNumber}}</p>
+                <div class="container justify-content-center">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <table class="table table-striped">
+                          <tbody>
+                            <tr>
+                              <td>Liên hệ:</td>
+                              <td>{{postUser.createByName}}</td>
+                            </tr>
+                            <tr>
+                              <td>Điện thoại:</td>
+                              <td>{{postUser.phoneNumber}}</td>
+                            </tr>
+                            <tr>
+                              <td>Email:</td>
+                              <td>{{postUser.emailAddress}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                </div>
             </tab>
         </tabset>
     </div>

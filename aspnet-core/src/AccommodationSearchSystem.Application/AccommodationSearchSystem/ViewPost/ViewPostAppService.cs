@@ -120,6 +120,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 RoomStatus = post.RoomStatus,
                 TenantId = tenantId,
                 EmailAddress = user.EmailAddress,
+                CreateByName = user.FullName,
                 PhoneNumber = user.PhoneNumber,
                 Photos = photoData.Select(photo => new PhotoDto
                 {
@@ -182,6 +183,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 RoomStatus = item.Post.RoomStatus,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : "Gói thường",
                 TenantId = tenantId,
+                CreateByName = item.User.FullName,
                 EmailAddress = item.User.EmailAddress,
                 PhoneNumber = item.User.PhoneNumber,
                 Photos = item.Photos.Select(photo => new PhotoDto
@@ -241,6 +243,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 Conditioner = item.Post.Conditioner,
                 RoomStatus = item.Post.RoomStatus,
                 TenantId = tenantId,
+                CreateByName = item.User.FullName,
                 EmailAddress = item.User.EmailAddress,
                 PhoneNumber = item.User.PhoneNumber,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : null,

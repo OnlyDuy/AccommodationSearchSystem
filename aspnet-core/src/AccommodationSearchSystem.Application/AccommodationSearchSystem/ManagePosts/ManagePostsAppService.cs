@@ -149,6 +149,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 RoomStatus = item.Post.RoomStatus,
                 TenantId = tenantId,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : "Gói thường",
+                CreateByName = item.User.FullName,
                 EmailAddress = item.User.EmailAddress,
                 PhoneNumber = item.User.PhoneNumber,
                 Photos = item.Photos.Select(photo => new PhotoDto
@@ -201,6 +202,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 ConfirmPostByAdmins = ObjectMapper.Map<ConfirmPostByAdminDto>(dataConfirmAdmin),
                 EmailAddress = user.EmailAddress,
                 PhoneNumber = user.PhoneNumber,
+                CreateByName = user.FullName,
                 // Khởi tạo danh sách hình ảnh
                 Photos = new List<PhotoDto>()
             };
@@ -409,6 +411,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 Conditioner = item.Post.Conditioner,
                 RoomStatus = item.Post.RoomStatus,
                 TenantId = tenantId,
+                CreateByName = item.User.FullName,
                 EmailAddress = item.User.EmailAddress,
                 PhoneNumber = item.User.PhoneNumber,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : null,
@@ -481,7 +484,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         {
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
-            .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == false)
+            .Where(e => tenantId == e.TenantId)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
@@ -520,6 +523,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 CreateByName = item.User.FullName,
                 PhoneNumber = item.User.PhoneNumber,
                 EmailAddress = item.User.EmailAddress,
+                ConfirmAdmin = item.Post.ConfirmAdmin,
                 Photos = item.Photos.Select(photo => new PhotoDto
                 {
                     Id = photo.Id,

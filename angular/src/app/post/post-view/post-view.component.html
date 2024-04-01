@@ -12,22 +12,21 @@
           <div class="row">
             <!-- Lọc theo loại phòng-->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataPriceCategory">
+              <select class="form-control custom-select" [(ngModel)]="dataPriceCategory">
                 <option value="all">Tất cả</option>
-                <option *ngFor="let priceCategory of priceCategoris" [value]="priceCategory">{{ priceCategory }}
-                </option>
+                <option *ngFor="let priceCategory of priceCategoris" [value]="priceCategory">{{ priceCategory }}</option>
               </select>
             </div>
             <!-- Lọc theo địa chỉ-->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataDistrict">
+              <select class="form-control custom-select" [(ngModel)]="dataDistrict">
                 <option value="all">Tất cả</option>
                 <option *ngFor="let district of districts" [value]="district">{{ district }}</option>
               </select>
             </div>
             <!-- Lọc theo giá-->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataRoomPrice">
+              <select class="form-control custom-select" [(ngModel)]="dataRoomPrice">
                 <option value="all">Tất cả</option>
                 <option value="1">Dưới 1 triệu đồng</option>
                 <option value="2">Từ 1 đến 2 triệu đồng</option>
@@ -38,7 +37,7 @@
             </div>
             <!-- Lọc theo diện tích -->
             <div class="col-md-2">
-              <select class="form-control" [(ngModel)]="dataSquare">
+              <select class="form-control custom-select" [(ngModel)]="dataSquare">
                 <option value="all">Tất cả</option>
                 <option value="1">Dưới 20m2</option>
                 <option value="2">Từ 20m2 đến 30m2</option>
@@ -48,10 +47,11 @@
             </div>
             <!-- Search button -->
             <div class="col-md-2">
-              <button class="btn btn-outline-secondary" (click)="search()">Tìm kiếm</button>
+              <button class="btn btn-outline-secondary btn-search" (click)="search()">Tìm kiếm</button>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -74,7 +74,7 @@
               <div class="col-md-4 mb-3" *ngFor="let post of dataVip">
                 <p-card>
                   <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-5 cursor-pointer"  [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image" *ngIf="!hasMainPhoto(post)"
@@ -82,11 +82,11 @@
                         alt="Default Photo">
                     </div>
                     <div class="col-md-7 content-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong>  <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -99,8 +99,12 @@
                   <ng-template pTemplate="footer">
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ
                         Zalo</button>
                     </div>
@@ -135,9 +139,9 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="header-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                     </div>
-                    <div class="mb-3 justify-content-center">
+                    <div class="mb-3 justify-content-center cursor-pointer" [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image-v" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image-v" *ngIf="!hasMainPhoto(post)"
@@ -147,8 +151,8 @@
                     <div class="content-posts">
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong>  <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -159,8 +163,12 @@
                     </div>
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ
                         Zalo</button>
                     </div>
@@ -195,7 +203,7 @@
               <div class="col-md-4 mb-3" *ngFor="let post of filteredDataVip">
                 <p-card>
                   <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-5 cursor-pointer"  [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image" *ngIf="!hasMainPhoto(post)"
@@ -203,7 +211,7 @@
                         alt="Default Photo">
                     </div>
                     <div class="col-md-7 content-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                       <p>
                         <!-- Content of the card -->
                         <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
@@ -220,8 +228,12 @@
                   <ng-template pTemplate="footer">
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ
                         Zalo</button>
                     </div>
@@ -256,9 +268,9 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="header-posts">
-                      <strong>{{ post.title }}</strong>
+                      <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                     </div>
-                    <div class="mb-3 justify-content-center">
+                    <div class="mb-3 justify-content-center cursor-pointer" [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image-v" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image-v" *ngIf="!hasMainPhoto(post)"
@@ -268,8 +280,8 @@
                     <div class="content-posts">
                       <p>
                         <!-- Content of the card -->
-                        <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                        <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                        <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong>  <span style="float: right;">{{post.square}} m2</span><br>
+                        <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                         <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                         <strong>Trạng thái:</strong>
                         <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -280,8 +292,12 @@
                     </div>
                     <div class="d-flex justify-content-between">
                       <!-- <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button> -->
-                      <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
-                        Xem chi tiết </button>
+                      <!-- <button type="button" class="btn btn-sm bg-primary" [routerLink]="['./', post.id]">
+                        Xem chi tiết </button> -->
+                      <div class="post-author">
+                        <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                        <span class="author-name">{{post.createByName}}</span>
+                      </div>
                       <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ
                         Zalo</button>
                     </div>

@@ -80,7 +80,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
 
     this.galleryOptions = [
       {
-        width: "500px",
+        width: "600px",
         height: "500px",
         imagePercent: 100,
         thumbnailsColumns: 4,
