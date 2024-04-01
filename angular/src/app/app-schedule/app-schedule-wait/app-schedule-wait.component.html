@@ -37,12 +37,12 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body" *ngIf="isHost">
-                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
 
                                 <ng-template pTemplate="header">
@@ -121,12 +121,12 @@
 
                         </div>
                         <div class="card-body" *ngIf="!isHost">
-                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
 
                                 <ng-template pTemplate="header">
@@ -219,12 +219,12 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body" *ngIf="isHost">
-                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -319,12 +319,12 @@
 
                         </div>
                         <div class="card-body" *ngIf="!isHost">
-                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -441,12 +441,12 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body" *ngIf="isHost">
-                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -541,12 +541,12 @@
 
                         </div>
                         <div class="card-body" *ngIf="!isHost">
-                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>

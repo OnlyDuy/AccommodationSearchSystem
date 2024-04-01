@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { PaginationParamsModel } from '@shared/commom/models/base.model';
 import { GetPostForViewDto, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
+import { ceil } from 'lodash-es';
 
 @Component({
   selector: 'app-post-view',
@@ -25,23 +26,56 @@ export class PostViewComponent extends AppComponentBase implements OnInit {
   selectedRow: any;
   visible: boolean = true;
 
+  filteredData: GetPostForViewDto[] = [];
+  filteredDataVip: GetPostForViewDto[] = [];
+
+  dataRoomPrice: string = 'all';
+  dataPriceCategory: string = 'all';
+  dataDistrict: string = 'all';
+  dataSquare: string = 'all';
+
+
+  // Địa chỉ có thể là một mảng chứa danh sách các quận/huyện
+  districts: string[] = [
+    "Ba Đình", "Bắc Từ Liêm", "Cầu Giấy", "Đống Đa", "Hà Đông",
+    "Hai Bà Trưng", "Hoàn Kiếm", "Hoàng Mai", "Long Biên", "Nam Từ Liêm", "Bắc từ Liêm", "Thanh Xuân" ];
+  priceCategoris: string[] = [
+      "Chung cư mini", "Phòng đơn", "Từ 2 người" ];
+
   constructor(injector: Injector, public _postService: ViewPostServiceProxy) {
     super(injector);
   }
 
   ngOnInit() {
-    this.paginationParams = { pageNum: 1, pageSize: 4, totalCount: 0 };
-    this.getAll(this.paginationParams).subscribe((data) => {
-      this.data = data.items;
-      console.log(this.data);
-    });
+    this.updateTable();
     this.onPageChange({ page: this.paginationParams.pageNum - 1, rows: this.paginationParams.pageSize });
-    this.paginationParamsVip = { pageNum: 1, pageSize: 3, totalCount: 0 };
-    this.getAllVip(this.paginationParamsVip).subscribe((data) => {
-      this.dataVip = data.items;
-      console.log(this.dataVip);
-    });
     this.onPageChangeVip({ page: this.paginationParamsVip.pageNum - 1, rows: this.paginationParamsVip.pageSize });
+  }
+
+  updateTable() {
+    this.isLoading = true;
+    this.dataDistrict = 'all';
+    this.dataRoomPrice = 'all';
+    this.dataSquare = 'all';
+
+    this.data = [];
+    this.paginationParams = { pageNum: 1, pageSize: 4, totalCount: 0 };
+    this.getAll(this.paginationParams).subscribe(data => {
+      console.log(data.items);
+      this.data = data.items;
+      this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
+      this.paginationParams.totalCount = data.totalCount;
+      this.isLoading = false;
+    });
+    this.dataVip = [];
+    this.paginationParamsVip = { pageNum: 1, pageSize: 3, totalCount: 0 };
+    this.getAllVip(this.paginationParamsVip).subscribe(data => {
+      console.log(data.items);
+      this.dataVip = data.items;
+      this.paginationParamsVip.totalPage = ceil(data.totalCount / this.maxResultCount);
+      this.paginationParamsVip.totalCount = data.totalCount;
+      this.isLoading = false;
+    });
   }
 
   getAll(paginationParams: PaginationParamsModel) {
@@ -69,6 +103,7 @@ export class PostViewComponent extends AppComponentBase implements OnInit {
     this.paginationParams.pageSize = event.rows;
     this.getAll(this.paginationParams).subscribe((data) => {
       this.data = data.items;
+      this.filterData();
       this.paginationParams.totalCount = data.totalCount;
       this.paginationParams.totalPage = Math.ceil(data.totalCount / this.maxResultCount);
     });
@@ -79,9 +114,81 @@ export class PostViewComponent extends AppComponentBase implements OnInit {
     this.paginationParamsVip.pageSize = event.rows;
     this.getAllVip(this.paginationParamsVip).subscribe((data) => {
       this.dataVip = data.items;
+      this.filterDataVip();
       this.paginationParamsVip.totalCount = data.totalCount;
       this.paginationParamsVip.totalPage = Math.ceil(data.totalCount / this.maxResultCount);
     });
+  }
+
+   // Xử lý tìm kiếm
+   search(): void {
+    if (this.dataRoomPrice === 'all' && this.dataDistrict === 'all' && this.dataSquare === 'all' && this.dataPriceCategory === 'all') {
+      // Nếu cả hai trường đều là 'all', sử dụng dữ liệu gốc
+      this.data = [];
+      this.dataVip = [];
+      this.updateTable();
+    } else {
+      // Nếu một trong hai trường không phải 'all', áp dụng bộ lọc
+      this.filterDataVip();
+      this.filterData();
+    }
+  }
+
+
+  filterDataVip(): void {
+    this.filteredDataVip = this.dataVip.filter(post => {
+      const pCMatch = this.dataPriceCategory === 'all' || post.priceCategory.toLowerCase().includes(this.dataPriceCategory.toLowerCase());
+      const addressMatch = this.dataDistrict === 'all' || post.district.toLowerCase().includes(this.dataDistrict.toLowerCase());
+
+      const priceCategory = this.getPriceCategory(post.roomPrice);
+      const priceMatch = this.dataRoomPrice === 'all' || priceCategory === parseInt(this.dataRoomPrice);
+
+      const squareCategory = this.getSquareCategory(post.square);
+      const squareMatch = this.dataSquare === 'all' || squareCategory === parseInt(this.dataSquare);
+
+      return pCMatch && addressMatch && priceMatch && squareMatch;
+    });
+  }
+
+  filterData(): void {
+    this.filteredData = this.data.filter(post => {
+      const pCMatch = this.dataPriceCategory === 'all' || post.priceCategory.toLowerCase().includes(this.dataPriceCategory.toLowerCase());
+      const addressMatch = this.dataDistrict === 'all' || post.district.toLowerCase().includes(this.dataDistrict.toLowerCase());
+
+      const priceCategory = this.getPriceCategory(post.roomPrice);
+      const priceMatch = this.dataRoomPrice === 'all' || priceCategory === parseInt(this.dataRoomPrice);
+
+      const squareCategory = this.getSquareCategory(post.square);
+      const squareMatch = this.dataSquare === 'all' || squareCategory === parseInt(this.dataSquare);
+
+      return pCMatch && addressMatch && priceMatch && squareMatch;
+    });
+  }
+
+  getPriceCategory(price: number): number {
+    if (price < 1) {
+      return 1;
+    } else if (price >= 1 && price < 2) {
+      return 2;
+    } else if (price >= 2 && price < 3) {
+      return 3;
+    } else if (price >= 3 && price < 4) {
+      return 4;
+    } else {
+      return 5;
+    }
+  }
+
+  getSquareCategory(square: number): number {
+    if (square < 20) {
+      return 1;
+    } else if (square >= 20 && square < 30) {
+      return 2;
+    } else if (square >= 30 && square < 40) {
+      return 3;
+    } else  {
+      return 4;
+    }
   }
 
 

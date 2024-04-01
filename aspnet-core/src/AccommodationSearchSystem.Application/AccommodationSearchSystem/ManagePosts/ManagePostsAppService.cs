@@ -105,8 +105,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
             .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
-            .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
-                                || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
+            .Where(e => (input.filterText == null || e.Title.Contains(input.filterText))
+                                || (e.District.Contains(input.filterText) && e.RoomPrice.Equals(input.filterText) && e.Square.Equals(input.filterText)))
                             //orderby p.Id descending
                         join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id into uGroup
                         from u in uGroup.DefaultIfEmpty()
@@ -370,8 +370,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             var tenantId = AbpSession.TenantId;
             var query = from p in _repositoryPost.GetAll()
             .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
-            .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
-                                || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
+            .Where(e => (input.filterText == null || e.Title.Contains(input.filterText))
+                               || (e.District.Contains(input.filterText) && e.RoomPrice.Equals(input.filterText) && e.Square.Equals(input.filterText)))
                         orderby p.Id descending
 
                         join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id into uGroup
