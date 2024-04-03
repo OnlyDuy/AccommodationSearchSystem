@@ -93,4 +93,15 @@ export class PostViewLikeComponent extends AppComponentBase implements OnInit {
       this.isLoading = false;
     });
   }
+
+  hasVipPro(post: GetPostForViewDto): boolean {
+    return post.packageType == 'Gói VIP pro';
+  }
+
+  openZalo(phoneNumber: string) {
+    if (phoneNumber) {
+      window.open('https://zalo.me/' + phoneNumber, '_blank');
+    }
+  }
+
 }

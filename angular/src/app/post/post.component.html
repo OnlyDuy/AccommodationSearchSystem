@@ -32,12 +32,12 @@
                         [busy]="isLoading"
                         [selection]="selectedPost"
 
-                        [globalFilterFields]="['title', 'roomPrice', 'id']">
+                        [globalFilterFields]="['id']">
                         <ng-template pTemplate="caption">
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                        <button class="btn btn-outline-info" (click)="updateTable()">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
                                         </button>
@@ -47,7 +47,7 @@
 
                                             <input pInputText class="form-control" type="search"
                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                placeholder="Search keyword" />
+                                                placeholder="Nhập giá trị tìm kiếm" />
 
                                         </div>
                                         <!-- <span class="p-input-icon-left ml-5">
@@ -72,22 +72,17 @@
                                 </th>
                                 <th style="min-width:10rem">
                                     <div class="flex align-items-center">
-                                        Giá phòng
-                                    </div>
-                                </th>
-                                <th style="min-width:10rem">
-                                    <div class="flex align-items-center">
-                                        Diện tích
-                                    </div>
-                                </th>
-                                <th style="min-width:15rem">
-                                    <div class="flex align-items-center">
-                                        {{l("Address")}}
-                                    </div>
-                                </th>
-                                <th style="min-width:10rem">
-                                    <div class="flex align-items-center">
                                         {{l("PriceCategory")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Người đăng
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Loại bài đăng
                                     </div>
                                 </th>
                                 <th style="min-width:10rem">
@@ -107,18 +102,14 @@
                                     {{ rowDataConfirm.title }}
                                 </td>
                                 <td style="min-width:10rem">
-                                    {{ rowDataConfirm.roomPrice }}
-                                </td>
-                                <td style="min-width:10rem">
-                                    {{ rowDataConfirm.square }}
-                                </td>
-                                <td style="min-width:15rem">
-                                    {{ rowDataConfirm.address }}
-                                </td>
-                                <td style="min-width:10rem">
                                     {{ rowDataConfirm.priceCategory }}
                                 </td>
-
+                                <td style="min-width:10rem">
+                                    {{ rowDataConfirm.createByName }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowDataConfirm.packageType }}
+                                </td>
                                 <!-- <td class="text-center" style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowDataConfirm.confirmAdmin === true, 'text-red-500 pi-times-circle': rowDataConfirm.confirmAdmin === false } "></i>
@@ -190,7 +181,7 @@
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                        <button class="btn btn-outline-info" (click)="updateTable()">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
                                         </button>
@@ -223,11 +214,6 @@
                                         {{l("Title")}}
                                     </div>
                                 </th>
-                                <th style="min-width:15rem">
-                                    <div class="flex align-items-center">
-                                        {{l("ContentPost")}}
-                                    </div>
-                                </th>
                                 <th style="min-width:10rem">
                                     <div class="flex align-items-center">
                                         Giá phòng
@@ -258,9 +244,6 @@
                                 </td>
                                 <td style="min-width:15rem">
                                     {{ rowData.title }}
-                                </td>
-                                <td style="min-width:15rem">
-                                    {{ rowData.contentPost }}
                                 </td>
                                 <td style="min-width:10rem">
                                     {{ rowData.roomPrice }}

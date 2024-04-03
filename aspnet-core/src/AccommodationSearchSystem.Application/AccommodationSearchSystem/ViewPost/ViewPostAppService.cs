@@ -376,12 +376,16 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                         join l in _repositoryUserLikePost.GetAll().AsNoTracking() on p.Id equals l.PostId
                         where tenantId == l.TenantId && UserId == l.CreatorUserId && l.Like == true
 
+                        join u in _repositoryUser.GetAll().AsNoTracking() on p.CreatorUserId equals u.Id into uGroup
+                        from u in uGroup.DefaultIfEmpty()
+                        where u.TenantId == p.TenantId
+
                         join pk in _repositoryPackagePost.GetAll().AsNoTracking() on p.CreatorUserId equals pk.CreatorUserId into pkGroup
                         from pk in pkGroup.DefaultIfEmpty()
                         where pk == null || (pk.Cancel == false && pk.Confirm == true)
                         orderby pk.PackageType == null ? 0 : 1 descending, p.Id descending
 
-                        select new { Post = p, PackagePost = pk, Like = l, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+                        select new { Post = p, User = u, PackagePost = pk, Like = l, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
@@ -408,6 +412,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 Parking = item.Post.Parking,
                 Conditioner = item.Post.Conditioner,
                 RoomStatus = item.Post.RoomStatus,
+                CreateByName = item.User.FullName,
+                PhoneNumber = item.User.PhoneNumber,
                 PackageType = item.PackagePost != null ? item.PackagePost.PackageType : "Gói thường",
                 TenantId = tenantId,
                 Photos = item.Photos.Select(photo => new PhotoDto

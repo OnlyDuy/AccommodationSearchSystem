@@ -74,7 +74,11 @@
               <div class="col-md-4 mb-3" *ngFor="let post of dataVip">
                 <p-card>
                   <div class="row">
-                    <div class="col-md-5 cursor-pointer"  [routerLink]="['./', post.id]">
+                    <div *ngIf="hasVipPro(post)" class="home-product-item__favourite">
+                      <i class="fa fa-check"></i>
+                      <span>Đặc biệt</span>
+                    </div>
+                    <div class="col-md-5 cursor-pointer" style="margin-top: 5px;"  [routerLink]="['./', post.id]">
                       <!-- You can customize the header here -->
                       <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                       <img class="post-image" *ngIf="!hasMainPhoto(post)"

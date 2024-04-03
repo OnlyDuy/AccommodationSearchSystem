@@ -191,10 +191,14 @@ export class PostViewComponent extends AppComponentBase implements OnInit {
     }
   }
 
+  hasVipPro(post: GetPostForViewDto): boolean {
+    return post.packageType == 'Gói VIP pro';
+  }
 
   hasMainPhoto(post: GetPostForViewDto): boolean {
     return post.photos && post.photos.some(photo => photo.isMain == true);
   }
+
 
   getMainPhotoUrl(post: GetPostForViewDto): string {
     const mainPhoto = post.photos.find(photo => photo.isMain);

@@ -54,22 +54,7 @@ export class PostComponent extends AppComponentBase {
     } else {
       this.isAdmin = false;
     }
-    this.rowData = [];
-    this.paginationParams = { pageNum: 1, pageSize: 20, totalCount: 0 };
-    this.getAll(this.paginationParams).subscribe(data => {
-      console.log(data.items);
-      this.rowData = data.items;
-      this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
-      this.paginationParams.totalCount = data.totalCount;
-    });
-    this.rowDataConfirm = [];
-    this.paginationParams = { pageNum: 1, pageSize: 20, totalCount: 0 };
-    this.getAllForAdmin(this.paginationParams).subscribe(data => {
-      console.log(data.items);
-      this.rowDataConfirm = data.items;
-      this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
-      this.paginationParams.totalCount = data.totalCount;
-    });
+    this.updateTable();
   }
 
   getAll(paginationParams: PaginationParamsModel) {
@@ -111,10 +96,6 @@ export class PostComponent extends AppComponentBase {
           })
       }
     })
-  }
-
-  clear(table: Table) {
-    table.clear();
   }
 
   updateTable() {

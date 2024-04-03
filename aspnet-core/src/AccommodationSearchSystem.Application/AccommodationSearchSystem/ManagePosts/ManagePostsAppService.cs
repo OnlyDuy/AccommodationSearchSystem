@@ -489,11 +489,15 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))
                         orderby p.Id descending
                         join u in _repositoryUser.GetAll() on p.CreatorUserId equals u.Id
+
+                        join pk in _repositoryPackagePost.GetAll() on u.Id equals pk.HostId into pkGroup
+                        from pk in pkGroup.DefaultIfEmpty()
+                        where pk == null || (pk.IsDeleted == false && pk.Cancel == false && ( pk.PackageType == "Gói VIP pro" || pk.PackageType == "Gói VIP"))
                         //join s in _repositorySchedule.GetAll().AsNoTracking() on p.Id equals s.PostId into sGroup
                         //from s in sGroup.DefaultIfEmpty()
                         //where s == null || (s.TenantId == tenantId && (s.Confirm == null || s.Confirm == false))
 
-                        select new { Post = p, User = u, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
+                        select new { Post = p, User = u, PackagePost = pk, Photos = _repositoryPhotoPost.GetAll().AsNoTracking().Where(ph => ph.PostId == p.Id).ToList() };
 
             var totalCount = await query.CountAsync();
             var pagedAndFilteredPost = query.PageBy(input);
@@ -524,6 +528,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 PhoneNumber = item.User.PhoneNumber,
                 EmailAddress = item.User.EmailAddress,
                 ConfirmAdmin = item.Post.ConfirmAdmin,
+                PackageType = item.PackagePost != null ? item.PackagePost.PackageType : "Gói thường",
                 Photos = item.Photos.Select(photo => new PhotoDto
                 {
                     Id = photo.Id,

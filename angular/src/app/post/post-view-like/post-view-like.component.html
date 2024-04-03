@@ -18,8 +18,17 @@
             <!-- Loop through rowData and display each item as a card -->
             <div class="col-md-4 mb-3" *ngFor="let post of dataLike">
               <p-card>
+                <div class="icon__delete">
+                  <button class="btn btn-sm btn-icon" style="margin-left: auto;" (click)="deletePost(post.likeId)">
+                    <i class="pi pi-times"></i>
+                  </button>
+                </div>
                 <div class="row">
-                  <div class="col-md-5">
+                  <div *ngIf="hasVipPro(post)" class="home-product-item__favourite">
+                    <i class="fa fa-check"></i>
+                    <span>Đặc biệt</span>
+                  </div>
+                  <div class="col-md-5 cursor-pointer" style="margin-top: 5px;"  [routerLink]="['./', post.id]">
                     <!-- You can customize the header here -->
                     <img class="post-image" *ngIf="hasMainPhoto(post)" [src]="getMainPhotoUrl(post)" />
                     <img class="post-image" *ngIf="!hasMainPhoto(post)"
@@ -27,11 +36,10 @@
                     alt="Default Photo">
                   </div>
                   <div class="col-md-7 content-posts">
-                    <strong>{{ post.title }}</strong>
+                    <a class="post__title" [routerLink]="['./', post.id]">{{ post.title }}</a>
                     <p>
-                      <!-- Content of the card -->
-                      <strong>Giá phòng:</strong> {{ post.roomPrice }} <br>
-                      <strong>Địa chỉ:</strong> {{ post.address }} <br>
+                      <strong class="post__price">{{ post.roomPrice }} triệu/tháng</strong>  <span style="float: right;">{{post.square}} m2</span><br>
+                      <strong>Địa chỉ: </strong><span>{{ post.district}}, {{post.city}}</span> <br>
                       <strong>Loại phòng:</strong> {{ post.priceCategory }} <br>
                       <strong>Trạng thái:</strong>
                       <span class="room-status {{ post.roomStatus ? 'available' : 'not-available' }}">
@@ -43,15 +51,20 @@
                 </div>
                 <ng-template pTemplate="footer">
                   <div class="d-flex justify-content-between">
-                    <p-button class="btn btn-sm" label="Xem chi tiết" [routerLink]="['./', post.id]"></p-button>
-                    <button class="btn btn-sm btn-icon justify-content-end" (click)="deletePost(post.likeId)">
-                      <i class="pi pi-times"></i>
-                    </button>
+                    <div class="post-author">
+                      <img class="img-author" src="https://phongtro123.com/images/default-user.png">
+                      <span class="author-name">{{post.createByName}}</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline-primary" (click)="openZalo(post.phoneNumber)">Liên hệ
+                      Zalo</button>
                   </div>
                   <!-- <p-button label="Cancel" [disabled] = "true" styleClass="p-button-secondary" [style]="{ 'margin-left': '.5em' }"></p-button> -->
                 </ng-template>
               </p-card>
             </div>
+          </div>
+          <div *ngIf="dataLike && dataLike.length === 0" class="d-flex justify-content-center align-items-center">
+            <p>Danh sách trống</p>
           </div>
           <div class="card flex justify-content-center">
             <p-paginator [rows]="3" [totalRecords]="paginationParams.totalCount" [rowsPerPageOptions]="[3, 6, 9]"
