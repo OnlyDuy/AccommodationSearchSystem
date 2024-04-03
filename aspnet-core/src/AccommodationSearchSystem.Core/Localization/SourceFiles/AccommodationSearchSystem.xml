@@ -129,6 +129,7 @@
 	  <text name="ViewPosts">ViewPosts</text>
 	  <text name="PersonalInformation">Personal information</text>
 	  <text name="ManageAppointmentSchedules">Manage appointment schedules</text>
+	  <text name="Statistical">Statistical</text>
 	  <text name="PostingPackage">Sign up for a PostingPackage</text>
 	  <text name="NewPost">New Post</text>
 	  <text name="Host">Host</text>

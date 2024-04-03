@@ -17,6 +17,7 @@ import { AppScheduleWaitComponent } from './app-schedule/app-schedule-wait/app-s
 import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success/app-schedule-success.component';
 import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.component';
 import { PostViewLikeComponent } from './post/post-view-like/post-view-like.component';
+import { StatisticalComponent } from './statistical/statistical.component';
 
 @NgModule({
     imports: [
@@ -27,6 +28,8 @@ import { PostViewLikeComponent } from './post/post-view-like/post-view-like.comp
                 children: [
                     { path: 'home', component: HomeComponent, data: { permission: 'Pages.Posts' },  canActivate: [AppRouteGuard] },
                     { path: 'home/:id', component: PostDetailComponent, data: { permission: 'Pages.Posts' },  canActivate: [AppRouteGuard] },
+
+                    { path: 'statistical', component: StatisticalComponent, data: { permission: 'Pages.Statistical' },  canActivate: [AppRouteGuard] },
 
                     // {path: 'create-post', component: CreatePostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
                     { path: 'post', component: PostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },

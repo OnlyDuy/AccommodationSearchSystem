@@ -47,6 +47,7 @@
             ],
             "scripts": [
               "node_modules/moment/min/moment.min.js",
+              "node_modules/chart.js/dist/chart.min.js",
               "node_modules/@aspnet/signalr/dist/browser/signalr.min.js",
               "node_modules/sweetalert2/dist/sweetalert2.js",
               "src/assets/freeze-ui/freeze-ui.js",

@@ -1,0 +1,113 @@
+﻿<div>
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <h1>Thống kê</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-2">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner" [busy]="isLoading">
+                <h3>{{countPost}}+</h3>
+                <p>Bài đăng</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-book"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+              <div class="inner" [busy]="isLoading">
+                <h3>{{countUser}}+</h3>
+                <p>Người dùng</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6" style="color: #ffffff;">
+            <div class="small-box bg-pink-200">
+              <div class="inner" [busy]="isLoading">
+                <h3>{{countPostLike}}+</h3>
+                <p>Yêu thích</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-heart"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner" [busy]="isLoading">
+                <h3>{{countBook}}+</h3>
+                <p>Lịch đặt / Lịch hẹn</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-calendar"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-3 mb-5">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <strong>Thống kê Lịch hẹn</strong>
+            <canvas #barChart [busy]="isLoading"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-3 mb-5">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8">
+            <strong>Thống kê Bài đăng</strong>
+            <canvas #lineChart [busy]="isLoading"></canvas>
+          </div>
+          <div class="col-4">
+            <strong>Theo loại hình</strong>
+            <canvas #pieChart [busy]="isLoading"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content px-3 mb-5">
+      <div class="container-fluid">
+        <strong>Xếp hạng</strong><br>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td>Tên</td>
+                  <td>Số lượng</td>
+                </tr>
+                <tr *ngFor="let user of userPostCounts">
+                  <td style="width: 240px;">Người đăng tin hiều nhất</td>
+                  <td>{{ user.fullName }}</td>
+                  <td>{{ user.postCount }}</td>
+                </tr>
+                <tr *ngFor="let user of userScheduleCounts">
+                  <td style="width: 240px;">Người đặt phòng nhiều nhất</td>
+                  <td>{{ user.fullName }}</td>
+                  <td>{{ user.scheduleCount }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>

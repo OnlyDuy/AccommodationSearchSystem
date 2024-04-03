@@ -3228,6 +3228,498 @@ export class SessionServiceProxy {
 }
 
 @Injectable()
+export class StatisticalServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    /**
+     * @return Success
+     */
+    getPostCountByCategory(): Observable<PostCategoryDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetPostCountByCategory";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPostCountByCategory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPostCountByCategory(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PostCategoryDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PostCategoryDto[]>;
+        }));
+    }
+
+    protected processGetPostCountByCategory(response: HttpResponseBase): Observable<PostCategoryDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PostCategoryDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PostCategoryDto[]>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getPostCountByMonth(): Observable<PostCountByMonthDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetPostCountByMonth";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPostCountByMonth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPostCountByMonth(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PostCountByMonthDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PostCountByMonthDto[]>;
+        }));
+    }
+
+    protected processGetPostCountByMonth(response: HttpResponseBase): Observable<PostCountByMonthDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PostCountByMonthDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PostCountByMonthDto[]>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getScheduleCountByMonth(): Observable<ScheduleCountByMonthDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetScheduleCountByMonth";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetScheduleCountByMonth(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetScheduleCountByMonth(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ScheduleCountByMonthDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ScheduleCountByMonthDto[]>;
+        }));
+    }
+
+    protected processGetScheduleCountByMonth(response: HttpResponseBase): Observable<ScheduleCountByMonthDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(ScheduleCountByMonthDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ScheduleCountByMonthDto[]>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getTotalBooking(): Observable<DashBoardTotalBooking> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetTotalBooking";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalBooking(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalBooking(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashBoardTotalBooking>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashBoardTotalBooking>;
+        }));
+    }
+
+    protected processGetTotalBooking(response: HttpResponseBase): Observable<DashBoardTotalBooking> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DashBoardTotalBooking.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DashBoardTotalBooking>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getTotalPost(): Observable<DashBoardTotalPost> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetTotalPost";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalPost(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashBoardTotalPost>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashBoardTotalPost>;
+        }));
+    }
+
+    protected processGetTotalPost(response: HttpResponseBase): Observable<DashBoardTotalPost> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DashBoardTotalPost.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DashBoardTotalPost>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getTotalPostLike(): Observable<DashBoardTotalPost> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetTotalPostLike";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalPostLike(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalPostLike(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashBoardTotalPost>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashBoardTotalPost>;
+        }));
+    }
+
+    protected processGetTotalPostLike(response: HttpResponseBase): Observable<DashBoardTotalPost> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DashBoardTotalPost.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DashBoardTotalPost>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getTotalUser(): Observable<DashBoardTotalUser> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetTotalUser";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalUser(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalUser(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<DashBoardTotalUser>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<DashBoardTotalUser>;
+        }));
+    }
+
+    protected processGetTotalUser(response: HttpResponseBase): Observable<DashBoardTotalUser> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = DashBoardTotalUser.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<DashBoardTotalUser>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserWithMostPosts(): Observable<UserPostCountDto> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetUserWithMostPosts";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserWithMostPosts(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserWithMostPosts(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserPostCountDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserPostCountDto>;
+        }));
+    }
+
+    protected processGetUserWithMostPosts(response: HttpResponseBase): Observable<UserPostCountDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserPostCountDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserPostCountDto>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getUserWithMostSchedules(): Observable<UserScheduleCountDto> {
+        let url_ = this.baseUrl + "/api/services/app/Statistical/GetUserWithMostSchedules";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetUserWithMostSchedules(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetUserWithMostSchedules(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<UserScheduleCountDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<UserScheduleCountDto>;
+        }));
+    }
+
+    protected processGetUserWithMostSchedules(response: HttpResponseBase): Observable<UserScheduleCountDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = UserScheduleCountDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<UserScheduleCountDto>(null as any);
+    }
+}
+
+@Injectable()
 export class TenantServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -6209,6 +6701,139 @@ export interface ICreateUserDto {
     password: string;
 }
 
+export class DashBoardTotalBooking implements IDashBoardTotalBooking {
+    totalBooking: number;
+
+    constructor(data?: IDashBoardTotalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalBooking = _data["totalBooking"];
+        }
+    }
+
+    static fromJS(data: any): DashBoardTotalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashBoardTotalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalBooking"] = this.totalBooking;
+        return data;
+    }
+
+    clone(): DashBoardTotalBooking {
+        const json = this.toJSON();
+        let result = new DashBoardTotalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDashBoardTotalBooking {
+    totalBooking: number;
+}
+
+export class DashBoardTotalPost implements IDashBoardTotalPost {
+    totalPost: number;
+    totalPostLike: number;
+
+    constructor(data?: IDashBoardTotalPost) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalPost = _data["totalPost"];
+            this.totalPostLike = _data["totalPostLike"];
+        }
+    }
+
+    static fromJS(data: any): DashBoardTotalPost {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashBoardTotalPost();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalPost"] = this.totalPost;
+        data["totalPostLike"] = this.totalPostLike;
+        return data;
+    }
+
+    clone(): DashBoardTotalPost {
+        const json = this.toJSON();
+        let result = new DashBoardTotalPost();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDashBoardTotalPost {
+    totalPost: number;
+    totalPostLike: number;
+}
+
+export class DashBoardTotalUser implements IDashBoardTotalUser {
+    totalUser: number;
+
+    constructor(data?: IDashBoardTotalUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.totalUser = _data["totalUser"];
+        }
+    }
+
+    static fromJS(data: any): DashBoardTotalUser {
+        data = typeof data === 'object' ? data : {};
+        let result = new DashBoardTotalUser();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalUser"] = this.totalUser;
+        return data;
+    }
+
+    clone(): DashBoardTotalUser {
+        const json = this.toJSON();
+        let result = new DashBoardTotalUser();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDashBoardTotalUser {
+    totalUser: number;
+}
+
 export class ExternalAuthenticateModel implements IExternalAuthenticateModel {
     authProvider: string;
     providerKey: string;
@@ -7817,6 +8442,108 @@ export interface IPhotoDto {
     postId: number;
 }
 
+export class PostCategoryDto implements IPostCategoryDto {
+    priceCategory: string | undefined;
+    count: number;
+
+    constructor(data?: IPostCategoryDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.priceCategory = _data["priceCategory"];
+            this.count = _data["count"];
+        }
+    }
+
+    static fromJS(data: any): PostCategoryDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostCategoryDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["priceCategory"] = this.priceCategory;
+        data["count"] = this.count;
+        return data;
+    }
+
+    clone(): PostCategoryDto {
+        const json = this.toJSON();
+        let result = new PostCategoryDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPostCategoryDto {
+    priceCategory: string | undefined;
+    count: number;
+}
+
+export class PostCountByMonthDto implements IPostCountByMonthDto {
+    id: number;
+    year: number;
+    month: number;
+    postCount: number;
+
+    constructor(data?: IPostCountByMonthDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.year = _data["year"];
+            this.month = _data["month"];
+            this.postCount = _data["postCount"];
+        }
+    }
+
+    static fromJS(data: any): PostCountByMonthDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PostCountByMonthDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["year"] = this.year;
+        data["month"] = this.month;
+        data["postCount"] = this.postCount;
+        return data;
+    }
+
+    clone(): PostCountByMonthDto {
+        const json = this.toJSON();
+        let result = new PostCountByMonthDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPostCountByMonthDto {
+    id: number;
+    year: number;
+    month: number;
+    postCount: number;
+}
+
 export class PostLikeDto implements IPostLikeDto {
     id: number | undefined;
     tenantId: number | undefined;
@@ -8438,6 +9165,65 @@ export interface IRoleUserLoginDto {
     roleId: number;
 }
 
+export class ScheduleCountByMonthDto implements IScheduleCountByMonthDto {
+    month: number;
+    year: number;
+    successfulCount: number;
+    cancelledByHostCount: number;
+    cancelledByTenantCount: number;
+
+    constructor(data?: IScheduleCountByMonthDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.month = _data["month"];
+            this.year = _data["year"];
+            this.successfulCount = _data["successfulCount"];
+            this.cancelledByHostCount = _data["cancelledByHostCount"];
+            this.cancelledByTenantCount = _data["cancelledByTenantCount"];
+        }
+    }
+
+    static fromJS(data: any): ScheduleCountByMonthDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ScheduleCountByMonthDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["month"] = this.month;
+        data["year"] = this.year;
+        data["successfulCount"] = this.successfulCount;
+        data["cancelledByHostCount"] = this.cancelledByHostCount;
+        data["cancelledByTenantCount"] = this.cancelledByTenantCount;
+        return data;
+    }
+
+    clone(): ScheduleCountByMonthDto {
+        const json = this.toJSON();
+        let result = new ScheduleCountByMonthDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IScheduleCountByMonthDto {
+    month: number;
+    year: number;
+    successfulCount: number;
+    cancelledByHostCount: number;
+    cancelledByTenantCount: number;
+}
+
 export enum TenantAvailabilityState {
     _1 = 1,
     _2 = 2,
@@ -8812,6 +9598,116 @@ export interface IUserLoginInfoDto {
     userName: string | undefined;
     emailAddress: string | undefined;
     phoneNumber: string | undefined;
+}
+
+export class UserPostCountDto implements IUserPostCountDto {
+    id: number;
+    userId: number;
+    fullName: string | undefined;
+    postCount: number;
+
+    constructor(data?: IUserPostCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userId = _data["userId"];
+            this.fullName = _data["fullName"];
+            this.postCount = _data["postCount"];
+        }
+    }
+
+    static fromJS(data: any): UserPostCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserPostCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userId"] = this.userId;
+        data["fullName"] = this.fullName;
+        data["postCount"] = this.postCount;
+        return data;
+    }
+
+    clone(): UserPostCountDto {
+        const json = this.toJSON();
+        let result = new UserPostCountDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserPostCountDto {
+    id: number;
+    userId: number;
+    fullName: string | undefined;
+    postCount: number;
+}
+
+export class UserScheduleCountDto implements IUserScheduleCountDto {
+    id: number;
+    userId: number;
+    fullName: string | undefined;
+    scheduleCount: number;
+
+    constructor(data?: IUserScheduleCountDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userId = _data["userId"];
+            this.fullName = _data["fullName"];
+            this.scheduleCount = _data["scheduleCount"];
+        }
+    }
+
+    static fromJS(data: any): UserScheduleCountDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserScheduleCountDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userId"] = this.userId;
+        data["fullName"] = this.fullName;
+        data["scheduleCount"] = this.scheduleCount;
+        return data;
+    }
+
+    clone(): UserScheduleCountDto {
+        const json = this.toJSON();
+        let result = new UserScheduleCountDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserScheduleCountDto {
+    id: number;
+    userId: number;
+    fullName: string | undefined;
+    scheduleCount: number;
 }
 
 export interface FileParameter {

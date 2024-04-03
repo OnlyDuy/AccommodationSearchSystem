@@ -62,6 +62,7 @@ import { AppPackagePostsVipProComponent } from './app-package-posts/app-package-
 import { AppPackagePostsVipComponent } from './app-package-posts/app-package-posts-vip/app-package-posts-vip.component';
 import { AppPackagePostsEditComponent } from './app-package-posts/app-package-posts-edit/app-package-posts-edit.component';
 import { PostViewLikeComponent } from './post/post-view-like/post-view-like.component';
+import { StatisticalComponent } from './statistical/statistical.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,10 @@ import { PostViewLikeComponent } from './post/post-view-like/post-view-like.comp
     AppPackagePostsVipProComponent,
     AppPackagePostsVipComponent,
     AppPackagePostsEditComponent,
-    PostViewLikeComponent
+    PostViewLikeComponent,
+
+    // statistics
+    StatisticalComponent
    ],
   imports: [
     CommonModule,
