@@ -14,9 +14,13 @@
                         <i class="fas fa-pencil-alt"></i>
                         Xem chi tiết
                     </button>
-                    <button class="btn bg-danger" (click)="deletePost()" [disabled]="!selectedRow">
+                    <button class="btn bg-danger mr-2" (click)="deletePost()" [disabled]="!selectedRow">
                         <i class="fas fa-trash-alt"></i>
                         Hủy bỏ
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
                     </button>
                 </div>
             </div>
@@ -37,10 +41,10 @@
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="updateTable()">
+                                        <!-- <button class="btn btn-outline-info" (click)="updateTable()">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-outline mb-2" data-mdb-input-init>
@@ -158,9 +162,13 @@
                         <i class="fas fa-pencil-alt"></i>
                         {{ "Edit" | localize }}
                     </button>
-                    <button class="btn bg-danger" (click)="deletePost()" [disabled]="!selectedRow">
+                    <button class="btn bg-danger mr-2" (click)="deletePost()" [disabled]="!selectedRow">
                         <i class="fas fa-trash-alt"></i>
                         {{ "Delete" | localize }}
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
                     </button>
                 </div>
             </div>
@@ -181,10 +189,10 @@
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="updateTable()">
+                                        <!-- <button class="btn btn-outline-info" (click)="updateTable()">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-outline mb-2" data-mdb-input-init>

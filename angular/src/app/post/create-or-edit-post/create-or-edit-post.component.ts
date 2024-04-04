@@ -1,3 +1,4 @@
+import { PhotoDto } from './../../../shared/service-proxies/service-proxies';
 import { Post } from './../../../shared/commom/models/post.model';
 
 import { Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
@@ -26,6 +27,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
   posts: CreateOrEditIPostDto = new CreateOrEditIPostDto();
   tenantId: number;
   postComponent: PostComponent;
+  postPhotos: PhotoDto[] = [];
 
   uploader!: FileUploader;
   hasBaseDropzoneOver = false;
@@ -60,6 +62,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
         .getLoyaltyGiftItemForEdit(PostId)
         .subscribe((result) => {
           this.posts = result.createOrEditPost;
+          this.postPhotos = result.photos;
           this.active = true
           this.modal.show();
         });
@@ -143,15 +146,22 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     //     }
     //   };
     // }
-    }
-
-
-  deletePhoto() {
-
   }
 
-  setMainPhoto() {
+  setMainPhotos(postId: number, photoId: number) {
+    this._postService.setMainPhoto(postId, photoId).subscribe(() => {
+      // this.post.photoUrl = photo.url;
+      this.posts.photos.forEach(p => {
+        if (p.isMain) p.isMain = false;
+        if (p.id === photoId) p.isMain = true;
+      })
+    })
+  }
 
+  deletePhoto(postId: number, photoId: number) {
+    this._postService.deletePhoto(postId, photoId).subscribe(() => {
+      this.posts.photos = this.posts.photos.filter(x => x.id === postId);
+    })
   }
 
   fileOverBase(e: any) {

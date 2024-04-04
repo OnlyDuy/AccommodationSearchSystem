@@ -142,6 +142,7 @@
 	  <text name="Address">Address</text>
 	  <text name="PriceCategory">Price Category</text>
 	  <text name="PostsDetails">Post Detail</text>
+	  <text name="PhotosDetails">Photos Detail</text>
 	  <text name="RoomStatus">Trạng thái phòng</text>
 	  <text name="CreateNewPost" value="Create New Post" />
 	  <text name="Photo" value="Photo" />

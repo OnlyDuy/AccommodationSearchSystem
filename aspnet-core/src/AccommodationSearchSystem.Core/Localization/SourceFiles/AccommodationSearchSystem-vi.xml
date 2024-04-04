@@ -141,6 +141,7 @@
 
 	  <text name="EditPosts">Chỉnh sửa bài đăng</text>
 	  <text name="PostsDetails">Chi tiết bài đăng</text>
+	  <text name="PhotosDetails">Chi tiết hình ảnh</text>
 	  <text name="Title">Tiêu đề</text>
 	  <text name="ContentPost">Nội dung bài đăng</text>
 	  <text name="RoomPrice">Giá phòng (triệu đồng)</text>

@@ -11,3 +11,8 @@ img.img-thumbnail {
 input[type = file] {
     color: transparent;
 }
+
+.Add_photos {
+    font-size: 18px;
+    font-weight: 600;
+}
