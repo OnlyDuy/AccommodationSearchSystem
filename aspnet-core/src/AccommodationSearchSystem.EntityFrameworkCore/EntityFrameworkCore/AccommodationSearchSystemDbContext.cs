@@ -21,6 +21,8 @@ namespace AccommodationSearchSystem.EntityFrameworkCore
         public virtual DbSet<AppointmentSchedule> AppointmentSchedules { get; set; }
         public virtual DbSet<PackagePost> PackagePosts { get; set; }
         public virtual DbSet<UserLikePost> UserLikePosts { get; set; }
+        public virtual DbSet<UserComments> UserCommentes { get; set; }
+
 
 
         //public virtual DbSet<UserRole> UserRoles { get; set; }

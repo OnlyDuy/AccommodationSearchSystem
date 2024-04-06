@@ -44,6 +44,6 @@ namespace AccommodationSearchSystem.Entity
         public ICollection<UserLikePost> UserLikePosts { get; set; }
         public ICollection<PackagePost> PackagePosts { get; set; }
         public bool ConfirmAdmin { get; set; }
-
+        public ICollection<UserComments> UserCommentes { get; set; }
     }
 }

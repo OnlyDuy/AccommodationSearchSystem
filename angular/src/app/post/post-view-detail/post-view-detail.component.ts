@@ -1,3 +1,4 @@
+import { UserCommentDto, UserCommentServiceProxy } from './../../../shared/service-proxies/service-proxies';
 import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
@@ -10,7 +11,7 @@ import { AgmMap, MapsAPILoader } from '@agm/core';
   selector: 'app-post-view-detail',
   templateUrl: './post-view-detail.component.html',
   styleUrls: ['./post-view-detail.component.css'],
-  providers: [ViewPostServiceProxy, ManageAppointmentSchedulesServiceProxy]
+  providers: [ViewPostServiceProxy, ManageAppointmentSchedulesServiceProxy, UserCommentServiceProxy]
 })
 export class PostViewDetailComponent extends AppComponentBase implements OnInit  {
   postId: number;
@@ -43,10 +44,17 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   directionsService: any;
   directionsRenderer: any;
 
+  userComment: UserCommentDto = new UserCommentDto();
+  comment: string;
+  comments: UserCommentDto[] = []; // Mảng lưu trữ các comment
+  editMode: boolean = false; // Biến để xác định xem đang ở chế độ chỉnh sửa hay không
+  commentIdToUpdate: number;
+
   constructor(
     injector: Injector,
     public _postService: ViewPostServiceProxy,
     public _postScheduleService: ManageAppointmentSchedulesServiceProxy,
+    public _userCommentService: UserCommentServiceProxy,
     private _sessionService: SessionServiceProxy,
     private route: ActivatedRoute,
     private _mapsAPILoader: MapsAPILoader
@@ -79,6 +87,7 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     ];
     this.getCurrentLocation();
     this.getStatus();
+    this.getComments();
   }
 
   getStatus(): void {
@@ -333,5 +342,75 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
         this.notify.success('Cảm ơn bạn đã yêu thích bài đăng này');
       })
     }
+  }
+
+  show(CommentID?: number): void {
+    if (CommentID) {
+      this._userCommentService.getCommentById(CommentID).subscribe((result) => {
+        this.comment = result.commentContent;
+        this.editMode = true;
+        this.commentIdToUpdate = CommentID;
+      })
+    } else {
+      this.addComment();
+    }
+  }
+
+  onCommentInput() {
+    if (!this.comment) {
+      this.editMode = false;
+    }
+  }
+
+  isUserOwner(commentUserId: number): boolean {
+    return abp.session.userId === commentUserId;
+  }
+
+  addComment() {
+    if (this.editMode) {
+      this.editComment();
+      return;
+    }
+
+    this.userComment = new UserCommentDto();
+    this.userComment.postId = this.postId;
+    this.userComment.tenantId = abp.session.tenantId;
+    this.userComment.commentContent = this.comment;
+
+    this._userCommentService.addComment(this.postId, this.userComment).subscribe(() => {
+      this.notify.success('Thêm bình luận thành công');
+      this.getComments();
+      this.comment = "";
+    });
+  }
+
+  editComment() {
+    this.userComment.id = this.commentIdToUpdate;
+    this.userComment.commentContent = this.comment;
+
+    this.userComment.commentContent = this.comment;
+    this._userCommentService.update(this.userComment).subscribe(() => {
+      this.notify.success('Sửa bình luận thành công');
+      this.getComments();
+      this.comment = "";
+      this.editMode = false;
+    });
+  }
+
+  deleteComment(CommentID?: number) {
+    this._userCommentService.deleteComment(CommentID)
+    .subscribe(() => {
+      this.notify.success('Xóa bình luận thành công');
+      this.getComments();
+      this.comment = "";
+    })
+  }
+
+  getComments() {
+    this._userCommentService.getAllComment(this.postId)
+      .pipe(finalize(() => {}))
+      .subscribe(result => {
+        this.comments = result;
+      });
   }
 }

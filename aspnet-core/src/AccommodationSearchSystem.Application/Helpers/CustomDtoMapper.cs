@@ -2,6 +2,7 @@
 using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.UserComment.Dto;
 using AccommodationSearchSystem.Entity;
 using AccommodationSearchSystem.Sessions.Dto;
 using AutoMapper;
@@ -39,6 +40,9 @@ namespace AccommodationSearchSystem.Helpers
 
             configuration.CreateMap<UserLikePost, PostLikeDto>().ReverseMap();
             configuration.CreateMap<UserLikePost, GetPostForLikeDto>().ReverseMap();
+
+            configuration.CreateMap<UserComments, UserCommentDto>().ReverseMap();
+            configuration.CreateMap<UserComments, UserCommentViewDto>().ReverseMap();
 
 
 
