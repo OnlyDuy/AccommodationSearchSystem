@@ -1,4 +1,6 @@
-import { UserCommentDto, UserCommentServiceProxy } from './../../../shared/service-proxies/service-proxies';
+import { CommentsService } from './../../_services/comments.service';
+
+import { UserCommentDto, UserCommentServiceProxy, UserCommentViewDto } from './../../../shared/service-proxies/service-proxies';
 import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
@@ -6,6 +8,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { CreateOrEditIPostDto, CreateOrEditSchedulesDto, GetPostForViewDto, ManageAppointmentSchedulesServiceProxy, PhotoDto, PostLikeDto, SessionServiceProxy, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
 import { finalize } from 'rxjs/operators';
 import { AgmMap, MapsAPILoader } from '@agm/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-post-view-detail',
@@ -14,6 +17,7 @@ import { AgmMap, MapsAPILoader } from '@agm/core';
   providers: [ViewPostServiceProxy, ManageAppointmentSchedulesServiceProxy, UserCommentServiceProxy]
 })
 export class PostViewDetailComponent extends AppComponentBase implements OnInit  {
+
   postId: number;
   post: GetPostForViewDto = new GetPostForViewDto();
   schedule: CreateOrEditSchedulesDto = new CreateOrEditSchedulesDto();
@@ -46,8 +50,9 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
 
   userComment: UserCommentDto = new UserCommentDto();
   comment: string;
-  comments: UserCommentDto[] = []; // Mảng lưu trữ các comment
-  editMode: boolean = false; // Biến để xác định xem đang ở chế độ chỉnh sửa hay không
+  commentsView: UserCommentViewDto[] = [];
+  comments: UserCommentDto[] = [];
+  editMode: boolean = false;
   commentIdToUpdate: number;
 
   constructor(
@@ -56,6 +61,7 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     public _postScheduleService: ManageAppointmentSchedulesServiceProxy,
     public _userCommentService: UserCommentServiceProxy,
     private _sessionService: SessionServiceProxy,
+    private _commentsService: CommentsService,
     private route: ActivatedRoute,
     private _mapsAPILoader: MapsAPILoader
     ) {
@@ -88,6 +94,39 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     this.getCurrentLocation();
     this.getStatus();
     this.getComments();
+    // Kết nối tới SignalR Hub
+    this._commentsService.startConnection();
+
+    this._commentsService.updateComment.subscribe((updatedComment: UserCommentDto) => {
+      var index = this.comments.findIndex(comment => comment.id === updatedComment.id);
+      if (index !== -1) {
+        this.comments[index] = updatedComment;
+      }
+    });
+
+    this._commentsService.deleteComment.subscribe((deletedCommentId: number) => {
+      var index = this.comments.findIndex(comment => comment.id === deletedCommentId);
+      if (index !== -1) {
+        this.comments.splice(index, 1);
+      }
+    });
+
+    this._commentsService.allCommentsReceived.subscribe((cmt: UserCommentViewDto[]) => {
+      cmt.forEach(comment => {
+        // Chuyển đổi creationTime thành đối tượng moment
+        const creationTimeMoment = moment(comment.creationTime);
+
+        const timeDiff = Math.abs(new Date().getTime() - creationTimeMoment.toDate().getTime());
+        comment.timeAgo = this.calculateTimeAgo(timeDiff);
+      });
+      this.commentsView = cmt;
+    });
+
+
+    this._commentsService.commentReceived.subscribe((cmt: UserCommentDto) => {
+        this.comments.push(cmt);
+    });
+
   }
 
   getStatus(): void {
@@ -344,6 +383,8 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     }
   }
 
+  // BÌNH LUẬN
+
   show(CommentID?: number): void {
     if (CommentID) {
       this._userCommentService.getCommentById(CommentID).subscribe((result) => {
@@ -410,7 +451,28 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     this._userCommentService.getAllComment(this.postId)
       .pipe(finalize(() => {}))
       .subscribe(result => {
-        this.comments = result;
+        result.forEach(comment => {
+          const timeAgo = moment().diff(comment.creationTime);
+          comment.timeAgo = this.calculateTimeAgo(timeAgo);
+        });
+        this.commentsView = result;
       });
   }
+
+  calculateTimeAgo(timeDiff: number): string {
+    let timeAgo: string;
+
+    if (timeDiff < 60000) {
+      timeAgo = Math.floor(timeDiff / 1000) + ' giây trước';
+    } else if (timeDiff < 3600000) { // Dưới 1 giờ
+      timeAgo = Math.floor(timeDiff / 60000) + ' phút trước';
+    } else if (timeDiff < 86400000) { // Dưới 1 ngày
+      timeAgo = Math.floor(timeDiff / 3600000) + ' giờ trước';
+    } else {
+      timeAgo = Math.floor(timeDiff / 86400000) + ' ngày trước';
+    }
+
+    return timeAgo;
+  }
+
 }

@@ -24,6 +24,7 @@ using AccommodationSearchSystem.Helpers;
 using AccommodationSearchSystem.Interfaces;
 using AccommodationSearchSystem.Services;
 using AccommodationSearchSystem.EntityFrameworkCore;
+using AccommodationSearchSystem.Chat.Signalr;
 
 namespace AccommodationSearchSystem.Web.Host.Startup
 {
@@ -115,6 +116,7 @@ namespace AccommodationSearchSystem.Web.Host.Startup
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
+                endpoints.MapHub<CommentHub>("/commentHub");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
             });

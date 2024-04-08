@@ -49,6 +49,16 @@ agm-map {
   border-bottom: 1px dotted #B3A9A9;
   display: flex;
 }
+.chat__body-content {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.chat__body-time {
+  font-size: 12px;
+  color: #B3A9A9;
+  margin-bottom: 5px;
+}
 
 .message-content {
   display: flex;

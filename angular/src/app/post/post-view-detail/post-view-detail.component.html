@@ -109,12 +109,14 @@
       <span class="comment__title">Bình luận gần nhất</span>
       <div class="card-body card_chat">
         <ul class="chat">
-          <li *ngFor="let comment of comments">
+          <li *ngFor="let comment of commentsView">
             <div class="message-content">
               <img class="message-img" src="assets/img/user.png">
               <div class="chat-body">
                 <strong>{{comment.createByName}}</strong><br>
-                <p>{{comment.commentContent}}</p>
+                <p class="chat__body-content">{{comment.commentContent}}</p>
+                <p class="chat__body-time">
+                  <i class="fas fa-clock mr-1"></i>{{comment.timeAgo}}</p>
                 <div class="action-buttons">
                   <button class="btn btn-sm btn-primary mr-1" id="commentContent"
                     (click)="show(comment.id)" [disabled]="!isUserOwner(comment.userId)">Sửa</button>

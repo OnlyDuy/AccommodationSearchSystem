@@ -22,5 +22,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment.Dto
         public long PostId { get; set; }
         public string CommentContent { get; set; }
         public string CreateByName { get; set; } // Tên người dùng
+        public DateTime CreationTime { get; set; }
+        public String TimeAgo { get; set; }
+
     }
 }

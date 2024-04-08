@@ -5,7 +5,9 @@ using Abp.UI;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.UserComment.Dto;
 using AccommodationSearchSystem.Authorization.Users;
+using AccommodationSearchSystem.Chat.Signalr;
 using AccommodationSearchSystem.Entity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,25 +20,22 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment
 {
     public class UserCommentAppService : ApplicationService, IUserCommentAppService
     {
-        private readonly IRepository<AppointmentSchedule, long> _repositorySchedule;
+        private readonly IHubContext<CommentHub> _hubContext;
         private readonly IRepository<UserComments, long> _repositoryComment;
         private readonly IRepository<User, long> _repositoryUser;
-        private readonly IRepository<PhotoPost, long> _repositoryPhotoPost;
         private readonly IRepository<Post, long> _repositoryPost;
 
         public UserCommentAppService(
-           IRepository<AppointmentSchedule, long> repositorySchedule,
            IRepository<Post, long> repositoryPost,
-           IRepository<PhotoPost, long> repositoryPhotoPost,
            IRepository<UserComments, long> repositoryComment,
+            IHubContext<CommentHub> hubContext,
            IRepository<User, long> repositoryUser)
 
         {
-            _repositorySchedule = repositorySchedule;
             _repositoryUser = repositoryUser;
             _repositoryPost = repositoryPost;
-            _repositoryPhotoPost = repositoryPhotoPost;
             _repositoryComment = repositoryComment;
+            _hubContext = hubContext;
         }
         public async Task<UserCommentDto> AddComment(long postId, UserCommentDto input)
         {
@@ -50,6 +49,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment
             var comment = ObjectMapper.Map<UserComments>(input);
             await _repositoryComment.InsertAsync(comment);
             await CurrentUnitOfWork.SaveChangesAsync();
+
+            await _hubContext.Clients.All.SendAsync("ReceiveComment", input);
 
             return input;
         }
@@ -70,6 +71,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment
             await _repositoryComment.UpdateAsync(comment);
             await CurrentUnitOfWork.SaveChangesAsync();
 
+            await _hubContext.Clients.All.SendAsync("UpdateComment", input);
+
             return input;
         }
 
@@ -81,7 +84,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment
             var data = await _repositoryComment.FirstOrDefaultAsync(c => c.UserId == userId && c.Id == input.Id && c.TenantId == tenanId);
             if (data != null)
             {
+
                 await _repositoryComment.DeleteAsync(data);
+                await _hubContext.Clients.All.SendAsync("DeleteComment", input.Id);
             }
             else
             {
@@ -106,8 +111,11 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment
                                   UserId = u.Id,
                                   CommentContent = c.CommentContent,
                                   CreateByName = u.FullName,
+                                  CreationTime = c.CreationTime,
                                   // Các trường thông tin người dùng khác cũng có thể được thêm vào nếu cần
                               }).ToListAsync();
+            // Gửi danh sách bình luận về client thông qua SignalR Hub
+            await _hubContext.Clients.All.SendAsync("ReceiveAllComments", data);
 
             return data;
         }

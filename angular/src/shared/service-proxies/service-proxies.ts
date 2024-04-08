@@ -9871,6 +9871,8 @@ export class UserCommentViewDto implements IUserCommentViewDto {
     postId: number;
     commentContent: string | undefined;
     createByName: string | undefined;
+    creationTime: moment.Moment;
+    timeAgo: string | undefined;
 
     constructor(data?: IUserCommentViewDto) {
         if (data) {
@@ -9889,6 +9891,8 @@ export class UserCommentViewDto implements IUserCommentViewDto {
             this.postId = _data["postId"];
             this.commentContent = _data["commentContent"];
             this.createByName = _data["createByName"];
+            this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
+            this.timeAgo = _data["timeAgo"];
         }
     }
 
@@ -9907,6 +9911,8 @@ export class UserCommentViewDto implements IUserCommentViewDto {
         data["postId"] = this.postId;
         data["commentContent"] = this.commentContent;
         data["createByName"] = this.createByName;
+        data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
+        data["timeAgo"] = this.timeAgo;
         return data;
     }
 
@@ -9925,6 +9931,8 @@ export interface IUserCommentViewDto {
     postId: number;
     commentContent: string | undefined;
     createByName: string | undefined;
+    creationTime: moment.Moment;
+    timeAgo: string | undefined;
 }
 
 export class UserDto implements IUserDto {
