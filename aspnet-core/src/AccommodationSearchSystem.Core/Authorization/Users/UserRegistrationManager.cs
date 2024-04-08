@@ -37,7 +37,8 @@ namespace AccommodationSearchSystem.Authorization.Users
             AbpSession = NullAbpSession.Instance;
         }
 
-        public async Task<User> RegisterAsync(string name, string surname, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed)
+        public async Task<User> RegisterAsync(string name, string surname, string emailAddress, string phone, string userName, string plainPassword, bool isEmailConfirmed,
+                string[] roleNames)
         {
             CheckForTenant();
 
@@ -49,6 +50,7 @@ namespace AccommodationSearchSystem.Authorization.Users
                 Name = name,
                 Surname = surname,
                 EmailAddress = emailAddress,
+                PhoneNumber = phone,
                 IsActive = true,
                 UserName = userName,
                 IsEmailConfirmed = isEmailConfirmed,
@@ -56,10 +58,27 @@ namespace AccommodationSearchSystem.Authorization.Users
             };
 
             user.SetNormalizedNames();
-           
-            foreach (var defaultRole in await _roleManager.Roles.Where(r => r.IsDefault).ToListAsync())
+
+            //foreach (var defaultRole in await _roleManager.Roles.Where(r => r.IsDefault).ToListAsync())
+            //{
+            //    user.Roles.Add(new UserRole(tenant.Id, user.Id, defaultRole.Id));
+            //}
+            // Gán các vai trò được chọn cho người dùng
+            if (roleNames != null && roleNames.Any())
             {
-                user.Roles.Add(new UserRole(tenant.Id, user.Id, defaultRole.Id));
+                foreach (var roleName in roleNames)
+                {
+                    var role = await _roleManager.FindByNameAsync(roleName);
+                    if (role != null)
+                    {
+                        user.Roles.Add(new UserRole(tenant.Id, user.Id, role.Id));
+                    }
+                    else
+                    {
+                        // Xử lý khi tên vai trò không tồn tại
+                        // Có thể throw exception, log, hoặc thực hiện hành động khác tùy thuộc vào yêu cầu của ứng dụng
+                    }
+                }
             }
 
             await _userManager.InitializeOptionsAsync(tenant.Id);

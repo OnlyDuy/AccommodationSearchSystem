@@ -19,11 +19,11 @@ namespace AccommodationSearchSystem.Authorization.Users
             var user = new User
             {
                 TenantId = tenantId,
-                PhoneNumber = phone,
                 UserName = AdminUserName,
                 Name = AdminUserName,
                 Surname = AdminUserName,
                 EmailAddress = emailAddress,
+                PhoneNumber = phone,
                 Roles = new List<UserRole>()
             };
 

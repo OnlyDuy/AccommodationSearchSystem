@@ -41,9 +41,11 @@ namespace AccommodationSearchSystem.Authorization.Accounts
                 input.Name,
                 input.Surname,
                 input.EmailAddress,
+                input.PhoneNumber,
                 input.UserName,
                 input.Password,
-                true // Assumed email address is always confirmed. Change this if you want to implement email confirmation.
+                true, // Assumed email address is always confirmed. Change this if you want to implement email confirmation.
+                input.RoleNames
             );
 
             var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);

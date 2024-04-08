@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { AppComponentBase } from '@shared/app-component-base';
@@ -14,9 +14,11 @@ import { AppAuthService } from '@shared/auth/app-auth.service';
   templateUrl: './register.component.html',
   animations: [accountModuleAnimation()]
 })
-export class RegisterComponent extends AppComponentBase {
+export class RegisterComponent extends AppComponentBase implements OnInit  {
   model: RegisterInput = new RegisterInput();
   saving = false;
+
+  selectedRoles: string[] = ["Chủ trọ", "Người thuê trọ"];
 
   constructor(
     injector: Injector,
@@ -27,8 +29,21 @@ export class RegisterComponent extends AppComponentBase {
     super(injector);
   }
 
+
+  ngOnInit() {
+    this.model.roleNames = [""];
+  }
+
   save(): void {
     this.saving = true;
+    if (this.model.roleNames.includes("Chủ trọ")) {
+      this.model.roleNames = ["Chủ trọ"];
+    } else if (this.model.roleNames.includes("Người thuê trọ")) {
+      this.model.roleNames = ["Người thuê trọ"];
+    } else {
+      // Nếu không có lựa chọn hoặc lựa chọn khác "Chủ trọ" và "Người thuê trọ", gán một mảng rỗng
+      this.model.roleNames = [];
+    }
     this._accountService
       .register(this.model)
       .pipe(

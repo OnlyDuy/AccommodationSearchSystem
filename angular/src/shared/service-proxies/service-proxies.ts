@@ -9022,8 +9022,10 @@ export class RegisterInput implements IRegisterInput {
     surname: string;
     userName: string;
     emailAddress: string;
+    phoneNumber: string;
     password: string;
     captchaResponse: string | undefined;
+    roleNames: string[] | undefined;
 
     constructor(data?: IRegisterInput) {
         if (data) {
@@ -9040,8 +9042,14 @@ export class RegisterInput implements IRegisterInput {
             this.surname = _data["surname"];
             this.userName = _data["userName"];
             this.emailAddress = _data["emailAddress"];
+            this.phoneNumber = _data["phoneNumber"];
             this.password = _data["password"];
             this.captchaResponse = _data["captchaResponse"];
+            if (Array.isArray(_data["roleNames"])) {
+                this.roleNames = [] as any;
+                for (let item of _data["roleNames"])
+                    this.roleNames.push(item);
+            }
         }
     }
 
@@ -9058,8 +9066,14 @@ export class RegisterInput implements IRegisterInput {
         data["surname"] = this.surname;
         data["userName"] = this.userName;
         data["emailAddress"] = this.emailAddress;
+        data["phoneNumber"] = this.phoneNumber;
         data["password"] = this.password;
         data["captchaResponse"] = this.captchaResponse;
+        if (Array.isArray(this.roleNames)) {
+            data["roleNames"] = [];
+            for (let item of this.roleNames)
+                data["roleNames"].push(item);
+        }
         return data;
     }
 
@@ -9076,8 +9090,10 @@ export interface IRegisterInput {
     surname: string;
     userName: string;
     emailAddress: string;
+    phoneNumber: string;
     password: string;
     captchaResponse: string | undefined;
+    roleNames: string[] | undefined;
 }
 
 export class RegisterOutput implements IRegisterOutput {
