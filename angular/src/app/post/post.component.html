@@ -166,6 +166,10 @@
                         <i class="fas fa-trash-alt"></i>
                         {{ "Delete" | localize }}
                     </button>
+                    <button class="btn bg-warning mr-2" (click)="repostPost()" [disabled]="!selectedRow">
+                        <i class="fas fa-check"></i>
+                        {{ "Đăng lại"}}
+                    </button>
                     <button class="btn btn-info" (click)="updateTable()">
                         <i class="pi pi-undo"></i>
                         {{ "Reset" | localize }}

@@ -5,6 +5,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 using Abp.UI;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
 using AccommodationSearchSystem.Authorization;
 using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
@@ -99,6 +100,26 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             post.IsDeleted = true;
 
             await _repositoryPost.DeleteAsync(post.Id);
+        }
+
+        // Đăng lại bài viết
+        public async Task RepostPost(CreateOrEditIPostDto input)
+        {
+            var post = await _repositoryPost.FirstOrDefaultAsync(e => e.Id == input.Id);
+            post.RoomStatus = true;
+            await _repositoryPost.UpdateAsync(post);
+        }
+
+        public async Task<bool> StatusRepostPost(CreateOrEditIPostDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var dataCheck = await _repositoryPost.FirstOrDefaultAsync(e => e.RoomStatus == true
+                                             && e.Id == input.Id && tenantId == e.TenantId);
+            if (dataCheck != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<PagedResultDto<GetPostForViewDto>> GetAll(GetPostInputDto input)
@@ -698,6 +719,19 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 await _repositoryPost.UpdateAsync(post);
             }
         }
+
+        public async Task<bool> StatusConfirmAD(ConfirmPostByAdminDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var dataCheck = await _repositoryPost.FirstOrDefaultAsync(e => e.ConfirmAdmin == true
+                                             && e.Id == input.Id && tenantId == e.TenantId);
+            if (dataCheck != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public Task<PostLikeDto> LikePosts(EntityDto<long> input)
         {

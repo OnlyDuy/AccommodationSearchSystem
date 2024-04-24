@@ -26,6 +26,7 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   buttonDisabled: boolean = false;
   postPhotos: PhotoDto[] = [];
   statusLike: boolean = false;
+  statusSchedule: boolean = false;
 
   galleryOptions: NgxGalleryOptions[] = [];
   galleryImages: NgxGalleryImage[] = [];
@@ -72,6 +73,7 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     this.route.params.subscribe(params => {
       this.postId = +params['id'];
       this.getPostDetails(this.postId);
+      this.getStatusRoom(this.postId);
     });
 
     this.galleryOptions = [
@@ -93,6 +95,7 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     ];
     this.getCurrentLocation();
     this.getStatus();
+    // this.getStatusRoom();
     this.getComments();
     // Kết nối tới SignalR Hub
     this._commentsService.startConnection();
@@ -137,11 +140,24 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     ))
   }
 
-  getStatusRoom() {
-    this._postService.statusRoom(this.postId).pipe(finalize(()=> {
-    })).subscribe((res=>{
+  getStatusRoom(id: number): void {
+    this._postService.statusRoom(id).subscribe((res=>{
         this.roomStatus = res;
+        console.log(this.roomStatus);
+        if (this.roomStatus == true) {
+          this.buttonDisabled = false;
+        } else {
+          this.buttonDisabled = true;
+        }
     }))
+  }
+
+  getStatusSchedule(): void {
+    this._postScheduleService.statusSchedule(this.post).subscribe((
+      res => {
+        this.statusSchedule = res;
+      }
+    ))
   }
 
   // Lấy vị trí hiện tại của người dùng
@@ -338,26 +354,37 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   }
 
   getPostDetails(postId: number): void {
-    this.getStatusRoom();
-    this.getStatus();
+    // this.getStatusRoom();
+    // this.getStatus();
     this._postService.getForEdit(postId).subscribe((result) => {
       this.post = result;
       this.postPhotos = result.photos;
-      if (this.roomStatus == true) {
-        this.buttonDisabled = false;
-      } else {
-        this.buttonDisabled = true;
-      }
+      // if (this.roomStatus == true) {
+      //   this.buttonDisabled = false;
+      // } else {
+      //   this.buttonDisabled = true;
+      // }
       this.galleryImages = this.getImages();
     });
   }
 
   booking(postsId: number): void {
-    this.post.id = postsId;
-    this._postScheduleService.createSchedule(this.post).subscribe((result) => {
-      this.schedule = result;
-      this.notify.success(this.l('YouAreScheduled'));
-    })
+    // this.post.id = postsId;
+    // this._postScheduleService.createSchedule(this.post).subscribe((result) => {
+    //   this.schedule = result;
+    //   this.notify.success(this.l('YouAreScheduled'));
+    // })
+    this.getStatusSchedule();
+    if (!this.statusSchedule) {
+      this.notify.warn(this.l('Bài đăng đã được lên lịch hoặc đã có người đặt'))
+    }
+    else {
+      this.post.id = postsId;
+      this._postScheduleService.createSchedule(this.post).subscribe((result) => {
+        this.schedule = result;
+        this.notify.success(this.l('YouAreScheduled'));
+      })
+    }
   }
 
   hasMainPhoto(post: GetPostForViewDto): boolean {

@@ -8,6 +8,7 @@ using Abp.Runtime.Session;
 using Abp.UI;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
 using AccommodationSearchSystem.Authorization;
 using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
@@ -187,6 +188,23 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
             }
             // Trả về thông tin về schedule đã được tạo
             return post;
+        }
+
+        public async Task<bool> StatusSchedule(EntityDto<long> input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var postCount = await (from s in _repositorySchedule.GetAll()
+                                   join user in _repositoryUser.GetAll() on s.CreatorUserId equals user.Id
+                                   where s.PostId == input.Id && s.TenantId == tenantId && s.Cancel == false
+                                   select s).CountAsync();
+            if (postCount >= 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public async Task EditSchedule(CreateOrEditSchedulesDto input)

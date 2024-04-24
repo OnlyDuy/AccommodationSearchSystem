@@ -108,6 +108,18 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
 
         }
 
+        public async Task<bool> StatusConfirm(ConfirmPackageDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var dataCheck = await _repositoryPackagePost.FirstOrDefaultAsync(e => e.Confirm == true
+                                    && e.Id == input.Id && tenantId == e.TenantId);
+            if (dataCheck != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> StatusCreate()
         {
             var tenantId = AbpSession.TenantId;

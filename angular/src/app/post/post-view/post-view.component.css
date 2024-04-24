@@ -6,12 +6,15 @@
 }
 
 .room-status.available {
-    color: green;
+    color: #febb02;
+    font-weight: 500;
 }
 
 .room-status.not-available {
     color: red;
+    font-weight: 500;
 }
+
 
 .post-image {
     max-width: 100%; /* Hình ảnh không vượt quá chiều rộng của container */

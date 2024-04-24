@@ -1,7 +1,7 @@
 import { PaginationParamsModel } from './../../shared/commom/models/base.model';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { GetPostForViewDto, ManagePostsServiceProxy, ConfirmPostByAdminDto } from '@shared/service-proxies/service-proxies';
+import { GetPostForViewDto, ManagePostsServiceProxy, ConfirmPostByAdminDto, CreateOrEditIPostDto } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
 import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-post.component';
@@ -34,6 +34,9 @@ export class PostComponent extends AppComponentBase {
   shownLogin: number;
   isAdmin: boolean = false;
   postConfirmAdmin: ConfirmPostByAdminDto = new ConfirmPostByAdminDto();
+  postRepost: CreateOrEditIPostDto = new CreateOrEditIPostDto();
+  statusPost: boolean = false;
+  statusRepost: boolean = false;
   active: boolean = false;
   tenantId: number;
 
@@ -54,7 +57,24 @@ export class PostComponent extends AppComponentBase {
     } else {
       this.isAdmin = false;
     }
+    this.getStatusConfirmAD();
     this.updateTable();
+  }
+
+  getStatusConfirmAD(): void {
+    this._postService.statusConfirmAD(this.postConfirmAdmin).subscribe((
+      res => {
+        this.statusPost = res;
+      }
+    ))
+  }
+
+  getStatusRepostPost(): void {
+    this._postService.statusRepostPost(this.postRepost).subscribe((
+      res => {
+        this.statusRepost = res;
+      }
+    ))
   }
 
   getAll(paginationParams: PaginationParamsModel) {
@@ -83,6 +103,40 @@ export class PostComponent extends AppComponentBase {
   }
   editPost() {
     this.CreateOrEditPost.show(this.selectedRow.id);
+  }
+
+  repostPost() {
+    this.getPostRepost(this.selectedRow.id);
+    console.log(this.selectedRow);
+  }
+
+  getPostRepost(PostId?: number): void {
+
+    this._postService
+        .getLoyaltyGiftItemForEdit(PostId)
+        .subscribe((result) => {
+          this.postRepost = result.createOrEditPost;
+          this.active = true;
+          this.repost();
+        });
+  }
+
+  repost() {
+    this.getStatusRepostPost();
+      this.message.confirm('', this.l('Bạn có thực sự muốn đăng lại bài viết này ?'), (isConfirme) => {
+        if (isConfirme) {
+          if (this.statusRepost) {
+            this.notify.warn("Bài đăng chưa hết hạn");
+          } else  {
+          this.postRepost.tenantId = this.tenantId;
+            this._postService.repostPost(this.postRepost)
+              .subscribe(() => {
+                this.notify.success(this.l('Đăng lại bài viết thành công'));
+                this.updateTable();
+              })
+          }
+        }
+      })
   }
 
 
@@ -134,14 +188,20 @@ export class PostComponent extends AppComponentBase {
   }
 
   confirm(): void {
+    this.getStatusConfirmAD();
     this.message.confirm('', 'Bạn có chắc chắn duyệt bài đăng này ?', (isConfirme) => {
       if (isConfirme) {
-        this.postConfirmAdmin.tenantId = this.tenantId;
-        this._postService.confirmPostAD(this.postConfirmAdmin)
-          .subscribe(() => {
-            this.notify.success('Duyệt bài đăng thành công');
-            this.updateTable();
-          })
+        if (this.statusPost) {
+          this.notify.warn("Bài đăng đã được duyệt");
+        } else  {
+          this.postConfirmAdmin.tenantId = this.tenantId;
+          this._postService.confirmPostAD(this.postConfirmAdmin)
+            .subscribe(() => {
+              this.notify.success('Duyệt bài đăng thành công');
+              this.updateTable();
+            })
+        }
+
       }
     })
   }

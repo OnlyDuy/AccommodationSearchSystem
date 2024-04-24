@@ -35,6 +35,7 @@ export class AppPackagePostsComponent extends AppComponentBase implements OnInit
   packageConfirm: ConfirmPackageDto = new ConfirmPackageDto();
   packageCancel: CancelPostDto = new CancelPostDto();
   tenantId: number;
+  statusPackage: boolean = false;
   isLoading = false;
   active: boolean = false;
 
@@ -61,7 +62,16 @@ export class AppPackagePostsComponent extends AppComponentBase implements OnInit
     //   this.paginationParams.totalPage = ceil(data.totalCount / this.maxResultCount);
     //   this.paginationParams.totalCount = data.totalCount;
     // });
+    this.getStatus();
     this.updateTable();
+  }
+
+  getStatus(): void {
+    this._packageService.statusConfirm(this.packageConfirm).subscribe((
+      res => {
+        this.statusPackage = res;
+      }
+    ))
   }
 
   getAll(paginationParams: PaginationParamsModel) {
@@ -113,14 +123,19 @@ export class AppPackagePostsComponent extends AppComponentBase implements OnInit
   }
 
   confirm(): void {
+    this.getStatus();
     this.message.confirm('', 'Bạn có chắc sẽ xác nhận ?', (isConfirme) => {
       if (isConfirme) {
-        this.packageConfirm.tenantId = this.tenantId;
-        this._packageService.confirmPackage(this.packageConfirm)
-          .subscribe(() => {
-            this.notify.success('Gói này đã được lưu');
-            this.updateTable();
-          })
+        if (this.statusPackage) {
+          this.notify.warn("Gói bài đã được xác nhận");
+        } else  {
+          this.packageConfirm.tenantId = this.tenantId;
+          this._packageService.confirmPackage(this.packageConfirm)
+            .subscribe(() => {
+              this.notify.success('Gói này đã được lưu');
+              this.updateTable();
+            })
+        }
       }
     })
   }
