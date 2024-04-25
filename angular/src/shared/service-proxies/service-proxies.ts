@@ -2211,6 +2211,64 @@ export class ManagePostsServiceProxy {
     }
 
     /**
+     * @return Success
+     */
+    getTotalLike(): Observable<PostLikeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetTotalLike";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalLike(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalLike(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PostLikeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PostLikeDto[]>;
+        }));
+    }
+
+    protected processGetTotalLike(response: HttpResponseBase): Observable<PostLikeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PostLikeDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PostLikeDto[]>(null as any);
+    }
+
+    /**
      * @param filterText (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
@@ -5466,6 +5524,63 @@ export class UserCommentServiceProxy {
     }
 
     /**
+     * @param postId (optional) 
+     * @return Success
+     */
+    getTotalComment(postId: number | undefined): Observable<number> {
+        let url_ = this.baseUrl + "/api/services/app/UserComment/GetTotalComment?";
+        if (postId === null)
+            throw new Error("The parameter 'postId' cannot be null.");
+        else if (postId !== undefined)
+            url_ += "postId=" + encodeURIComponent("" + postId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalComment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalComment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processGetTotalComment(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    /**
      * @param id (optional) 
      * @return Success
      */
@@ -6196,6 +6311,64 @@ export class ViewPostServiceProxy {
             }));
         }
         return _observableOf<PostLikeDto>(null as any);
+    }
+
+    /**
+     * @return Success
+     */
+    getTotalLike(): Observable<PostLikeDto[]> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetTotalLike";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetTotalLike(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetTotalLike(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<PostLikeDto[]>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<PostLikeDto[]>;
+        }));
+    }
+
+    protected processGetTotalLike(response: HttpResponseBase): Observable<PostLikeDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200.push(PostLikeDto.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<PostLikeDto[]>(null as any);
     }
 
     /**
@@ -8404,6 +8577,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
     phoneNumber: string | undefined;
     confirmAdmin: boolean;
     packageType: string | undefined;
+    totalLike: number;
 
     constructor(data?: IGetPostForViewDto) {
         if (data) {
@@ -8444,6 +8618,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
             this.phoneNumber = _data["phoneNumber"];
             this.confirmAdmin = _data["confirmAdmin"];
             this.packageType = _data["packageType"];
+            this.totalLike = _data["totalLike"];
         }
     }
 
@@ -8484,6 +8659,7 @@ export class GetPostForViewDto implements IGetPostForViewDto {
         data["phoneNumber"] = this.phoneNumber;
         data["confirmAdmin"] = this.confirmAdmin;
         data["packageType"] = this.packageType;
+        data["totalLike"] = this.totalLike;
         return data;
     }
 
@@ -8520,6 +8696,7 @@ export interface IGetPostForViewDto {
     phoneNumber: string | undefined;
     confirmAdmin: boolean;
     packageType: string | undefined;
+    totalLike: number;
 }
 
 export class GetPostForViewDtoPagedResultDto implements IGetPostForViewDtoPagedResultDto {
@@ -9244,6 +9421,7 @@ export class PostLikeDto implements IPostLikeDto {
     hostId: number;
     postId: number;
     like: boolean;
+    count: number;
 
     constructor(data?: IPostLikeDto) {
         if (data) {
@@ -9261,6 +9439,7 @@ export class PostLikeDto implements IPostLikeDto {
             this.hostId = _data["hostId"];
             this.postId = _data["postId"];
             this.like = _data["like"];
+            this.count = _data["count"];
         }
     }
 
@@ -9278,6 +9457,7 @@ export class PostLikeDto implements IPostLikeDto {
         data["hostId"] = this.hostId;
         data["postId"] = this.postId;
         data["like"] = this.like;
+        data["count"] = this.count;
         return data;
     }
 
@@ -9295,6 +9475,7 @@ export interface IPostLikeDto {
     hostId: number;
     postId: number;
     like: boolean;
+    count: number;
 }
 
 export class RegisterInput implements IRegisterInput {
@@ -10169,6 +10350,7 @@ export class UserCommentViewDto implements IUserCommentViewDto {
     createByName: string | undefined;
     creationTime: moment.Moment;
     timeAgo: string | undefined;
+    totalComment: number;
 
     constructor(data?: IUserCommentViewDto) {
         if (data) {
@@ -10189,6 +10371,7 @@ export class UserCommentViewDto implements IUserCommentViewDto {
             this.createByName = _data["createByName"];
             this.creationTime = _data["creationTime"] ? moment(_data["creationTime"].toString()) : <any>undefined;
             this.timeAgo = _data["timeAgo"];
+            this.totalComment = _data["totalComment"];
         }
     }
 
@@ -10209,6 +10392,7 @@ export class UserCommentViewDto implements IUserCommentViewDto {
         data["createByName"] = this.createByName;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         data["timeAgo"] = this.timeAgo;
+        data["totalComment"] = this.totalComment;
         return data;
     }
 
@@ -10229,6 +10413,7 @@ export interface IUserCommentViewDto {
     createByName: string | undefined;
     creationTime: moment.Moment;
     timeAgo: string | undefined;
+    totalComment: number;
 }
 
 export class UserDto implements IUserDto {

@@ -13,6 +13,7 @@ export class CommentsService {
   allCommentsReceived = new Subject<any>();
   updateComment = new Subject<any>();
   deleteComment = new Subject<any>();
+  getTotalComments = new BehaviorSubject<number>(0);
 
   baseUrl = environment.apiUrl;
 
@@ -50,6 +51,10 @@ export class CommentsService {
 
     this.hubConnection.on('ReceiveAllComments', (data) => {
       this.allCommentsReceived.next(data);
+    });
+
+    this.hubConnection.on('GetTotalComments', (data: number) => {
+      this.getTotalComments.next(data);;
     });
   }
 }

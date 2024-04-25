@@ -120,6 +120,21 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment
             return data;
         }
 
+        public async Task<int> GetTotalComment(long postId)
+        {
+            var tenantId = AbpSession.TenantId;
+
+            // Lấy tổng số lượng bình luận của bài đăng
+            var totalComment = await _repositoryComment.GetAll()
+                .Where(p => p.TenantId == tenantId && !p.IsDeleted && p.PostId == postId)
+                .CountAsync();
+
+            await _hubContext.Clients.All.SendAsync("GetTotalComments", totalComment);
+
+            return totalComment;
+
+        }
+
         public async Task<UserCommentDto> GetCommentById(long id)
         {
             var comment = await _repositoryComment

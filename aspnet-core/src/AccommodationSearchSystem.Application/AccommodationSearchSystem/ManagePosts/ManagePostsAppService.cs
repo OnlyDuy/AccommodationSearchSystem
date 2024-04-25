@@ -33,7 +33,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
         private readonly IRepository<PhotoPost, long> _repositoryPhotoPost;
         private readonly IRepository<User, long> _repositoryUser;
         private readonly IRepository<PackagePost, long> _repositoryPackagePost;
-
+        private readonly IRepository<UserLikePost, long> _repositoryUserLikePost;
         private readonly AccommodationSearchSystemDbContext _dbContext;
         private readonly IPhotoService _photoService;
 
@@ -44,6 +44,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             IRepository<User, long> repositoryUser,
             IRepository<PackagePost, long> repositoryPackagePost,
             IPhotoService photoService,
+            IRepository<UserLikePost, long> repositoryUserLikePost,
             AccommodationSearchSystemDbContext dbContext)
 
         {
@@ -54,6 +55,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             _dbContext = dbContext;
             _repositoryPhotoPost = repositoryPhotoPost;
             _repositoryPackagePost = repositoryPackagePost;
+            _repositoryUserLikePost = repositoryUserLikePost;
 
         }
         public async Task CreateOrEdit(CreateOrEditIPostDto input)
@@ -182,6 +184,15 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                     PostId = photo.PostId
                 }).ToList(),
             }).ToList();
+
+            // Lấy danh sách lượt thích của mỗi bài viết
+            var totalLike = await GetTotalLike();
+            // Gán tổng số  lượt thích cho mỗi bài viết
+            foreach (var item in postDtos)
+            {
+                var likeInfor = totalLike.FirstOrDefault(l => l.TenantId == tenantId && l.PostId == item.Id);
+                item.TotalLike = likeInfor?.Count ?? 0;
+            }
 
             return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
 
@@ -584,7 +595,39 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 }).ToList(),
             }).ToList();
 
+            // Lấy danh sách lượt thích của mỗi bài viết
+            var totalLike = await GetTotalLike();
+            // Gán tổng số  lượt thích cho mỗi bài viết
+            foreach (var item in postDtos)
+            {
+                var likeInfor = totalLike.FirstOrDefault(l => l.TenantId == tenantId && l.PostId == item.Id);
+                item.TotalLike = likeInfor?.Count ?? 0;
+            }
+
             return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
+        }
+
+        public async Task<List<PostLikeDto>> GetTotalLike()
+        {
+            var tenantId = AbpSession.TenantId;
+            var data = new List<PostLikeDto>();
+
+            // Lấy sô lượng yêu thích theo từng bài đăng
+            var postCountLike = await _repositoryUserLikePost.GetAll()
+                .Where(p => p.TenantId == tenantId && !p.IsDeleted)
+            .GroupBy(p => p.PostId)
+                .Select(g => new { TenantId = tenantId, PostId = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            // Chuyển kết quả thành DTO
+            data = postCountLike.Select(pc => new PostLikeDto
+            {
+                TenantId = pc.TenantId,
+                PostId = pc.PostId,
+                Count = pc.Count
+            }).ToList();
+
+            return data;
         }
 
         public async Task<PagedResultDto<GetPostForViewDto>> GetAllForHost(GetPostInputDto input)

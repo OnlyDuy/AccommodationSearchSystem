@@ -39,5 +39,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public string PhoneNumber { get; set; }
         public bool ConfirmAdmin { get; set; }
         public string PackageType { get; set; }
+        public int TotalLike { get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public int PostId { get; set; } // Id bài đăng
         public bool Like { get; set; }
 
+        public int Count { get; set; }
     }
 }

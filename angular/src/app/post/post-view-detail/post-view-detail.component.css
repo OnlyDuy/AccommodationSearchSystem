@@ -24,6 +24,13 @@ agm-map {
   font-style: italic;
 }
 
+.comment__title-cmt {
+  display: flex;
+  margin: 21px 0 0 19px;
+  color: #0d0e0f;
+  font-size: 14px;
+}
+
 .card-with-elevation {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đây là shadow tạo hiệu ứng elevation */
 }

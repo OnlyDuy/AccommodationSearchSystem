@@ -77,6 +77,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
   comments: UserCommentDto[] = [];
   editMode: boolean = false;
   commentIdToUpdate: number;
+  totalCmt: number;
 
   constructor(
     injector: Injector,
@@ -126,6 +127,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
     ];
     this.getCurrentLocation();
     this.getComments();
+    this.getTotalComments();
     // Kết nối tới SignalR Hub
     this._commentsService.startConnection();
 
@@ -157,6 +159,9 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
 
     this._commentsService.commentReceived.subscribe((cmt: UserCommentDto) => {
         this.comments.push(cmt);
+    });
+    this._commentsService.getTotalComments.subscribe((total: number) => {
+      this.totalCmt = total;
     });
   }
 
@@ -417,6 +422,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
     this._userCommentService.addComment(this.postId, this.userComment).subscribe(() => {
       this.notify.success('Thêm bình luận thành công');
       this.getComments();
+      this.getTotalComments();
       this.comment = "";
     });
   }
@@ -439,6 +445,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
     .subscribe(() => {
       this.notify.success('Xóa bình luận thành công');
       this.getComments();
+      this.getTotalComments();
       this.comment = "";
     })
   }
@@ -454,6 +461,13 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
         this.commentsView = result;
       });
   }
+
+  getTotalComments() {
+    this._userCommentService.getTotalComment(this.postId).subscribe(total => {
+      this.totalCmt = total;
+    });
+  }
+
 
   calculateTimeAgo(timeDiff: number): string {
     let timeAgo: string;

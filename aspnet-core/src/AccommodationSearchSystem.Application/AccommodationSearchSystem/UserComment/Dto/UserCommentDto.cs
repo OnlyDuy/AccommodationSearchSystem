@@ -24,6 +24,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.UserComment.Dto
         public string CreateByName { get; set; } // Tên người dùng
         public DateTime CreationTime { get; set; }
         public String TimeAgo { get; set; }
+        public int TotalComment { get; set; }
 
     }
 }

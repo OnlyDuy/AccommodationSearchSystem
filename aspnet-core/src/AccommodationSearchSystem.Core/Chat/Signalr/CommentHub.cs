@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Abp.Runtime.Session;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,11 @@ namespace AccommodationSearchSystem.Chat.Signalr
         {
             // Gửi danh sách bình luận tới tất cả client
             await Clients.All.SendAsync("ReceiveAllComments", comments);
+        }
+        public async Task GetTotalComments(int comments)
+        {
+            // Gửi danh sách tổng số lượng bình luận tới tất cả client
+            await Clients.All.SendAsync("GetTotalComments", comments);
         }
     }
 }

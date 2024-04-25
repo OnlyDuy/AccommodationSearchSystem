@@ -104,7 +104,10 @@
   </div>
   <div class="col-9">
     <div class="card">
-      <span class="comment__title">Bình luận gần nhất</span>
+      <div class="d-flex">
+        <span class="comment__title">Bình luận gần nhất</span>
+        <span class="comment__title-cmt">{{totalCmt}} bình luận</span>
+      </div>
       <div class="card-body card_chat">
         <ul class="chat">
           <li *ngFor="let comment of commentsView">

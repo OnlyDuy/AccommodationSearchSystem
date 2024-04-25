@@ -7,6 +7,7 @@ using Abp.UI;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.Statistical.Dto;
 using AccommodationSearchSystem.Authorization;
 using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
@@ -20,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static AccommodationSearchSystem.Authorization.Roles.StaticRoleNames;
 
 namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
 {
@@ -195,6 +197,16 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                 }).ToList(),
             }).ToList();
 
+
+            // Lấy danh sách lượt thích của mỗi bài viết
+            var totalLike = await GetTotalLike();
+            // Gán tổng số  lượt thích cho mỗi bài viết
+            foreach (var item in postDtos)
+            {
+                var likeInfor = totalLike.FirstOrDefault(l => l.TenantId == tenantId && l.PostId == item.Id);
+                item.TotalLike = likeInfor?.Count ?? 0;
+            }
+
             return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
         }
 
@@ -255,6 +267,15 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
                     PostId = photo.PostId
                 }).ToList(),
             }).ToList();
+
+            // Lấy danh sách lượt thích của mỗi bài viết
+            var totalLike = await GetTotalLike();
+            // Gán tổng số  lượt thích cho mỗi bài viết
+            foreach (var item in postDtos)
+            {
+                var likeInfor = totalLike.FirstOrDefault(l => l.TenantId == tenantId && l.PostId == item.Id); 
+                item.TotalLike = likeInfor?.Count ?? 0;
+            }
 
             return new PagedResultDto<GetPostForViewDto>(totalCount, postDtos);
         }
@@ -333,6 +354,29 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
             }
             // Trả về thông tin về schedule đã được tạo
             return post;
+        }
+
+        public async Task<List<PostLikeDto>> GetTotalLike()
+        {
+            var tenantId = AbpSession.TenantId;
+            var data = new List<PostLikeDto>();
+
+            // Lấy sô lượng yêu thích theo từng bài đăng
+            var postCountLike = await _repositoryUserLikePost.GetAll()
+                .Where(p => p.TenantId == tenantId && !p.IsDeleted)
+            .GroupBy(p => p.PostId)
+                .Select(g => new { TenantId = tenantId, PostId = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            // Chuyển kết quả thành DTO
+            data = postCountLike.Select(pc => new PostLikeDto
+            {
+                TenantId = pc.TenantId,
+                PostId = pc.PostId,
+                Count = pc.Count
+            }).ToList();
+
+            return data;
         }
 
         public async Task<bool> StatusRoomLike(long Id)
