@@ -202,7 +202,7 @@
             </section>
         </tab>
         <!-- Lịch hẹn đã hủy -->
-        <tab [heading]="'Lịch hẹn đã hủy'" class="pt-3 px-2" *ngIf="isHost">
+        <tab [heading]="'Lịch hẹn đã hủy'" class="pt-3 px-2">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row">
@@ -278,9 +278,9 @@
                                                 Giờ hẹn
                                             </div>
                                         </th>
-                                        <th style="min-width:10rem">
+                                        <th style="min-width:15rem">
                                             <div class="flex align-items-center">
-                                                Trạng thái chờ
+                                                Lý do hủy
                                             </div>
                                         </th>
                                     </tr>
@@ -303,9 +303,12 @@
                                         <td style="min-width:15rem">
                                             {{ rowDataHost.hour | date: 'HH:mm:ss' }}
                                         </td>
-                                        <td style="min-width:10rem">
+                                        <!-- <td style="min-width:10rem">
                                             <i class="pi"
                                                 [ngClass]="{ 'text-green-500 pi-check-circle': rowDataHost.confirm === true, 'text-red-500 pi-times-circle': rowDataHost.confirm === false } "></i>
+                                        </td> -->
+                                        <td style="min-width:15rem">
+                                            {{ rowDataHost.reasonCancel }}
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -378,9 +381,9 @@
                                                 Giờ hẹn
                                             </div>
                                         </th>
-                                        <th style="min-width:10rem">
+                                        <th style="min-width:15rem">
                                             <div class="flex align-items-center">
-                                                Trạng thái chờ
+                                               Lý do hủy
                                             </div>
                                         </th>
                                     </tr>
@@ -403,9 +406,12 @@
                                         <td style="min-width:15rem">
                                             {{ rowDataHost.hour | date: 'HH:mm:ss' }}
                                         </td>
-                                        <td style="min-width:10rem">
+                                        <!-- <td style="min-width:10rem">
                                             <i class="pi"
                                                 [ngClass]="{ 'text-green-500 pi-check-circle': rowDataHost.confirm === true, 'text-red-500 pi-times-circle': rowDataHost.confirm === false } "></i>
+                                        </td> -->
+                                        <td style="min-width:15rem">
+                                            {{ rowDataHost.reasonCancel }}
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -424,7 +430,7 @@
             </section>
         </tab>
         <!-- Lịch hẹn bị hủy -->
-        <tab [heading]="'Lịch hẹn bị hủy'" class="pt-3 px-2" *ngIf="isHost">
+        <tab [heading]="'Lịch hẹn bị hủy'" class="pt-3 px-2">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row">
@@ -500,9 +506,9 @@
                                                 Giờ hẹn
                                             </div>
                                         </th>
-                                        <th style="min-width:10rem">
+                                        <th style="min-width:15rem">
                                             <div class="flex align-items-center">
-                                                Trạng thái chờ
+                                                Lý do hủy
                                             </div>
                                         </th>
                                     </tr>
@@ -525,9 +531,12 @@
                                         <td style="min-width:15rem">
                                             {{ rowDataRenter.hour | date: 'HH:mm:ss' }}
                                         </td>
-                                        <td style="min-width:10rem">
+                                        <!-- <td style="min-width:10rem">
                                             <i class="pi"
                                                 [ngClass]="{ 'text-green-500 pi-check-circle': rowDataRenter.confirm === true, 'text-red-500 pi-times-circle': rowDataRenter.confirm === false } "></i>
+                                        </td> -->
+                                        <td style="min-width:15rem">
+                                            {{ rowDataRenter.reasonCancel }}
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -600,9 +609,9 @@
                                                 Giờ hẹn
                                             </div>
                                         </th>
-                                        <th style="min-width:10rem">
+                                        <th style="min-width:15rem">
                                             <div class="flex align-items-center">
-                                                Trạng thái chờ
+                                                Lý do hủy
                                             </div>
                                         </th>
                                     </tr>
@@ -625,9 +634,12 @@
                                         <td style="min-width:15rem">
                                             {{ rowDataRenter.hour | date: 'HH:mm:ss' }}
                                         </td>
-                                        <td style="min-width:10rem">
+                                        <!-- <td style="min-width:10rem">
                                             <i class="pi"
                                                 [ngClass]="{ 'text-green-500 pi-check-circle': rowDataRenter.confirm === true, 'text-red-500 pi-times-circle': rowDataRenter.confirm === false } "></i>
+                                        </td> -->
+                                        <td style="min-width:15rem">
+                                            {{ rowDataRenter.reasonCancel }}
                                         </td>
                                     </tr>
                                 </ng-template>

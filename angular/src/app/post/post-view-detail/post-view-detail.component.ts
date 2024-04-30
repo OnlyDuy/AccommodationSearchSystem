@@ -381,7 +381,7 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
     //   this.notify.success(this.l('YouAreScheduled'));
     // })
     this.getStatusSchedule();
-    if (!this.statusSchedule) {
+    if (this.statusSchedule == true) {
       this.notify.warn(this.l('Bài đăng đã được lên lịch hoặc đã có người đặt'))
     }
     else {

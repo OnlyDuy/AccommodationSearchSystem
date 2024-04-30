@@ -373,7 +373,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
             var tenantId = AbpSession.TenantId;
             var UserId = AbpSession.UserId;
             var query = from s in _repositorySchedule.GetAll()
-                        .Where(e => e.TenantId == tenantId && e.CancelById == e.HostId && e.Cancel == true)
+                        .Where(e => (e.TenantId == tenantId && e.CancelById == UserId && e.Cancel == true && e.CreatorUserId != UserId )
+                                || (e.TenantId == tenantId && e.CancelById == UserId && e.Cancel == true && e.CreatorUserId == UserId) )
                         .Where(e => input.filterText == null || e.Confirm.Equals(input.filterText))
                         join p in _repositoryPost.GetAll() on s.PostId equals p.Id
                         join u in _repositoryUser.GetAll() on s.CreatorUserId equals u.Id
@@ -390,6 +391,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                             Hour = s.Hour,
                             Confirm = s.Confirm,
                             Cancel = s.Cancel,
+                            ReasonCancel = s.ReasonCancel,
                         };
 
             var totalCount = await query.CountAsync();
@@ -402,7 +404,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
             var tenantId = AbpSession.TenantId;
             var UserId = AbpSession.UserId;
             var query = from s in _repositorySchedule.GetAll()
-                        .Where(e => e.TenantId == tenantId && e.CancelById == e.CreatorUserId && e.Cancel == true)
+                        .Where(e => (e.TenantId == tenantId && e.CancelById != UserId && e.Cancel == true && e.HostId == UserId)
+                            || (e.TenantId == tenantId && e.CancelById != UserId && e.Cancel == true && e.CreatorUserId == UserId))
                         .Where(e => input.filterText == null || e.Confirm.Equals(input.filterText))
                         join p in _repositoryPost.GetAll() on s.PostId equals p.Id
                         join u in _repositoryUser.GetAll() on s.CreatorUserId equals u.Id
@@ -419,6 +422,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                             Hour = s.Hour,
                             Confirm = s.Confirm,
                             Cancel = s.Cancel,
+                            ReasonCancel = s.ReasonCancel,
                         };
 
             var totalCount = await query.CountAsync();

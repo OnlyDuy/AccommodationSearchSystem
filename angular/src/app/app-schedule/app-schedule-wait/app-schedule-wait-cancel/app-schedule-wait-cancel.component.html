@@ -16,9 +16,11 @@
                                     Lý do hủy lịch
                                 </label>
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" name="reasonCancel" id="reasonCancel" required
-                                        [(ngModel)]="schedules.reasonCancel"   #reasonCancelModel="ngModel" #reasonCancelEl/>
-                                    <abp-validation-summary [control]="reasonCancelModel" [controlEl]="reasonCancelEl"></abp-validation-summary>
+                                    <input type="text" class="form-control" name="reasonCancel" id="reasonCancel"
+                                        required [(ngModel)]="schedules.reasonCancel" #reasonCancelModel="ngModel"
+                                        #reasonCancelEl />
+                                    <abp-validation-summary [control]="reasonCancelModel"
+                                        [controlEl]="reasonCancelEl"></abp-validation-summary>
                                 </div>
                             </div>
                         </tab>

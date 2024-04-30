@@ -101,11 +101,6 @@ export class AppScheduleSuccessComponent extends AppComponentBase implements OnI
     console.log(this.selectedRow);
   }
 
-  viewSchedules() {
-    this.AppScheduleWaitView.show(this.selectedRow.id);
-    console.log(this.selectedRow);
-  }
-
   rentalConfirm() {
     this.getScheduleConfirm(this.selectedRow.id);
     console.log(this.selectedRow);

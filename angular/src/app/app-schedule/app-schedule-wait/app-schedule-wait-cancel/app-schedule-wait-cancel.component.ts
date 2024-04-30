@@ -3,7 +3,6 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { CancelSchedulesDto, ManageAppointmentSchedulesServiceProxy, SessionServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { AppScheduleWaitComponent } from '../app-schedule-wait.component';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -22,7 +21,6 @@ export class AppScheduleWaitCancelComponent extends AppComponentBase implements 
   schedules: CancelSchedulesDto = new CancelSchedulesDto();
   tenantId: number;
   scheduleWaitComponent: AppScheduleWaitComponent;
-  minDate: Date;
 
   constructor(
     injector: Injector,
