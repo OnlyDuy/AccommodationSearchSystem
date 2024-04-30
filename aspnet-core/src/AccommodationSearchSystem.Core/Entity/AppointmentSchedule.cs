@@ -27,6 +27,7 @@ namespace AccommodationSearchSystem.Entity
         public int PostId { get; set; } // Id bài đăng
         public bool Cancel { get; set; }
         public int CancelById { get; set; }
+        public string ReasonCancel { get; set; }  // Lý do hủy lịch
 
     }
 }

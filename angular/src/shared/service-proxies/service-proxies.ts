@@ -896,6 +896,115 @@ export class ManageAppointmentSchedulesServiceProxy {
      * @param body (optional) 
      * @return Success
      */
+    rentalConfirm(body: Int64EntityDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/RentalConfirm";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRentalConfirm(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRentalConfirm(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRentalConfirm(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    statusRentalConfirm(body: Int64EntityDto | undefined): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/StatusRentalConfirm";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processStatusRentalConfirm(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processStatusRentalConfirm(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<boolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<boolean>;
+        }));
+    }
+
+    protected processStatusRentalConfirm(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
     cancelSchedules(body: CancelSchedulesDto | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/ManageAppointmentSchedules/CancelSchedules";
         url_ = url_.replace(/[?&]$/, "");
@@ -4413,6 +4522,7 @@ export class CancelSchedulesDto implements ICancelSchedulesDto {
     creatorUserId: number;
     cancel: boolean;
     cancelById: number;
+    reasonCancel: string | undefined;
 
     constructor(data?: ICancelSchedulesDto) {
         if (data) {
@@ -4431,6 +4541,7 @@ export class CancelSchedulesDto implements ICancelSchedulesDto {
             this.creatorUserId = _data["creatorUserId"];
             this.cancel = _data["cancel"];
             this.cancelById = _data["cancelById"];
+            this.reasonCancel = _data["reasonCancel"];
         }
     }
 
@@ -4449,6 +4560,7 @@ export class CancelSchedulesDto implements ICancelSchedulesDto {
         data["creatorUserId"] = this.creatorUserId;
         data["cancel"] = this.cancel;
         data["cancelById"] = this.cancelById;
+        data["reasonCancel"] = this.reasonCancel;
         return data;
     }
 
@@ -4467,6 +4579,7 @@ export interface ICancelSchedulesDto {
     creatorUserId: number;
     cancel: boolean;
     cancelById: number;
+    reasonCancel: string | undefined;
 }
 
 export class ChangePasswordDto implements IChangePasswordDto {
@@ -4854,6 +4967,7 @@ export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
     day: moment.Moment;
     hour: moment.Moment;
     postId: number;
+    reasonCancel: string | undefined;
     getPostForViewDtos: GetPostForViewDto;
 
     constructor(data?: ICreateOrEditSchedulesDto) {
@@ -4877,6 +4991,7 @@ export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
             this.day = _data["day"] ? moment(_data["day"].toString()) : <any>undefined;
             this.hour = _data["hour"] ? moment(_data["hour"].toString()) : <any>undefined;
             this.postId = _data["postId"];
+            this.reasonCancel = _data["reasonCancel"];
             this.getPostForViewDtos = _data["getPostForViewDtos"] ? GetPostForViewDto.fromJS(_data["getPostForViewDtos"]) : <any>undefined;
         }
     }
@@ -4900,6 +5015,7 @@ export class CreateOrEditSchedulesDto implements ICreateOrEditSchedulesDto {
         data["day"] = this.day ? this.day.toISOString() : <any>undefined;
         data["hour"] = this.hour ? this.hour.toISOString() : <any>undefined;
         data["postId"] = this.postId;
+        data["reasonCancel"] = this.reasonCancel;
         data["getPostForViewDtos"] = this.getPostForViewDtos ? this.getPostForViewDtos.toJSON() : <any>undefined;
         return data;
     }
@@ -4923,6 +5039,7 @@ export interface ICreateOrEditSchedulesDto {
     day: moment.Moment;
     hour: moment.Moment;
     postId: number;
+    reasonCancel: string | undefined;
     getPostForViewDtos: GetPostForViewDto;
 }
 
@@ -5349,6 +5466,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
     hour: moment.Moment;
     confirm: boolean;
     cancel: boolean;
+    reasonCancel: string | undefined;
 
     constructor(data?: IGetAllSchedulesDto) {
         if (data) {
@@ -5370,6 +5488,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
             this.hour = _data["hour"] ? moment(_data["hour"].toString()) : <any>undefined;
             this.confirm = _data["confirm"];
             this.cancel = _data["cancel"];
+            this.reasonCancel = _data["reasonCancel"];
         }
     }
 
@@ -5391,6 +5510,7 @@ export class GetAllSchedulesDto implements IGetAllSchedulesDto {
         data["hour"] = this.hour ? this.hour.toISOString() : <any>undefined;
         data["confirm"] = this.confirm;
         data["cancel"] = this.cancel;
+        data["reasonCancel"] = this.reasonCancel;
         return data;
     }
 
@@ -5412,6 +5532,7 @@ export interface IGetAllSchedulesDto {
     hour: moment.Moment;
     confirm: boolean;
     cancel: boolean;
+    reasonCancel: string | undefined;
 }
 
 export class GetAllSchedulesDtoPagedResultDto implements IGetAllSchedulesDtoPagedResultDto {

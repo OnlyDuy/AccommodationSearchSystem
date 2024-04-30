@@ -286,18 +286,22 @@ export class PostViewDetailComponent extends AppComponentBase implements OnInit 
   }
 
   booking(postsId: number): void {
-    this.post.id = postsId;
-    this._postScheduleService.createSchedule(this.post).subscribe((result) => {
-      this.schedule = result;
-      this.notify.success(this.l('YouAreScheduled'));
-    })
-  }
-
-  getStatusRoom() {
-    this._postService.statusRoom(this.postId).pipe(finalize(()=> {
-    })).subscribe((res=>{
-        this.roomStatus = res;
-    }))
+    // this.post.id = postsId;
+    // this._postScheduleService.createSchedule(this.post).subscribe((result) => {
+    //   this.schedule = result;
+    //   this.notify.success(this.l('YouAreScheduled'));
+    // })
+    this.getStatusSchedule();
+    if (!this.statusSchedule) {
+      this.notify.warn(this.l('Bài đăng đã được lên lịch hoặc đã có người đặt'))
+    }
+    else {
+      this.post.id = postsId;
+      this._postScheduleService.createSchedule(this.post).subscribe((result) => {
+        this.schedule = result;
+        this.notify.success(this.l('YouAreScheduled'));
+      })
+    }
   }
 
   hasMainPhoto(post: GetPostForViewDto): boolean {

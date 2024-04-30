@@ -17,5 +17,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public DateTime Hour { get; set; }
         public bool Confirm { get; set; }
         public bool Cancel { get; set; }
+        public string ReasonCancel { get; set; }  // Lý do hủy lịch
     }
 }

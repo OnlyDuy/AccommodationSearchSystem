@@ -1,9 +1,55 @@
 ﻿<div>
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <h1 class="font__title-v2">{{"NewPost" | localize}}</h1>
+      <div class="row mb-2">
+        <div class="col-3">
+          <button class="btn btn-info" (click)="updateTable()">
+            <i class="pi pi-undo"></i>
+            {{ "Reset" | localize }}
+        </button>
+        </div>
+        <div class="col-9">
+          <div class="row">
+            <!-- Lọc theo loại phòng-->
+            <div class="col-md-2">
+              <select class="form-control custom-select" [(ngModel)]="dataPriceCategory">
+                <option value="all">Loại phòng</option>
+                <option *ngFor="let priceCategory of priceCategoris" [value]="priceCategory">{{ priceCategory }}</option>
+              </select>
+            </div>
+            <!-- Lọc theo địa chỉ-->
+            <div class="col-md-2">
+              <select class="form-control custom-select" [(ngModel)]="dataDistrict">
+                <option value="all">Phường</option>
+                <option *ngFor="let district of districts" [value]="district">{{ district }}</option>
+              </select>
+            </div>
+            <!-- Lọc theo giá-->
+            <div class="col-md-2">
+              <select class="form-control custom-select" [(ngModel)]="dataRoomPrice">
+                <option value="all">Giá phòng</option>
+                <option value="1">Dưới 1 triệu đồng</option>
+                <option value="2">Từ 1 đến 2 triệu đồng</option>
+                <option value="3">Từ 2 đến 3 triệu đồng</option>
+                <option value="4">Từ 3 đến 4 triệu đồng</option>
+                <option value="5">Trên 4 triệu đồng</option>
+              </select>
+            </div>
+            <!-- Lọc theo diện tích -->
+            <div class="col-md-2">
+              <select class="form-control custom-select" [(ngModel)]="dataSquare">
+                <option value="all">Diện tích</option>
+                <option value="1">Dưới 20m2</option>
+                <option value="2">Từ 20m2 đến 30m2</option>
+                <option value="3">Từ 30m2 đến 40m2</option>
+                <option value="4">Trên 40m2</option>
+              </select>
+            </div>
+            <!-- Search button -->
+            <div class="col-md-2">
+              <button class="btn btn-outline-secondary btn-search" (click)="search()">Tìm kiếm</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

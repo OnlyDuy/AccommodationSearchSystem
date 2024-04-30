@@ -22,6 +22,8 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public DateTime Hour { get; set; }
         public int PostId { get; set; } // Id bài đăng
 
+        public string ReasonCancel { get; set; }  // Lý do hủy lịch
+
         public GetPostForViewDto GetPostForViewDtos { get; set; }
     }
 

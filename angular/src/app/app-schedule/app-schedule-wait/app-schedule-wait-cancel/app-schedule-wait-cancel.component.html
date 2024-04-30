@@ -1,0 +1,36 @@
+<div bsModal #cancelScheduleModal="bs-modal" class="modal fade" aria-labelledby="cancelScheduleModal" aria-hidden="true"
+    [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-md modal-lg">
+        <div class="modal-content">
+            <form class="form-horizontal" autocomplete="off" #cancelScheduleFormModal="ngForm" (ngSubmit)="save()"
+                *ngIf="active">
+
+                <abp-modal-header *ngIf="schedules.id" [title]="'Lịch hẹn'"
+                    (onCloseClick)="cancelScheduleModal.hide()"></abp-modal-header>
+
+                <div class="modal-body">
+                    <tabset>
+                        <tab [heading]="'Xác nhận hủy lịch hẹn'" class="pt-3 px-2">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="reasonCancel">
+                                    Lý do hủy lịch
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="reasonCancel" id="reasonCancel" required
+                                        [(ngModel)]="schedules.reasonCancel"   #reasonCancelModel="ngModel" #reasonCancelEl/>
+                                    <abp-validation-summary [control]="reasonCancelModel" [controlEl]="reasonCancelEl"></abp-validation-summary>
+                                </div>
+                            </div>
+                        </tab>
+
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <abp-modal-footer [cancelDisabled]="saving"
+                        [saveDisabled]="!cancelScheduleFormModal.form.valid || saving"
+                        (onCancelClick)="cancelScheduleModal.hide()"></abp-modal-footer>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

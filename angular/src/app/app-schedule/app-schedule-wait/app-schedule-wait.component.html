@@ -21,7 +21,7 @@
                                 <i class="fas fa-pencil-alt"></i>
                                 {{ "Edit" | localize }}
                             </button>
-                            <button class="btn bg-danger" [disabled]="!selectedRow" (click)="cancelSchedule()">
+                            <button class="btn bg-danger mr-2" [disabled]="!selectedRow" (click)="cancelReasonSchedule()">
                                 <i class="fas fa-trash-alt"></i>
                                 Hủy lịch
                             </button>
@@ -692,4 +692,8 @@
 <AppScheduleWaitUpdate #AppScheduleWaitUpdate>
 
 </AppScheduleWaitUpdate>
+
+<AppScheduleWaitCancel #AppScheduleWaitCancel>
+
+</AppScheduleWaitCancel>
 

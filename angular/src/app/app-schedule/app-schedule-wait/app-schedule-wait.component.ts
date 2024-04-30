@@ -6,6 +6,7 @@ import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
 import { AppScheduleWaitUpdateComponent } from './app-schedule-wait-update/app-schedule-wait-update.component';
 import { AppScheduleWaitViewPostComponent } from './app-schedule-wait-view-post/app-schedule-wait-view-post.component';
+import { AppScheduleWaitCancelComponent } from './app-schedule-wait-cancel/app-schedule-wait-cancel.component';
 
 @Component({
   selector: 'app-app-schedule-wait',
@@ -16,6 +17,7 @@ import { AppScheduleWaitViewPostComponent } from './app-schedule-wait-view-post/
 export class AppScheduleWaitComponent extends AppComponentBase implements OnInit {
   @ViewChild('AppScheduleWaitUpdate') AppScheduleWaitUpdate: AppScheduleWaitUpdateComponent;
   @ViewChild('AppScheduleWaitView') AppScheduleWaitView: AppScheduleWaitViewPostComponent;
+  @ViewChild('AppScheduleWaitCancel') AppScheduleWaitCancel: AppScheduleWaitCancelComponent;
 
 
   isHost: boolean = false;
@@ -183,7 +185,7 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
     })
   }
 
-  // HỦY LỊCH HẸN
+  // HỦY LỊCH HẸN KHÔNG LÝ DO
   cancelSchedule() {
     this.getScheduleCancel(this.selectedRow.id);
     console.log(this.selectedRow);
@@ -208,6 +210,12 @@ export class AppScheduleWaitComponent extends AppComponentBase implements OnInit
           })
       }
     })
+  }
+
+  // HỦY LỊCH HẸN CÓ LÝ DO
+  cancelReasonSchedule() {
+    this.AppScheduleWaitCancel.show(this.selectedRow.id);
+    console.log(this.selectedRow);
   }
 
 }

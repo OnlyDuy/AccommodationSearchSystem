@@ -14,6 +14,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
         public int CreatorUserId { get; set; }
         public bool Cancel { get; set; }
         public int CancelById { get; set; }
+        public string ReasonCancel { get; set; }  // Lý do hủy lịch
 
     }
 }

@@ -63,18 +63,62 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                     // Lưu thay đổi vào cơ sở dữ liệu
                     await _repositorySchedule.UpdateAsync(schedule);
                     // Lấy thông tin từ _repositoryPost và cập nhật RoomStatus
-                    var post = await (from s in _repositorySchedule.GetAll()
-                                      join p in _repositoryPost.GetAll() on s.PostId equals p.Id
-                                      where s.Id == input.Id
-                                      select p).FirstOrDefaultAsync();
+                    //var post = await (from s in _repositorySchedule.GetAll()
+                    //                  join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                    //                  where s.Id == input.Id
+                    //                  select p).FirstOrDefaultAsync();
 
-                    if (post != null)
-                    {
-                        post.RoomStatus = false;
-                        await _repositoryPost.UpdateAsync(post);
-                    }
+                    //if (post != null)
+                    //{
+                    //    post.RoomStatus = false;
+                    //    await _repositoryPost.UpdateAsync(post);
+                    //}
                 }
             }
+        }
+
+        public async Task RentalConfirm(EntityDto<long> input) {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+
+            var schedule = await _repositorySchedule.FirstOrDefaultAsync(e => e.Id == input.Id && UserId == e.HostId);
+            if (schedule != null)
+            {
+                // Lấy thông tin từ _repositoryPost và cập nhật RoomStatus
+                var post = await (from s in _repositorySchedule.GetAll()
+                                  join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                                  where s.Id == input.Id
+                                  select p).FirstOrDefaultAsync();
+
+                if (post != null)
+                {
+                    post.RoomStatus = false;
+                    await _repositoryPost.UpdateAsync(post);
+                }
+            }
+        }
+
+        public async Task<bool> StatusRentalConfirm(EntityDto<long> input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var UserId = AbpSession.UserId;
+
+            var schedule = await _repositorySchedule.FirstOrDefaultAsync(e => e.Id == input.Id && UserId == e.HostId);
+            if (schedule != null)
+            {
+                // Lấy thông tin từ _repositoryPost và cập nhật RoomStatus
+                var post = await (from s in _repositorySchedule.GetAll()
+                                  join p in _repositoryPost.GetAll() on s.PostId equals p.Id
+                                  where s.Id == input.Id
+                                  select p).FirstOrDefaultAsync(e => e.RoomStatus == false);
+
+                if (post != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            return true;
         }
 
         public async Task CancelSchedules(CancelSchedulesDto input)
@@ -98,7 +142,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                     // Cập nhật thuộc tính của đối tượng schedule
                     schedule.Cancel = true;
                     schedule.CancelById = (int)UserId;
-
+                    schedule.ReasonCancel = input.ReasonCancel;
                     // Lưu thay đổi vào cơ sở dữ liệu
                     await _repositorySchedule.UpdateAsync(schedule);
                 }

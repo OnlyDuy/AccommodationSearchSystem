@@ -4,6 +4,7 @@ using AccommodationSearchSystem.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccommodationSearchSystem.Migrations
 {
     [DbContext(typeof(AccommodationSearchSystemDbContext))]
-    partial class AccommodationSearchSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240430095518_AddColumnReason")]
+    partial class AddColumnReason
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2447,6 +2449,21 @@ namespace AccommodationSearchSystem.Migrations
                     b.Navigation("Users");
                 });
 
+            modelBuilder.Entity("AccommodationSearchSystem.Entity.PackagePost", b =>
+                {
+                    b.HasOne("AccommodationSearchSystem.Entity.Post", "Posts")
+                        .WithMany("PackagePosts")
+                        .HasForeignKey("PostsId");
+
+                    b.HasOne("AccommodationSearchSystem.Authorization.Users.User", "Users")
+                        .WithMany()
+                        .HasForeignKey("UsersId");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("AccommodationSearchSystem.Entity.PhotoPost", b =>
                 {
                     b.HasOne("AccommodationSearchSystem.Entity.Post", "Post")
@@ -2581,6 +2598,8 @@ namespace AccommodationSearchSystem.Migrations
             modelBuilder.Entity("AccommodationSearchSystem.Entity.Post", b =>
                 {
                     b.Navigation("AppointmentSchedules");
+
+                    b.Navigation("PackagePosts");
 
                     b.Navigation("PhotoPosts");
 
