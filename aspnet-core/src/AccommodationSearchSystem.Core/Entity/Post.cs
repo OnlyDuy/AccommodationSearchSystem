@@ -41,7 +41,9 @@ namespace AccommodationSearchSystem.Entity
         public ICollection<PhotoPost> PhotoPosts { get; set; }
         public bool Conditioner { get; set; } // Có điều hóa hay không
         public ICollection<AppointmentSchedule> AppointmentSchedules { get; set; }
+        public ICollection<UserLikePost> UserLikePosts { get; set; }
+        public ICollection<PackagePost> PackagePosts { get; set; }
         public bool ConfirmAdmin { get; set; }
-
+        public ICollection<UserComments> UserCommentes { get; set; }
     }
 }

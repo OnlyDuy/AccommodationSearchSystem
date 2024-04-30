@@ -21,9 +21,13 @@
                                 <i class="fas fa-pencil-alt"></i>
                                 {{ "Edit" | localize }}
                             </button>
-                            <button class="btn bg-danger mr-2" [disabled]="!selectedRow" (click)="cancelReasonSchedule()">
+                            <button class="btn bg-danger mr-2" [disabled]="!selectedRow" (click)="cancelSchedule()">
                                 <i class="fas fa-trash-alt"></i>
                                 Hủy lịch
+                            </button>
+                            <button class="btn btn-info" (click)="updateTable()">
+                                <i class="pi pi-undo"></i>
+                                {{ "Reset" | localize }}
                             </button>
                         </div>
                     </div>
@@ -33,38 +37,14 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body" *ngIf="isHost">
-                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
-                                <ng-template pTemplate="caption">
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button class="btn btn-outline-info" (click)="clear(dt1)">
-                                                    <i class="pi pi-undo"></i>
-                                                    {{ "Reset" | localize }}
-                                                </button>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!-- <div class="form-outline mb-2" data-mdb-input-init>
 
-                                                    <input pInputText class="form-control" type="search"
-                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                        placeholder="Search keyword" />
-
-                                                </div> -->
-                                                <!-- <span class="p-input-icon-left ml-5">
-                                                  <i class="pi pi-search"></i>
-                                                  <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
-                                              </span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th style="min-width:10rem" pFrozenColumn>
@@ -117,15 +97,23 @@
                                         <td style="min-width:15rem">
                                             {{ rowData.hour | date: 'HH:mm:ss' }}
                                         </td>
-                                        <td style="min-width:10rem">
+                                        <!-- <td style="min-width:10rem">
                                             <i class="pi"
                                                 [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
+                                        </td> -->
+                                        <td class="text-center" style="min-width:10rem">
+                                            <ng-container *ngIf="rowData.confirm; else notConfirmed">
+                                                <span class="text-green-500 font-bold">Đã xác nhận</span>
+                                            </ng-container>
+                                            <ng-template #notConfirmed>
+                                                <span class="text-yellow-500 font-bold">Chưa xác nhận</span>
+                                            </ng-template>
                                         </td>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -133,38 +121,14 @@
 
                         </div>
                         <div class="card-body" *ngIf="!isHost">
-                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
-                                <ng-template pTemplate="caption">
-                                    <div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <button class="btn btn-outline-info" (click)="clear(dt1)">
-                                                    <i class="pi pi-undo"></i>
-                                                    {{ "Reset" | localize }}
-                                                </button>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!-- <div class="form-outline mb-2" data-mdb-input-init>
 
-                                                    <input pInputText class="form-control" type="search"
-                                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                        placeholder="Search keyword" />
-
-                                                </div> -->
-                                                <!-- <span class="p-input-icon-left ml-5">
-                                                  <i class="pi pi-search"></i>
-                                                  <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
-                                              </span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th style="min-width:10rem" pFrozenColumn>
@@ -225,7 +189,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -255,12 +219,12 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body" *ngIf="isHost">
-                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -347,7 +311,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -355,12 +319,12 @@
 
                         </div>
                         <div class="card-body" *ngIf="!isHost">
-                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataHost" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -447,7 +411,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -477,12 +441,12 @@
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-body" *ngIf="isHost">
-                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -569,7 +533,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 
@@ -577,12 +541,12 @@
 
                         </div>
                         <div class="card-body" *ngIf="!isHost">
-                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                            <p-table #dt1 [value]="rowDataRenter" dataKey="id" [rows]="5"
                                 selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                                 [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                                 [busy]="isLoading"
                                 [selection]="selectedSchedule"
-                                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                                 [globalFilterFields]="['title', 'roomPrice', 'id']">
                                 <ng-template pTemplate="caption">
                                     <div>
@@ -669,7 +633,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="5">No customers found.</td>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
                                     </tr>
                                 </ng-template>
 

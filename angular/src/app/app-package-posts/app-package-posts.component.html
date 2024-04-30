@@ -1,0 +1,365 @@
+<div *ngIf="isAdmin">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <h1>Quản lý gói đăng bài</h1>
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn bg-blue mr-2" (click)="confirmPackage()" [disabled]="!selectedPackage">
+                        <i class="fa fa-plus-square"></i>
+                        Xác nhận
+                    </button>
+                    <button class="btn bg-success mr-2" (click)="editPackage()"  [disabled]="!selectedPackage">
+                        <i class="fas fa-pencil-alt"></i>
+                        Thời hạn
+                    </button>
+                    <button class="btn bg-danger mr-2" (click)="cancelPackage()" [disabled]="!selectedPackage">
+                        <i class="fas fa-trash-alt"></i>
+                        Hủy bỏ
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content px-2">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-body">
+                    <p-table #dt1 [value]="rowDataPackage" dataKey="id" [rows]="5"
+                        selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
+                        [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
+                        [busy]="isLoading"
+                        [selection]="selectedPackage"
+                        [globalFilterFields]="['title', 'roomPrice', 'id']">
+                        <ng-template pTemplate="caption">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <!-- <button class="btn btn-outline-info" (click)="updateTable()">
+                                            <i class="pi pi-undo"></i>
+                                            {{ "Reset" | localize }}
+                                        </button> -->
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-outline mb-2" data-mdb-input-init>
+
+                                            <!-- <input pInputText class="form-control" type="search"
+                                                (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                                placeholder="Search keyword" /> -->
+
+                                        </div>
+                                        <!-- <span class="p-input-icon-left ml-5">
+                                          <i class="pi pi-search"></i>
+                                          <input pInputText class="form-control" type="search" (input)="dt1.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                      </span> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th style="min-width:5rem" pFrozenColumn>
+                                    <div class="flex align-items-center">
+                                        Mã
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Tên chủ trọ
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Số điện thoại
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Gói đăng ký
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Thời hạn hết
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Xác nhận
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Hủy
+                                    </div>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowDataPackage let-rowIndex="rowIndex">
+                            <tr [class.p-odd]="rowIndex % 2 === 0" [class.p-even]="rowIndex % 2 !== 0"
+                                [pSelectableRow]="rowDataPackage" (click)="selectedPackage = rowDataPackage">
+                                <td style="min-width:5rem" pFrozenColumn>
+                                    {{ rowDataPackage.id }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowDataPackage.hostName }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowDataPackage.hostPhoneNumber }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowDataPackage.packageType }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowDataPackage.expirationDate | date: 'dd/MM/YYYY' }}
+                                </td>
+                                <!-- <td class="text-center" style="min-width:10rem">
+                                    <i class="pi"
+                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowDataPackage.confirm === true, 'text-red-500 pi-times-circle': rowDataPackage.confirm === false } "></i>
+                                </td> -->
+                                <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="rowDataPackage.confirm; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Đã xác nhận</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-yellow-500 font-bold">Chưa xác nhận</span>
+                                    </ng-template>
+                                </td>
+<!--
+                                <td class="text-center" style="min-width:10rem">
+                                    <i class="pi"
+                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowDataPackage.cancel === true, 'text-red-500 pi-times-circle': rowDataPackage.cancel === false } "></i>
+                                </td> -->
+                                <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="!rowDataPackage.cancel; else Confirmed">
+                                        <span class="text-green-500 font-bold">Chưa hủy</span>
+                                    </ng-container>
+                                    <ng-template #Confirmed>
+                                        <span class="text-red-500 font-bold">Đã hủy</span>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5">Không có dữ liệu nào.</td>
+                            </tr>
+                        </ng-template>
+
+                    </p-table>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <AppPackagePostsEdit #AppPackagePostsEdit>
+
+    </AppPackagePostsEdit>
+</div>
+<div *ngIf="!isAdmin">
+    <tabset>
+        <tab [heading]="'Các gói đăng bài'" class="pt-3 px-2">
+            <!-- <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <h1>Các gói đăng bài</h1>
+                        </div>
+                        <div class="col-6 text-right">
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+            <section class="content px-2">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <section class="container my-4">
+                                <div class="mb-4 p-4 bg-light rounded shadow">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <h2>Gói VIP Pro</h2>
+                                            <p><strong>Giá: 399.000 VNĐ</strong> </p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p><strong>Bao gồm:</strong> </p>
+                                            <ul>
+                                                <li>Có thời hạn đăng bài trong 6 tháng</li>
+                                                <li>Bài được đăng sẽ ở mục Tin nổi bật</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-3 d-flex justify-content-center">
+                                        <button type="button" class="btn btn-lg bg-primary" (click)="createPackageVIPpro()">
+                                            <i class="fa fa-plus-square"></i>
+                                           Chi tiết </button>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <section class="content px-2">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <section class="container my-4">
+                                <div class="mb-4 p-4 bg-light rounded shadow">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <h2>Gói VIP</h2>
+                                            <p><strong>Giá: 199.000 VNĐ</strong> </p>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p><strong>Bao gồm:</strong> </p>
+                                            <ul>
+                                                <li>Có thời hạn đăng bài trong 3 tháng</li>
+                                                <li>Bài được đăng sẽ ở mục Tin mới</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-3 d-flex justify-content-center">
+                                        <button type="button" class="btn btn-lg bg-primary" (click)="createPackageVIP()">
+                                            <i class="fa fa-plus-square"></i>
+                                           Chi tiết </button>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <AppPackagePostsVipPro #AppPackagePostsVipPro>
+
+            </AppPackagePostsVipPro>
+            <AppPackagePostsVip #AppPackagePostsVip>
+
+            </AppPackagePostsVip>
+        </tab>
+        <tab [heading]="'Gói đăng bài đã đăng ký'" class="pt-3 px-2">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-6">
+                            <!-- <h1>Gói đăng bài đã đăng ký</h1> -->
+                        </div>
+                        <div class="col-6 text-right">
+                            <button class="btn bg-danger mr-2" (click)="deletePackage()"  [disabled]="!selectedPackage">
+                                <i class="fas fa-trash-alt"></i>
+                                Hủy gói
+                            </button>
+                            <button class="btn btn-info" (click)="updateTable()">
+                                <i class="pi pi-undo"></i>
+                                {{ "Reset" | localize }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="content px-2">
+                <div class="container-fluid">
+                    <div class="card">
+                        <div class="card-body">
+                            <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
+                                selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
+                                [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
+                                [busy]="isLoading"
+                                [selection]="selectedPackage"
+
+                                [globalFilterFields]="['title', 'roomPrice', 'id']">
+                                <ng-template pTemplate="caption">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <!-- <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                                    <i class="pi pi-undo"></i>
+                                                    {{ "Reset" | localize }}
+                                                </button> -->
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-outline mb-2" data-mdb-input-init>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr>
+                                        <th style="min-width:5rem" pFrozenColumn>
+                                            <div class="flex align-items-center">
+                                                Mã
+                                            </div>
+                                        </th>
+                                        <th style="min-width:10rem">
+                                            <div class="flex align-items-center">
+                                                Gói đăng ký
+                                            </div>
+                                        </th>
+                                        <th style="min-width:10rem">
+                                            <div class="flex align-items-center">
+                                                Thời hạn hết
+                                            </div>
+                                        </th>
+                                        <th style="min-width:10rem">
+                                            <div class="flex align-items-center">
+                                                Trạng thái
+                                            </div>
+                                        </th>
+                                        <th style="min-width:10rem">
+                                            <div class="flex align-items-center">
+                                                Trạng thái hủy
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                                    <tr [class.p-odd]="rowIndex % 2 === 0" [class.p-even]="rowIndex % 2 !== 0"
+                                        [pSelectableRow]="rowData" (click)="selectedPackage = rowData">
+                                        <td style="min-width:5rem" pFrozenColumn>
+                                            {{ rowData.id }}
+                                        </td>
+                                        <td style="min-width:10rem">
+                                            {{ rowData.packageType }}
+                                        </td>
+                                        <td style="min-width:10rem">
+                                            {{ rowData.expirationDate | date: 'dd/MM/YYYY' }}
+                                        </td>
+                                        <td class="text-center" style="min-width:10rem">
+                                            <i class="pi"
+                                                [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
+                                        </td>
+                                        <td class="text-center" style="min-width:10rem">
+                                            <i class="pi"
+                                                [ngClass]="{ 'text-green-500 pi-check-circle': rowData.cancel === true, 'text-red-500 pi-times-circle': rowData.cancel === false } "></i>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="5">Không có dữ liệu nào.</td>
+                                    </tr>
+                                </ng-template>
+
+                            </p-table>
+
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </tab>
+    </tabset>
+</div>
+

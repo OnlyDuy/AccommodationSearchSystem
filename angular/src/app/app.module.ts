@@ -63,7 +63,6 @@ import { AppPackagePostsVipComponent } from './app-package-posts/app-package-pos
 import { AppPackagePostsEditComponent } from './app-package-posts/app-package-posts-edit/app-package-posts-edit.component';
 import { PostViewLikeComponent } from './post/post-view-like/post-view-like.component';
 import { StatisticalComponent } from './statistical/statistical.component';
-import { AppScheduleWaitCancelComponent } from './app-schedule/app-schedule-wait/app-schedule-wait-cancel/app-schedule-wait-cancel.component';
 
 @NgModule({
   declarations: [
@@ -110,6 +109,8 @@ import { AppScheduleWaitCancelComponent } from './app-schedule/app-schedule-wait
     AppScheduleSuccessComponent,
     AppScheduleWaitComponent,
     FormDatePipe,
+
+    // schedule
     AppScheduleWaitUpdateComponent,
     PostAdminViewComponent,
     AppScheduleWaitViewPostComponent,
@@ -122,8 +123,7 @@ import { AppScheduleWaitCancelComponent } from './app-schedule/app-schedule-wait
     PostViewLikeComponent,
 
     // statistics
-    StatisticalComponent,
-      AppScheduleWaitCancelComponent
+    StatisticalComponent
    ],
   imports: [
     CommonModule,

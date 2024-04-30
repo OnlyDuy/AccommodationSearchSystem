@@ -130,6 +130,9 @@
 
 	  <text name="PersonalInformation">Thông tin cá nhân</text>
 	  <text name="ManageAppointmentSchedules">Quản lý lịch hẹn</text>
+	  <text name="Statistical">Thống kê</text>
+	  <text name="PostingPackage">Quản lý gói đăng bài</text>
+	  
 	  <text name="NewPost">Bài đăng mới</text>
   	  <text name="Host">Chủ nhà</text>
 	  <text name="Admin">Quản trị viên</text>
@@ -138,6 +141,7 @@
 
 	  <text name="EditPosts">Chỉnh sửa bài đăng</text>
 	  <text name="PostsDetails">Chi tiết bài đăng</text>
+	  <text name="PhotosDetails">Chi tiết hình ảnh</text>
 	  <text name="Title">Tiêu đề</text>
 	  <text name="ContentPost">Nội dung bài đăng</text>
 	  <text name="RoomPrice">Giá phòng (triệu đồng)</text>

@@ -1,9 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { PaginationParamsModel } from '@shared/commom/models/base.model';
 import { ConfirmSchedulesDto, GetAllSchedulesDto, ManageAppointmentSchedulesServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
+import { AppScheduleWaitViewPostComponent } from '../app-schedule-wait/app-schedule-wait-view-post/app-schedule-wait-view-post.component';
 
 @Component({
   selector: 'app-app-schedule-success',
@@ -12,7 +13,7 @@ import { Table } from 'primeng/table';
   providers : [ManageAppointmentSchedulesServiceProxy]
 })
 export class AppScheduleSuccessComponent extends AppComponentBase implements OnInit {
-
+  @ViewChild('AppScheduleWaitView') AppScheduleWaitView: AppScheduleWaitViewPostComponent;
   isHost: boolean = false;
 
   filterText;
@@ -93,6 +94,11 @@ export class AppScheduleSuccessComponent extends AppComponentBase implements OnI
       this.paginationParams.totalCount = data.totalCount;
       this.isLoading = false;
     });
+  }
+
+  viewSchedules() {
+    this.AppScheduleWaitView.show(this.selectedRow.id);
+    console.log(this.selectedRow);
   }
 
   viewSchedules() {

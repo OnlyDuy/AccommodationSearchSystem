@@ -1,0 +1,36 @@
+<div bsModal #editPackageModal="bs-modal" class="modal fade" aria-labelledby="editPackageModal" aria-hidden="true"
+    [config]="{backdrop: 'static'}">
+    <div class="modal-dialog modal-md modal-lg">
+        <div class="modal-content">
+            <form class="form-horizontal" autocomplete="off" #editPackageFormModal="ngForm" (ngSubmit)="save()"
+                *ngIf="active">
+
+                <abp-modal-header *ngIf="packages.id" [title]="'Lịch hẹn'"
+                    (onCloseClick)="editPackageModal.hide()"></abp-modal-header>
+
+                <div class="modal-body">
+                    <tabset>
+                        <tab [heading]="'Điều chỉnh lịch hẹn'" class="pt-3 px-2">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="day">
+                                    Ngày hết hạn
+                                </label>
+                                <div class="col-md-9">
+                                    <input type="text" class="form-control" name="day" id="day"
+                                        [(ngModel)]="packages.expirationDate" #dayModel="ngModel" [minDate]="minDate" bsDatepicker/>
+
+                                </div>
+                            </div>
+                        </tab>
+
+                    </tabset>
+                </div>
+                <div class="modal-footer">
+                    <abp-modal-footer [cancelDisabled]="saving"
+                        [saveDisabled]="!editPackageFormModal.form.valid || saving"
+                        (onCancelClick)="editPackageModal.hide()"></abp-modal-footer>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

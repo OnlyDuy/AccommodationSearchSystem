@@ -1,12 +1,121 @@
+
+.font__title {
+    font-size: 24px;
+    font-style: bold;
+    font-weight: 600;
+}
+
 .room-status.available {
-    color: green;
+    color: #febb02;
+    font-weight: 500;
 }
 
 .room-status.not-available {
     color: red;
+    font-weight: 500;
 }
 
+
 .post-image {
-    width: 235px; /* Đặt chiều rộng mong muốn */
-    height: 200px; /* Đặt chiều cao tự động để giữ tỷ lệ khung hình */
-  }
+    max-width: 100%; /* Hình ảnh không vượt quá chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ khung hình */
+}
+
+.post-image-v {
+    width: 253px;
+    height: 186px;
+}
+
+.content-posts {
+    font-size: 14px;
+}
+
+.img-content {
+    margin: 5px;
+}
+
+.header-posts {
+    padding-bottom: 4px;
+}
+
+.btn-search {
+    background-color: #feaf01;
+    border-color: #feaf01;
+    color: #fff;
+}
+
+.btn-search:hover {
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+    color: #fff;
+}
+
+
+.post-author {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    color: #8a8d91;
+}
+
+.img-author {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+
+.post__title {
+    color: #06618c;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.post__title:hover {
+    text-decoration: underline;
+}
+.post__price {
+    color: #16c784;
+    font-size: 17px;
+}
+
+
+
+.home-product-item__favourite{
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    color:#e77020;
+    background-color: currentColor;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 21px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    margin-bottom: 5px;
+    padding-right: 5px;
+}
+
+.home-product-item__favourite::after{
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: -3.5px;
+    border-top: 3.5px solid currentColor;
+    border-left: 3.5px solid transparent;
+    /* giảm độ sáng */
+    filter: brightness(60%);
+}
+
+.home-product-item__favourite i {
+    font-size: 9px;
+    margin: 0 2px 0 5px;
+    color: #fff;
+}
+
+.home-product-item__favourite span{
+    color: #fff;
+}
+

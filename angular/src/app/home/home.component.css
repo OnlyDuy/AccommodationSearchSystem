@@ -1,19 +1,78 @@
 .font__title {
-    font-size: 18px;
+    font-size: 24px;
     font-style: bold;
     font-weight: 600;
 }
 
 .room-status.available {
-    color: green;
+    color: #febb02;
+    font-weight: 500;
 }
 
 .room-status.not-available {
     color: red;
+    font-weight: 500;
 }
 
 .post-image {
-    width: 235px; /* Đặt chiều rộng mong muốn */
-    height: 200px; /* Đặt chiều cao tự động để giữ tỷ lệ khung hình */
-  }
+    max-width: 100%; /* Hình ảnh không vượt quá chiều rộng của container */
+    height: auto; /* Giữ tỷ lệ khung hình */
+}
+
+.post-image-v {
+    width: 253px;
+    height: 186px;
+}
+
+.content-posts {
+    font-size: 14px;
+}
+
+.img-content {
+    margin: 5px;
+}
+
+.header-posts {
+    padding-bottom: 4px;
+}
+
+.post-author {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    color: #8a8d91;
+}
+.img-author {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.btn-search {
+    background-color: #feaf01;
+    border-color: #feaf01;
+    color: #fff;
+}
+
+.btn-search:hover {
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+    color: #fff;
+}
+
+.post__title {
+    color: #06618c;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.post__title:hover {
+    text-decoration: underline;
+}
+.post__price {
+    color: #16c784;
+    font-size: 17px;
+}
 

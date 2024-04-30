@@ -141,10 +141,12 @@ namespace AccommodationSearchSystem.Controllers
             var user = await _userRegistrationManager.RegisterAsync(
                 externalUser.Name,
                 externalUser.Surname,
+                externalUser.PhoneNumber,
                 externalUser.EmailAddress,
                 externalUser.EmailAddress,
                 Authorization.Users.User.CreateRandomPassword(),
-                true
+                true,
+                externalUser.RoleNames
             );
 
             user.Logins = new List<UserLogin>

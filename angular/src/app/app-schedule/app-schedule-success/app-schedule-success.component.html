@@ -27,26 +27,45 @@
             </div>
         </div>
     </section>
+    <section class="">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <!-- <h1>Quản lý lịch hẹn</h1> -->
+                </div>
+                <div class="col-6 text-right">
+                    <button class="btn bg-gray mr-2" [disabled]="!selectedRow" (click)="viewSchedules()" >
+                        <i class="fas fa-info"></i>
+                        Chi tiết
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
     <section class="content px-2">
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body" *ngIf="isHost">
-                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                         selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                         [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                         [busy]="isLoading"
                         [selection]="selectedSchedule"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                         [globalFilterFields]="['title', 'roomPrice', 'id']">
                         <ng-template pTemplate="caption">
                             <div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <!-- <div class="col-md-6">
                                         <button class="btn btn-outline-info" (click)="clear(dt1)">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
                                         </button>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-6">
                                         <!-- <div class="form-outline mb-2" data-mdb-input-init>
 
@@ -90,11 +109,11 @@
                                         Giờ hẹn
                                     </div>
                                 </th>
-                                <th style="min-width:10rem">
+                                <!-- <th style="min-width:10rem">
                                     <div class="flex align-items-center">
                                         Trạng thái chờ
                                     </div>
-                                </th>
+                                </th> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -115,15 +134,15 @@
                                 <td style="min-width:15rem">
                                     {{ rowData.hour | date: 'HH:mm:ss' }}
                                 </td>
-                                <td style="min-width:10rem">
+                                <!-- <td style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
-                                </td>
+                                </td> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="5">No customers found.</td>
+                                <td colspan="5">Không có dữ liệu nào.</td>
                             </tr>
                         </ng-template>
 
@@ -131,21 +150,21 @@
 
                 </div>
                 <div class="card-body" *ngIf="!isHost">
-                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                         selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                         [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                         [busy]="isLoading"
                         [selection]="selectedSchedule"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                         [globalFilterFields]="['title', 'roomPrice', 'id']">
                         <ng-template pTemplate="caption">
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                        <!-- <button class="btn btn-outline-info" (click)="clear(dt1)">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="col-md-6">
                                         <!-- <div class="form-outline mb-2" data-mdb-input-init>
@@ -190,11 +209,11 @@
                                         Giờ hẹn
                                     </div>
                                 </th>
-                                <th style="min-width:10rem">
+                                <!-- <th style="min-width:10rem">
                                     <div class="flex align-items-center">
-                                        Trạng thái chờ
+                                        Trạng thái
                                     </div>
-                                </th>
+                                </th> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -215,15 +234,23 @@
                                 <td style="min-width:15rem">
                                     {{ rowData.hour | date: 'HH:mm:ss' }}
                                 </td>
-                                <td style="min-width:10rem">
+                                <!-- <td style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowData.confirm === true, 'text-red-500 pi-times-circle': rowData.confirm === false } "></i>
-                                </td>
+                                </td> -->
+                                <!-- <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="rowData.confirm; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Đã xác nhận</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-yellow-500 font-bold">Chưa xác nhận</span>
+                                    </ng-template>
+                                </td> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="5">No customers found.</td>
+                                <td colspan="5">Không có dữ liệu nào.</td>
                             </tr>
                         </ng-template>
 
@@ -235,5 +262,9 @@
         </div>
     </section>
 </div>
+
+<AppScheduleWaitView #AppScheduleWaitView>
+
+</AppScheduleWaitView>
 
 

@@ -1,6 +1,8 @@
 ﻿using Abp.Authorization.Users;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentSchedules.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
+using AccommodationSearchSystem.AccommodationSearchSystem.UserComment.Dto;
 using AccommodationSearchSystem.Entity;
 using AccommodationSearchSystem.Sessions.Dto;
 using AutoMapper;
@@ -28,9 +30,22 @@ namespace AccommodationSearchSystem.Helpers
             configuration.CreateMap<AppointmentSchedule, GetAllSchedulesDto>().ReverseMap();
             configuration.CreateMap<AppointmentSchedule, CancelSchedulesDto>().ReverseMap();
 
-
             configuration.CreateMap<PhotoPost, PhotoDto>().ReverseMap();
             configuration.CreateMap<PhotoPost, GetPostForViewDto>().ReverseMap();
+
+            configuration.CreateMap<PackagePost, ConfirmPackageDto>().ReverseMap();
+            configuration.CreateMap<PackagePost, CancelPostDto>().ReverseMap();
+            configuration.CreateMap<PackagePost, PackagePostDto>().ReverseMap();
+            configuration.CreateMap<PackagePost, GetPackageViewDto>().ReverseMap();
+
+            configuration.CreateMap<UserLikePost, PostLikeDto>().ReverseMap();
+            configuration.CreateMap<UserLikePost, GetPostForLikeDto>().ReverseMap();
+
+            configuration.CreateMap<UserComments, UserCommentDto>().ReverseMap();
+            configuration.CreateMap<UserComments, UserCommentViewDto>().ReverseMap();
+
+
+
 
             //configuration.CreateMap<UserRole, UserRoleDto>().ReverseMap();
 

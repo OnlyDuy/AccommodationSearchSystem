@@ -14,9 +14,13 @@
                         <i class="fas fa-pencil-alt"></i>
                         Xem chi tiết
                     </button>
-                    <button class="btn bg-danger" (click)="deletePost()" [disabled]="!selectedRow">
+                    <button class="btn bg-danger mr-2" (click)="deletePost()" [disabled]="!selectedRow">
                         <i class="fas fa-trash-alt"></i>
                         Hủy bỏ
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
                     </button>
                 </div>
             </div>
@@ -26,28 +30,28 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <p-table #dt1 [value]="rowDataConfirm" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                    <p-table #dt1 [value]="rowDataConfirm" dataKey="id" [rows]="5"
                         selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                         [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                         [busy]="isLoading"
                         [selection]="selectedPost"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        [globalFilterFields]="['title', 'roomPrice', 'id']">
+
+                        [globalFilterFields]="['id']">
                         <ng-template pTemplate="caption">
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                        <!-- <button class="btn btn-outline-info" (click)="updateTable()">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-outline mb-2" data-mdb-input-init>
 
                                             <input pInputText class="form-control" type="search"
                                                 (input)="dt1.filterGlobal($event.target.value, 'contains')"
-                                                placeholder="Search keyword" />
+                                                placeholder="Nhập giá trị tìm kiếm" />
 
                                         </div>
                                         <!-- <span class="p-input-icon-left ml-5">
@@ -72,22 +76,17 @@
                                 </th>
                                 <th style="min-width:10rem">
                                     <div class="flex align-items-center">
-                                        Giá phòng
-                                    </div>
-                                </th>
-                                <th style="min-width:10rem">
-                                    <div class="flex align-items-center">
-                                        Diện tích
-                                    </div>
-                                </th>
-                                <th style="min-width:15rem">
-                                    <div class="flex align-items-center">
-                                        {{l("Address")}}
-                                    </div>
-                                </th>
-                                <th style="min-width:10rem">
-                                    <div class="flex align-items-center">
                                         {{l("PriceCategory")}}
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Người đăng
+                                    </div>
+                                </th>
+                                <th style="min-width:10rem">
+                                    <div class="flex align-items-center">
+                                        Loại bài đăng
                                     </div>
                                 </th>
                                 <th style="min-width:10rem">
@@ -107,27 +106,32 @@
                                     {{ rowDataConfirm.title }}
                                 </td>
                                 <td style="min-width:10rem">
-                                    {{ rowDataConfirm.roomPrice }}
-                                </td>
-                                <td style="min-width:10rem">
-                                    {{ rowDataConfirm.square }}
-                                </td>
-                                <td style="min-width:15rem">
-                                    {{ rowDataConfirm.address }}
-                                </td>
-                                <td style="min-width:10rem">
                                     {{ rowDataConfirm.priceCategory }}
                                 </td>
-
-                                <td class="text-center" style="min-width:10rem">
+                                <td style="min-width:10rem">
+                                    {{ rowDataConfirm.createByName }}
+                                </td>
+                                <td style="min-width:10rem">
+                                    {{ rowDataConfirm.packageType }}
+                                </td>
+                                <!-- <td class="text-center" style="min-width:10rem">
                                     <i class="pi"
                                         [ngClass]="{ 'text-green-500 pi-check-circle': rowDataConfirm.confirmAdmin === true, 'text-red-500 pi-times-circle': rowDataConfirm.confirmAdmin === false } "></i>
+                                </td> -->
+                                <td class="text-center" style="min-width:10rem">
+                                    <ng-container *ngIf="rowDataConfirm.confirmAdmin; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Xác nhận</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-yellow-500 font-bold">Đang chờ</span>
+                                    </ng-template>
                                 </td>
+
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="5">No customers found.</td>
+                                <td colspan="5">Không có dữ liệu nào.</td>
                             </tr>
                         </ng-template>
 
@@ -158,9 +162,17 @@
                         <i class="fas fa-pencil-alt"></i>
                         {{ "Edit" | localize }}
                     </button>
-                    <button class="btn bg-danger" (click)="deletePost()" [disabled]="!selectedRow">
+                    <button class="btn bg-danger mr-2" (click)="deletePost()" [disabled]="!selectedRow">
                         <i class="fas fa-trash-alt"></i>
                         {{ "Delete" | localize }}
+                    </button>
+                    <button class="btn bg-warning mr-2" (click)="repostPost()" [disabled]="!selectedRow">
+                        <i class="fas fa-check"></i>
+                        {{ "Đăng lại"}}
+                    </button>
+                    <button class="btn btn-info" (click)="updateTable()">
+                        <i class="pi pi-undo"></i>
+                        {{ "Reset" | localize }}
                     </button>
                 </div>
             </div>
@@ -170,21 +182,21 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5" [showCurrentPageReport]="true"
+                    <p-table #dt1 [value]="rowData" dataKey="id" [rows]="5"
                         selectionMode="single"  [rowsPerPageOptions]="[5, 25, 50]"
                         [paginator]="true" [scrollable]="true" responsiveLayout="scroll"
                         [busy]="isLoading"
                         [selection]="selectedPost"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+
                         [globalFilterFields]="['title', 'roomPrice', 'id']">
                         <ng-template pTemplate="caption">
                             <div>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button class="btn btn-outline-info" (click)="clear(dt1)">
+                                        <!-- <button class="btn btn-outline-info" (click)="updateTable()">
                                             <i class="pi pi-undo"></i>
                                             {{ "Reset" | localize }}
-                                        </button>
+                                        </button> -->
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-outline mb-2" data-mdb-input-init>
@@ -212,11 +224,6 @@
                                 <th style="min-width:15rem">
                                     <div class="flex align-items-center">
                                         {{l("Title")}}
-                                    </div>
-                                </th>
-                                <th style="min-width:15rem">
-                                    <div class="flex align-items-center">
-                                        {{l("ContentPost")}}
                                     </div>
                                 </th>
                                 <th style="min-width:10rem">
@@ -250,9 +257,6 @@
                                 <td style="min-width:15rem">
                                     {{ rowData.title }}
                                 </td>
-                                <td style="min-width:15rem">
-                                    {{ rowData.contentPost }}
-                                </td>
                                 <td style="min-width:10rem">
                                     {{ rowData.roomPrice }}
                                 </td>
@@ -264,14 +268,20 @@
                                 </td>
 
                                 <td class="text-center" style="min-width:10rem">
-                                    <i class="pi"
-                                        [ngClass]="{ 'text-green-500 pi-check-circle': rowData.roomStatus === true, 'text-red-500 pi-times-circle': rowData.roomStatus === false } "></i>
+                                    <ng-container *ngIf="rowData.roomStatus; else notConfirmed">
+                                        <span class="text-green-500 font-bold">Còn phòng</span>
+                                    </ng-container>
+                                    <ng-template #notConfirmed>
+                                        <span class="text-red-500 font-bold">Đã hết</span>
+                                    </ng-template>
                                 </td>
+
+                                <!-- <td class="text-center" style="min-width:10rem"><p-tag [value]="rowData.roomStatus" [severity]="getSeverity(rowData.roomStatus)"></p-tag></td> -->
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="emptymessage">
                             <tr>
-                                <td colspan="5">No customers found.</td>
+                                <td colspan="5">Không có dữ liệu nào.</td>
                             </tr>
                         </ng-template>
 

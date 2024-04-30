@@ -4,7 +4,7 @@
     <div class="modal-content">
       <form class="form-horizontal" autocomplete="off" #createpostsModal="ngForm" (ngSubmit)="save()" *ngIf="active">
 
-        <abp-modal-header *ngIf="posts.id" [title]="'CreateNewPost' | localize"
+        <abp-modal-header *ngIf="posts.id" [title]="'EditPosts' | localize"
           (onCloseClick)="modal.hide()"></abp-modal-header>
         <abp-modal-header *ngIf="!posts.id" [title]="'CreateNewPost' | localize"
           (onCloseClick)="modal.hide()"></abp-modal-header>
@@ -95,7 +95,7 @@
                     [(ngModel)]="posts.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl >
                     <option selected>Phòng đơn</option>
                     <option value="Chung cư mini">Chung cư mini</option>
-                    <option value="2 người trở lên">2 người trở lên</option></select>
+                    <option value="Từ 2 người">Từ 2 người</option></select>
                   <abp-validation-summary [control]="priceCategoryModel"
                     [controlEl]="priceCategoryEl"></abp-validation-summary>
                 </div>
@@ -126,7 +126,7 @@
                         [(ngModel)]="posts.priceCategory" #priceCategoryModel="ngModel" #priceCategoryEl >
                         <option selected>Phòng đơn</option>
                         <option value="Chung cư mini">Chung cư mini</option>
-                        <option value="2 người trở lên">2 người trở lên</option></select>
+                        <option value="Từ 2 người">Từ 2 người</option></select>
                       <abp-validation-summary [control]="priceCategoryModel"
                         [controlEl]="priceCategoryEl"></abp-validation-summary>
                     </div>
@@ -208,36 +208,56 @@
               </div>
             </tab>
 
-            <tab *ngIf="posts.id" [heading]="'PostsDetails' | localize" class="pt-3 px-2">
-              <div class="row mt-3">
+            <tab *ngIf="posts.id" [heading]="'PhotosDetails' | localize" class="pt-3 px-2">
+              <div class="row">
+                <div class="col-2" *ngFor="let photo of postPhotos">
+                  <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1">
+                  <div class="text-center">
+                    <button
+                      [disabled]="photo.isMain"
+                      (click)="setMainPhotos(posts.id, photo.id)"
+                      [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"'
+                      class="btn btn-sm">
+                       Chính
+                    </button>
+                    <button
+                      [disabled]="photo.isMain"
+                      (click)="deletePhoto(posts.id, photo.id)"
+                      class="btn btn-sm btn-danger">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+              </div>
+              </div>
+              <div class="row mt-4">
 
                 <div class="col-md-3">
 
-                  <h3>Add Photos</h3>
+                  <h3 class="Add_photos">Thêm hình ảnh</h3>
 
                   <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropzoneOver}" (fileOver)="fileOverBase($event)"
                     [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
                     <i class="fa fa-upload fa-3x"></i>
-                    Drop photos here
+                    Thả vào đây
                   </div>
 
-                  Multiple
+                  Nhiều ảnh
                   <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
 
-                  Single
+                  Đơn ảnh
                   <input type="file" ng2FileSelect [uploader]="uploader" />
                 </div>
 
                 <div class="col-md-9" style="margin-bottom: 40px">
 
-                  <h3>Upload queue</h3>
-                  <p>Queue length: {{ uploader?.queue?.length }}</p>
+                  <h3 class="Add_photos">Chờ tải lên</h3>
+                  <p>Kích thước: {{ uploader?.queue?.length }}</p>
 
                   <table class="table">
                     <thead>
                       <tr>
-                        <th width="50%">Name</th>
-                        <th>Size</th>
+                        <th width="50%">Tên</th>
+                        <th>Kích cỡ</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -252,7 +272,7 @@
 
                   <div>
                     <div>
-                      Queue progress:
+                      Tiến trình xếp hàng
                       <div class="progress">
                         <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
                         </div>
@@ -260,15 +280,15 @@
                     </div>
                     <button class="btn btn-success btn-s" (click)="uploader.uploadAll()"
                       [disabled]="!uploader.getNotUploadedItems().length">
-                      <span class="fa fa-upload"></span> Upload all
+                      <span class="fa fa-upload"></span> Tải lên
                     </button>
                     <button class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
                       [disabled]="!uploader.isUploading">
-                      <span class="fa fa-ban"></span> Cancel all
+                      <span class="fa fa-ban"></span> Hủy bỏ
                     </button>
                     <button class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
                       [disabled]="!uploader.queue.length">
-                      <span class="fa fa-trash"></span> Remove all
+                      <span class="fa fa-trash"></span> Xóa bỏ
                     </button>
                   </div>
 

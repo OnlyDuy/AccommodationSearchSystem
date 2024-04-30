@@ -1,5 +1,21 @@
 .ngx-gallery {
-    display: inline-block;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Định dạng trường nhập bị vô hiệu hóa */
+input[disabled] {
+  background-color: #ffffff;
+  /* Màu nền trắng */
+}
+
+select[disabled] {
+  background-color: #ffffff;
+  /* Màu nền trắng */
+}
+
+textarea[disabled] {
+  background-color: #ffffff;
+  /* Màu nền trắng */
+}

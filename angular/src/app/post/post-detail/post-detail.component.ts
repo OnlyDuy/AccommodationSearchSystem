@@ -10,6 +10,9 @@ import {
   ManagePostsServiceProxy,
   PhotoDto,
   SessionServiceProxy,
+  UserCommentDto,
+  UserCommentServiceProxy,
+  UserCommentViewDto,
 } from "@shared/service-proxies/service-proxies";
 import { environment } from "environments/environment";
 import { FileItem, FileUploader } from "ng2-file-upload";
@@ -19,14 +22,22 @@ import {
   NgxGalleryOptions,
 } from "@kolkov/ngx-gallery";
 import { AgmMap, MapsAPILoader } from "@agm/core";
+import { CommentsService } from "@app/_services/comments.service";
+import * as moment from "moment";
+import { finalize } from "rxjs/operators";
 
 @Component({
   selector: "app-post-detail",
   templateUrl: "./post-detail.component.html",
   styleUrls: ["./post-detail.component.css"],
-  providers: [ManagePostsServiceProxy],
+  providers: [ManagePostsServiceProxy, UserCommentServiceProxy],
 })
 export class PostDetailComponent extends AppComponentBase implements OnInit {
+
+  shownLogin: number;
+  isHost: boolean = false;
+  hostId: number;
+
   postId: number;
   post: CreateOrEditIPostDto = new CreateOrEditIPostDto();
   postUser: GetPostForEditOutput = new GetPostForEditOutput();
@@ -60,11 +71,20 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
   directionsService: any;
   directionsRenderer: any;
 
+  userComment: UserCommentDto = new UserCommentDto();
+  comment: string;
+  commentsView: UserCommentViewDto[] = [];
+  comments: UserCommentDto[] = [];
+  editMode: boolean = false;
+  commentIdToUpdate: number;
+  totalCmt: number;
 
   constructor(
     injector: Injector,
     public _postService: ManagePostsServiceProxy,
     private _sessionService: SessionServiceProxy,
+    public _userCommentService: UserCommentServiceProxy,
+    private _commentsService: CommentsService,
     private route: ActivatedRoute,
     private _mapsAPILoader: MapsAPILoader
   ) {
@@ -72,6 +92,16 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
   }
 
   ngOnInit(): void {
+    this.shownLogin = this.appSession.getShownLoginRoleId();
+    if (this.shownLogin == 4 || this.shownLogin == 3) {
+      this.isHost = true;
+      this.hostId = abp.session.userId;
+    } else {
+      this.isHost = false;
+    }
+    console.log(this.isHost);
+    console.log(this.hostId);
+
     this.route.params.subscribe((params) => {
       this.postId = +params["id"];
       this.getPostDetails(this.postId);
@@ -80,7 +110,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
 
     this.galleryOptions = [
       {
-        width: "500px",
+        width: "600px",
         height: "500px",
         imagePercent: 100,
         thumbnailsColumns: 4,
@@ -96,6 +126,43 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
       },
     ];
     this.getCurrentLocation();
+    this.getComments();
+    this.getTotalComments();
+    // Kết nối tới SignalR Hub
+    this._commentsService.startConnection();
+
+    this._commentsService.updateComment.subscribe((updatedComment: UserCommentDto) => {
+      var index = this.comments.findIndex(comment => comment.id === updatedComment.id);
+      if (index !== -1) {
+        this.comments[index] = updatedComment;
+      }
+    });
+
+    this._commentsService.deleteComment.subscribe((deletedCommentId: number) => {
+      var index = this.comments.findIndex(comment => comment.id === deletedCommentId);
+      if (index !== -1) {
+        this.comments.splice(index, 1);
+      }
+    });
+
+    this._commentsService.allCommentsReceived.subscribe((cmt: UserCommentViewDto[]) => {
+      cmt.forEach(comment => {
+        // Chuyển đổi creationTime thành đối tượng moment
+        const creationTimeMoment = moment(comment.creationTime);
+
+        const timeDiff = Math.abs(new Date().getTime() - creationTimeMoment.toDate().getTime());
+        comment.timeAgo = this.calculateTimeAgo(timeDiff);
+      });
+      this.commentsView = cmt;
+    });
+
+
+    this._commentsService.commentReceived.subscribe((cmt: UserCommentDto) => {
+        this.comments.push(cmt);
+    });
+    this._commentsService.getTotalComments.subscribe((total: number) => {
+      this.totalCmt = total;
+    });
   }
 
   // Lấy vị trí hiện tại của người dùng
@@ -315,5 +382,106 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
       // Gọi hàm getImages() sau khi lấy được danh sách ảnh
       this.galleryImages = this.getImages();
     });
+  }
+
+  // BÌNH LUẬN
+
+  show(CommentID?: number): void {
+    if (CommentID) {
+      this._userCommentService.getCommentById(CommentID).subscribe((result) => {
+        this.comment = result.commentContent;
+        this.editMode = true;
+        this.commentIdToUpdate = CommentID;
+      })
+    } else {
+      this.addComment();
+    }
+  }
+
+  onCommentInput() {
+    if (!this.comment) {
+      this.editMode = false;
+    }
+  }
+
+  isUserOwner(commentUserId: number): boolean {
+    return abp.session.userId === commentUserId;
+  }
+
+  addComment() {
+    if (this.editMode) {
+      this.editComment();
+      return;
+    }
+
+    this.userComment = new UserCommentDto();
+    this.userComment.postId = this.postId;
+    this.userComment.tenantId = abp.session.tenantId;
+    this.userComment.commentContent = this.comment;
+
+    this._userCommentService.addComment(this.postId, this.userComment).subscribe(() => {
+      this.notify.success('Thêm bình luận thành công');
+      this.getComments();
+      this.getTotalComments();
+      this.comment = "";
+    });
+  }
+
+  editComment() {
+    this.userComment.id = this.commentIdToUpdate;
+    this.userComment.commentContent = this.comment;
+
+    this.userComment.commentContent = this.comment;
+    this._userCommentService.update(this.userComment).subscribe(() => {
+      this.notify.success('Sửa bình luận thành công');
+      this.getComments();
+      this.comment = "";
+      this.editMode = false;
+    });
+  }
+
+  deleteComment(CommentID?: number) {
+    this._userCommentService.deleteComment(CommentID)
+    .subscribe(() => {
+      this.notify.success('Xóa bình luận thành công');
+      this.getComments();
+      this.getTotalComments();
+      this.comment = "";
+    })
+  }
+
+  getComments() {
+    this._userCommentService.getAllComment(this.postId)
+      .pipe(finalize(() => {}))
+      .subscribe(result => {
+        result.forEach(comment => {
+          const timeAgo = moment().diff(comment.creationTime);
+          comment.timeAgo = this.calculateTimeAgo(timeAgo);
+        });
+        this.commentsView = result;
+      });
+  }
+
+  getTotalComments() {
+    this._userCommentService.getTotalComment(this.postId).subscribe(total => {
+      this.totalCmt = total;
+    });
+  }
+
+
+  calculateTimeAgo(timeDiff: number): string {
+    let timeAgo: string;
+
+    if (timeDiff < 60000) {
+      timeAgo = Math.floor(timeDiff / 1000) + ' giây trước';
+    } else if (timeDiff < 3600000) { // Dưới 1 giờ
+      timeAgo = Math.floor(timeDiff / 60000) + ' phút trước';
+    } else if (timeDiff < 86400000) { // Dưới 1 ngày
+      timeAgo = Math.floor(timeDiff / 3600000) + ' giờ trước';
+    } else {
+      timeAgo = Math.floor(timeDiff / 86400000) + ' ngày trước';
+    }
+
+    return timeAgo;
   }
 }

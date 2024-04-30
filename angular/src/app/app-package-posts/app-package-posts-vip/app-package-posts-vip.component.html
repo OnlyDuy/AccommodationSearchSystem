@@ -1,0 +1,62 @@
+<div bsModal #packagePostsVipModal="bs-modal" class="modal fade" aria-labelledby="packagePostsVipModal" aria-hidden="true"
+  [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-md modal-lg">
+    <div class="modal-content">
+        <form class="form-horizontal" autocomplete="off" #postAdminModal="ngForm" (ngSubmit)="save()" *ngIf="active">
+
+          <abp-modal-header  [title]="'Thông tin'"
+            (onCloseClick)="modal.hide()"></abp-modal-header>
+
+          <div class="modal-body">
+            <tabset>
+              <tab [heading]="'Thông tin chi tiết'" class="pt-3 px-2">
+                <div class="form-group row required">
+                  <label class="col-md-3 col-form-label" for="title">
+                    {{ "Gói đăng bài" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <input type="text" class="form-control" name="packageType" id="packageType" required [(ngModel)]="packages.packageType"
+                      #packageTypeModel="ngModel" #packageTypeEl [disabled] = "true"/>
+                  </div>
+                </div>
+                <div class="form-group row required">
+                  <label class="col-md-3 col-form-label" for="contentPost">
+                    {{ "Chi tiết gói" | localize }}
+                  </label>
+                  <div class="col-md-9">
+                    <textarea type="text" class="form-control" name="packageDetail" id="packageDetail" required
+                      [(ngModel)]="packages.packageDetail" #packageDetailModel="ngModel" #packageDetailEl [disabled] = "true">
+                    </textarea>
+                  </div>
+                </div>
+                <div class="form-group row mt-6">
+                  <div class="col-md-12">
+                    <div class="alert alert-warning" role="alert">
+                      <i class="fas fa-exclamation mr-2"></i> <strong>Nếu bạn đồng ý thì hãy nhấn nút Lưu để Xác nhận và chờ admin duyệt.</strong>
+                      <br><strong>Điều kiện (vui lòng thực hiện những điều sau đây):</strong>
+                      <ul>
+                        <li>From: Admin Timtro24h</li>
+                        <li>Số ngân hàng: MBbank 388999270602</li>
+                        <li>Nội dung chuyển khoản: XNGVIP(số điện thoại)</li>
+                        <li>
+                          <button class="btn btn-link" type="button" (click)="showQRCode()">Hiển thị QR Code</button>
+                        </li>
+                        <li class="d-flex justify-content-center" >
+                          <img *ngIf="showQR" src="assets/img/QRcode.png" alt="QR Code">
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </tab>
+            </tabset>
+          </div>
+          <div class="modal-footer">
+            <abp-modal-footer
+            (onCancelClick)="modal.hide()"></abp-modal-footer>
+          </div>
+
+        </form>
+      </div>
+  </div>
+</div>
