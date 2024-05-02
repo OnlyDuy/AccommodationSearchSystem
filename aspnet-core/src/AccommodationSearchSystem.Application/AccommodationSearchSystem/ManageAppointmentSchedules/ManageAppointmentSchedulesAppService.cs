@@ -206,31 +206,42 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManageAppointmentS
                                   Hour = DateTime.Now,
                                   // Các thuộc tính khác của schedule có thể được gán tại đây
                               }).FirstOrDefaultAsync();
-            var postCount = await (from s in _repositorySchedule.GetAll()
-                                   join user in _repositoryUser.GetAll() on s.CreatorUserId equals user.Id
-                                   where s.PostId == input.Id && s.TenantId == tenantId && s.Cancel == false
-                                   select s).CountAsync();
-
-            if (postCount >= 1)
+            if (post == null)
             {
-                throw new UserFriendlyException(00, "Bài đăng đã được lên lịch hoặc đã có người đặt ");
+                // Xử lý khi không tìm thấy bài đăng tương ứng
+                throw new UserFriendlyException(00, L("PostNotFound"));
             }
-            else
-            {
-
-                if (post == null)
-                {
-                    // Xử lý khi không tìm thấy bài đăng tương ứng
-                    throw new UserFriendlyException(00, L("PostNotFound"));
-                }
 
 
-                // Khởi tạo đối tượng Schedule và chèn vào repository
-                var schedulev1 = ObjectMapper.Map<AppointmentSchedule>(post);
-                schedulev1.TenantId = tenantId;
-                await _repositorySchedule.InsertAsync(schedulev1);
-            }
-            // Trả về thông tin về schedule đã được tạo
+            // Khởi tạo đối tượng Schedule và chèn vào repository
+            var schedulev1 = ObjectMapper.Map<AppointmentSchedule>(post);
+            schedulev1.TenantId = tenantId;
+            await _repositorySchedule.InsertAsync(schedulev1);
+            //var postCount = await (from s in _repositorySchedule.GetAll()
+            //                       join user in _repositoryUser.GetAll() on s.CreatorUserId equals user.Id
+            //                       where s.PostId == input.Id && s.TenantId == tenantId && s.Cancel == false
+            //                       select s).CountAsync();
+
+            //if (postCount >= 1)
+            //{
+            //    throw new UserFriendlyException(00, "Bài đăng đã được lên lịch hoặc đã có người đặt ");
+            //}
+            //else
+            //{
+
+            //    if (post == null)
+            //    {
+            //        // Xử lý khi không tìm thấy bài đăng tương ứng
+            //        throw new UserFriendlyException(00, L("PostNotFound"));
+            //    }
+
+
+            //    // Khởi tạo đối tượng Schedule và chèn vào repository
+            //    var schedulev1 = ObjectMapper.Map<AppointmentSchedule>(post);
+            //    schedulev1.TenantId = tenantId;
+            //    await _repositorySchedule.InsertAsync(schedulev1);
+            //}
+            //// Trả về thông tin về schedule đã được tạo
             return post;
         }
 
