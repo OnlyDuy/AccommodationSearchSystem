@@ -21,6 +21,9 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto
         public int? TenantId { get; set; }
         public bool Cancel { get; set; }
         public int PostId { get; set; } // Id bài đăng
+        public string Description { get; set; }
+        public double Amount { get; set; }
+        public string PaymentUrl { get; set; } // Nội dung gói
 
     }
 }

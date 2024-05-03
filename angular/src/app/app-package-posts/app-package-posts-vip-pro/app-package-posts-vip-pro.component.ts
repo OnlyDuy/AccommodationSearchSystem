@@ -60,6 +60,8 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
   save(): void {
     this.saving = true;
     this.packages.tenantId = this.tenantId;
+    this.packages.amount = 399000;
+    this.packages.description = "XNGVIP" + this.packages.hostPhoneNumber;
     this.getStatus();
     this.message.confirm('', 'Bạn muốn đăng ký gói đăng bài này ?', (isConfirme) => {
       if (isConfirme) {
@@ -69,10 +71,10 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
         } else {
           this._packageService
             .createPackage(this.packages)
-            .subscribe(() => {
-              this.notify.info(this.l("SavedSuccessfully"));
+            .subscribe((response) => {
               this.close();
-
+              window.open(response.paymentUrl, '_blank');
+              this.notify.info(this.l("SavedSuccessfully"));
               this.modalSave.emit();
               this.packages = null;
 

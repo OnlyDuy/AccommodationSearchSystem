@@ -2804,7 +2804,7 @@ export class PackagePostsServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createPackage(body: PackagePostDto | undefined): Observable<void> {
+    createPackage(body: PackagePostDto | undefined): Observable<PackagePostDto> {
         let url_ = this.baseUrl + "/api/services/app/PackagePosts/CreatePackage";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -2816,6 +2816,7 @@ export class PackagePostsServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -2826,14 +2827,14 @@ export class PackagePostsServiceProxy {
                 try {
                     return this.processCreatePackage(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<PackagePostDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<PackagePostDto>;
         }));
     }
 
-    protected processCreatePackage(response: HttpResponseBase): Observable<void> {
+    protected processCreatePackage(response: HttpResponseBase): Observable<PackagePostDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2842,14 +2843,17 @@ export class PackagePostsServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PackagePostDto.fromJS(resultData200);
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(null as any);
+        return _observableOf<PackagePostDto>(null as any);
     }
 
     /**
@@ -9202,6 +9206,9 @@ export class PackagePostDto implements IPackagePostDto {
     tenantId: number | undefined;
     cancel: boolean;
     postId: number;
+    description: string | undefined;
+    amount: number;
+    paymentUrl: string | undefined;
 
     constructor(data?: IPackagePostDto) {
         if (data) {
@@ -9225,6 +9232,9 @@ export class PackagePostDto implements IPackagePostDto {
             this.tenantId = _data["tenantId"];
             this.cancel = _data["cancel"];
             this.postId = _data["postId"];
+            this.description = _data["description"];
+            this.amount = _data["amount"];
+            this.paymentUrl = _data["paymentUrl"];
         }
     }
 
@@ -9248,6 +9258,9 @@ export class PackagePostDto implements IPackagePostDto {
         data["tenantId"] = this.tenantId;
         data["cancel"] = this.cancel;
         data["postId"] = this.postId;
+        data["description"] = this.description;
+        data["amount"] = this.amount;
+        data["paymentUrl"] = this.paymentUrl;
         return data;
     }
 
@@ -9271,6 +9284,9 @@ export interface IPackagePostDto {
     tenantId: number | undefined;
     cancel: boolean;
     postId: number;
+    description: string | undefined;
+    amount: number;
+    paymentUrl: string | undefined;
 }
 
 export class PermissionDto implements IPermissionDto {

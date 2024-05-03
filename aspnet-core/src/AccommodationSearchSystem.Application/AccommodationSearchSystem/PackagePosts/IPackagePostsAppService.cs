@@ -14,7 +14,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
     public interface IPackagePostsAppService : IApplicationService
     {
         Task<PagedResultDto<GetPackageViewDto>> GetAll(GetPackageInputDto input);
-        Task CreatePackage(PackagePostDto input);
+        Task<PackagePostDto> CreatePackage(PackagePostDto input);
         Task EditPackage(GetPackageViewDto input);
         Task CancelPackage(CancelPostDto input);
         Task ConfirmPackage(ConfirmPackageDto input);

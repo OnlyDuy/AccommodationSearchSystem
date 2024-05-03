@@ -5,6 +5,7 @@ using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
 using AccommodationSearchSystem.AccommodationSearchSystem.UserComment.Dto;
 using AccommodationSearchSystem.Entity;
 using AccommodationSearchSystem.Sessions.Dto;
+using AccommodationSearchSystem.VnPayment.Dto;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,9 @@ namespace AccommodationSearchSystem.Helpers
 
             configuration.CreateMap<UserComments, UserCommentDto>().ReverseMap();
             configuration.CreateMap<UserComments, UserCommentViewDto>().ReverseMap();
+
+            configuration.CreateMap<VnPayments, VnPaymentRequestDto>().ReverseMap();
+
 
 
 

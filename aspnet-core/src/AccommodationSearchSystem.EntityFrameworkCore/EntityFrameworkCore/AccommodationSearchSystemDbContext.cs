@@ -22,6 +22,8 @@ namespace AccommodationSearchSystem.EntityFrameworkCore
         public virtual DbSet<PackagePost> PackagePosts { get; set; }
         public virtual DbSet<UserLikePost> UserLikePosts { get; set; }
         public virtual DbSet<UserComments> UserCommentes { get; set; }
+        public virtual DbSet<VnPayments> VnPaymentes { get; set; }
+
 
 
 

@@ -10,7 +10,12 @@ using AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts.Dto;
 using AccommodationSearchSystem.Authorization;
 using AccommodationSearchSystem.Authorization.Users;
 using AccommodationSearchSystem.Entity;
+using AccommodationSearchSystem.Services;
+using AccommodationSearchSystem.VnPayment.Dto;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,16 +30,23 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
         private readonly IRepository<User, long> _repositoryUser;
         private readonly IRepository<Post, long> _repositoryPost;
         private readonly IRepository<PackagePost, long> _repositoryPackagePost;
+        private readonly IVnPayService _vnPayService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public PackagePostsAppService(
            IRepository<Post, long> repositoryPost,
            IRepository<PackagePost, long> repositoryPackagePost,
-           IRepository<User, long> repositoryUser)
+           IVnPayService vnPayService,
+           IRepository<User, long> repositoryUser,
+           IHttpContextAccessor httpContextAccessor)
 
         {
             _repositoryUser = repositoryUser;
             _repositoryPost = repositoryPost;
             _repositoryPackagePost = repositoryPackagePost;
+            _vnPayService = vnPayService;
+            _httpContextAccessor = httpContextAccessor;
+
         }
         public async Task CancelPackage(CancelPostDto input)
         {
@@ -81,7 +93,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
             }
         }
 
-        public async Task CreatePackage(PackagePostDto input)
+        public async Task<PackagePostDto> CreatePackage(PackagePostDto input)
         {
             var tenantId = AbpSession.TenantId;
             var hostId = AbpSession.UserId;
@@ -96,16 +108,47 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
             //else
             //{
 
-            var package = ObjectMapper.Map<PackagePost>(input);
+            // Tạo thanh toán VNPay
+            var vnPayRequestModel = new VnPaymentRequestDto
+            {
+                OrderId = input.HostId,
+                FullName = user.FullName,
+                Description = input.Description,
+                Amount = input.Amount,
+                CreatedDate = DateTime.Now
+            };
+            // Lấy HttpContext từ IHttpContextAccessor
+            var httpContext = _httpContextAccessor.HttpContext;
+            input.PaymentUrl = _vnPayService.CreatePaymentUrl(httpContext, vnPayRequestModel);
+
+            var formData = new Dictionary<string, StringValues>
+            {
+                { "vnp_TxnRef", new StringValues(input.HostId.ToString()) },
+                { "vnp_TransactionNo", new StringValues(input.Amount.ToString()) },
+            };
+
+            var queryCollection = new QueryCollection(formData);
+
+            var paymentResult = _vnPayService.PaymentExcute(queryCollection);
+            if (paymentResult != null || paymentResult.VnPayResponseCode == "00")
+            {
+
+                var package = ObjectMapper.Map<PackagePost>(input);
                 package.TenantId = tenantId;
                 package.HostId = (int)hostId;
                 package.Confirm = false;
                 package.HostName = user.FullName;
                 package.HostPhoneNumber = user.PhoneNumber;
                 package.ExpirationDate = DateTime.Now.Date;
-            await _repositoryPackagePost.InsertAsync(package);
-            //}
-
+            
+                await _repositoryPackagePost.InsertAsync(package);
+                //}
+                return new PackagePostDto { PaymentUrl = input.PaymentUrl };
+            } else
+            {
+                
+            }
+            return new PackagePostDto { PaymentUrl = input.PaymentUrl };
         }
 
         public async Task<bool> StatusConfirm(ConfirmPackageDto input)

@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.success-icon {
+    font-size: 48px;
+    color: #4CAF50;
+}
+.success-message {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+.order-details {
+    font-size: 18px;
+    margin-top: 20px;
+}
+.return-button {
+    margin-top: 30px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

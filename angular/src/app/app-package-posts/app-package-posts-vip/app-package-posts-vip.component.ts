@@ -26,27 +26,12 @@ export class AppPackagePostsVipComponent extends AppComponentBase implements OnI
   statusPackage: boolean = false;
   showQR: boolean = false;
 
-    // Khai báo biến VNPay
-    // vnpay: VNPay;
-
   constructor(
     injector: Injector,
     public _packageService: PackagePostsServiceProxy,
     private _sessionService: SessionServiceProxy
   ) {
     super(injector);
-    // const config: VNPayConfig = {
-    //   paymentGateway: 'https://mtf.onepay.vn/vpcpay/vpcpay.op',
-    //   merchant: 'LJG8TUNP',
-    //   secureSecret: 'SYRXYOSZDPAGROSPXWOYFYVUROHWBUOO',
-    //   vnp_TmnCode: 'LJG8TUNP',
-    //   vnp_HashSecret: 'SYRXYOSZDPAGROSPXWOYFYVUROHWBUOO',
-    //   vnp_Url: 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html',
-    //   returnUrl: 'http://localhost:4200/app/app-package-posts',
-    //   lang: 'vn',
-    //   vnp_Version: '1.1.0',
-    // };
-    // this.vnpay = new VNPay(config);
   }
 
   ngOnInit(): void {
@@ -77,6 +62,8 @@ export class AppPackagePostsVipComponent extends AppComponentBase implements OnI
   save(): void {
     this.saving = true;
     this.packages.tenantId = this.tenantId;
+    this.packages.amount = 199000;
+    this.packages.description = "XNGVIP" + this.packages.hostPhoneNumber;
     this.getStatus();
     this.message.confirm('', 'Bạn muốn đăng ký gói đăng bài này ?', (isConfirme) => {
       if (isConfirme) {
@@ -86,10 +73,11 @@ export class AppPackagePostsVipComponent extends AppComponentBase implements OnI
         } else {
           this._packageService
             .createPackage(this.packages)
-            .subscribe(() => {
-              this.notify.info(this.l("SavedSuccessfully"));
+            .subscribe((response) => {
               this.close();
-
+              window.open(response.paymentUrl, '_blank');
+              this.notify.info(this.l("SavedSuccessfully"));
+              console.log(response.paymentUrl);
               this.modalSave.emit();
               this.packages = null;
 

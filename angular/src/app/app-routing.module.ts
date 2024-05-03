@@ -18,6 +18,7 @@ import { AppScheduleSuccessComponent } from './app-schedule/app-schedule-success
 import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.component';
 import { PostViewLikeComponent } from './post/post-view-like/post-view-like.component';
 import { StatisticalComponent } from './statistical/statistical.component';
+import { AppPackagePostsPaymentSuccessComponent } from './app-package-posts/app-package-posts-payment-success/app-package-posts-payment-success.component';
 
 @NgModule({
     imports: [
@@ -52,6 +53,8 @@ import { StatisticalComponent } from './statistical/statistical.component';
                     { path: 'app-schedule/app-schedule-success', component: AppScheduleSuccessComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' },  canActivate: [AppRouteGuard] },
 
                     { path: 'app-package-posts', component: AppPackagePostsComponent, data: { permission: '' },  canActivate: [AppRouteGuard] },
+                    { path: 'app-package-posts-payment-success', component: AppPackagePostsPaymentSuccessComponent, data: { permission: '' },  canActivate: [AppRouteGuard] },
+
 
 
                 ]

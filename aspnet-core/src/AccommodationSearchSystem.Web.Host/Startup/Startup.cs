@@ -25,6 +25,7 @@ using AccommodationSearchSystem.Interfaces;
 using AccommodationSearchSystem.Services;
 using AccommodationSearchSystem.EntityFrameworkCore;
 using AccommodationSearchSystem.Chat.Signalr;
+using AccommodationSearchSystem.VnPayment;
 
 namespace AccommodationSearchSystem.Web.Host.Startup
 {
@@ -93,7 +94,9 @@ namespace AccommodationSearchSystem.Web.Host.Startup
                     )
                 )
             );
+            services.AddHttpContextAccessor();
             services.Configure<CloudinarySettings>(_config.GetSection("CloudinarySettings"));
+            services.AddSingleton<IVnPayService, VnPayService>();
             services.AddScoped<IPhotoService, PhotoService>();
             services.AddDbContext<AccommodationSearchSystemDbContext>();
         }
