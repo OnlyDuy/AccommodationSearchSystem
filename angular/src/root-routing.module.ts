@@ -1,8 +1,14 @@
+import { HomeUserModule } from './home-user/home-user.module';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
     { path: '', redirectTo: '/app/about', pathMatch: 'full' },
+    {
+        path: 'home-user',
+        loadChildren: () => import('home-user/home-user.module').then(m => m.HomeUserModule), // Lazy load account module
+        data: { preload: true }
+    },
     {
         path: 'account',
         loadChildren: () => import('account/account.module').then(m => m.AccountModule), // Lazy load account module

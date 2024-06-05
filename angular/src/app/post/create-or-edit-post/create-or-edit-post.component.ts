@@ -114,6 +114,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
     // Sau khi tải thêm tệp sẽ chuyển tệp dưới dạng tham số
     this.uploader.onAfterAddingFile = (file) => {
       file.withCredentials = false;
+      this.postComponent.updateTable();
     }
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
