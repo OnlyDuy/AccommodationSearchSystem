@@ -51,7 +51,7 @@ export class AppSessionService {
     }
 
     getShownLoginRoleId(): number {
-        const id = this._roleUser.roleId;
+        const id = this._roleUser?.roleId;
         if (!this._abpMultiTenancyService.isEnabled) {
             return id;
         }
@@ -61,7 +61,7 @@ export class AppSessionService {
     }
 
     getShownLoginId(): number {
-        const id = this._user.id;
+        const id = this._user?.id;
         if (!this._abpMultiTenancyService.isEnabled) {
             return id;
         }
@@ -72,7 +72,7 @@ export class AppSessionService {
 
 
     getShownLoginName(): string {
-        const userName = this._user.userName;
+        const userName = this._user?.userName;
         if (!this._abpMultiTenancyService.isEnabled) {
             return userName;
         }

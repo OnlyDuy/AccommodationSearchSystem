@@ -5,12 +5,12 @@ import { GetPostForViewDto, ViewPostServiceProxy } from '@shared/service-proxies
 import { ceil } from 'lodash-es';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home-user.component.html',
-  styleUrls: ['./home-user.component.css'],
-  providers: [ViewPostServiceProxy]
+  selector: 'app-home-view-posts',
+  templateUrl: './home-view-posts.component.html',
+  styleUrls: ['./home-view-posts.component.css']
 })
-export class HomeUserComponent extends AppComponentBase implements OnInit {
+export class HomeViewPostsComponent extends AppComponentBase implements OnInit {
+
   filterText;
   sorting: string = "";
   paginationParams: PaginationParamsModel;
@@ -210,6 +210,4 @@ export class HomeUserComponent extends AppComponentBase implements OnInit {
       window.open('https://zalo.me/' + phoneNumber, '_blank');
     }
   }
-
-
 }

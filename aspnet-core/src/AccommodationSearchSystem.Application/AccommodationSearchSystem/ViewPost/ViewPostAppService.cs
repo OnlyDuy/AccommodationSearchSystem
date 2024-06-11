@@ -25,7 +25,7 @@ using static AccommodationSearchSystem.Authorization.Roles.StaticRoleNames;
 
 namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
 {
-    [AbpAuthorize(PermissionNames.Pages_View_Posts)]
+    [AbpAllowAnonymous]
     public class ViewPostAppService : ApplicationService, IManagePostsAppService
     {
         private readonly IRepository<Post, long> _repositoryPost;

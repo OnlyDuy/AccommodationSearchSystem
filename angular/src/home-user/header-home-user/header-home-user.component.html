@@ -10,29 +10,30 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto">
-                <a href="index.html" class="nav-item nav-link text-primary-huser active">Trang chủ</a>
-                <a href="about.html" class="nav-item nav-link">Nhà cho thuê</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Liên hệ</a>
+            <div class="navbar-nav">
+                <a routerLink="/home-user" routerLinkActive="active" class="nav-item nav-link"><b>Trang chủ</b></a>
+                <a routerLink="/home-user/home-view-posts" routerLinkActive="active" class="nav-item nav-link"><b>Nhà cho thuê</b></a>
+                <!-- <div class="nav-item dropdown">
+                    <a routerLink="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Liên hệ</a>
                     <div class="dropdown-menu rounded-0 m-0">
-                        <a href="property-list.html" class="dropdown-item">Property List</a>
-                        <a href="property-type.html" class="dropdown-item">Property Type</a>
-                        <a href="property-agent.html" class="dropdown-item">Property Agent</a>
+                        <a routerLink="property-list.html" class="dropdown-item">Property List</a>
+                        <a routerLink="property-type.html" class="dropdown-item">Property Type</a>
+                        <a routerLink="property-agent.html" class="dropdown-item">Property Agent</a>
                     </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Người cho thuê</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                        <a href="404.html" class="dropdown-item">404 Error</a>
-                    </div>
-                </div>
+                </div> -->
+                <a routerLink="/home-user/home-user-contact" routerLinkActive="active" class="nav-item nav-link"><b>Liên hệ</b></a>
+                <a routerLink="/home-user/home-user-about-us" routerLinkActive="active" class="nav-item nav-link"><b>Về chúng tôi</b></a>
 
             </div>
-            <a href="" class="btn btn-info d-lg-flex mr-2">Quản lý tài khoản</a>
-            <a href="" class="btn btn-light d-lg-flex mr-2">Đăng nhập</a>
-            <a href="" class="btn btn-secondary d-lg-flex">Đăng ký</a>
+            <div class="ms-auto d-flex">
+                <a class="nav-item nav-link">
+                    <b *ngIf="shownLogin">{{ 'Xin chào, ' + shownLoginName }}</b>
+                </a>
+                <a *ngIf="isLogin" href="/app/home" class="btn btn-info d-lg-flex mr-2">Quản lý tài khoản</a>
+                <a *ngIf="!isLogin" href="/account/login" class="btn btn-light d-lg-flex mr-2">Đăng nhập</a>
+                <a *ngIf="!isLogin" href="/account/register" class="btn btn-secondary d-lg-flex">Đăng ký</a>
+                <a *ngIf="isLogin" (click)="logout()" class="btn btn-secondary d-lg-flex">Đăng xuất</a>
+            </div>
         </div>
     </nav>
 </div>

@@ -1,4 +1,3 @@
-import { HomeUserModule } from './home-user/home-user.module';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 

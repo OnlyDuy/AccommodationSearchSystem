@@ -24,6 +24,11 @@ export class AppRouteGuard implements CanActivate, CanActivateChild {
             return false;
         }
 
+        if (this._sessionService.user) {
+            this._router.navigate(['/home-user']);
+            return false;
+        }
+
         if (!this._sessionService.user) {
             this._router.navigate(['/account/login']);
             return false;

@@ -19,6 +19,7 @@ import { AppPackagePostsComponent } from './app-package-posts/app-package-posts.
 import { PostViewLikeComponent } from './post/post-view-like/post-view-like.component';
 import { StatisticalComponent } from './statistical/statistical.component';
 import { AppPackagePostsPaymentSuccessComponent } from './app-package-posts/app-package-posts-payment-success/app-package-posts-payment-success.component';
+import { HomeUserComponent } from 'home-user/home-user.component';
 
 @NgModule({
     imports: [
@@ -28,16 +29,16 @@ import { AppPackagePostsPaymentSuccessComponent } from './app-package-posts/app-
                 component: AppComponent,
                 children: [
                     { path: 'home', component: HomeComponent, data: { permission: 'Pages.Posts' },  canActivate: [AppRouteGuard] },
-                    { path: 'home/:id', component: PostDetailComponent, data: { permission: 'Pages.Posts' },  canActivate: [AppRouteGuard] },
+                    { path: 'home/:id', component: PostDetailComponent, data: { permission: 'Pages.Posts' } },
 
-                    { path: 'statistical', component: StatisticalComponent, data: { permission: 'Pages.Statistical' },  canActivate: [AppRouteGuard] },
+                    { path: 'statistical', component: StatisticalComponent, data: { permission: 'Pages.Statistical' } },
 
                     // {path: 'create-post', component: CreatePostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
-                    { path: 'post', component: PostComponent, data: { permission: 'Pages.Posts' }, canActivate: [AppRouteGuard] },
-                    { path: 'post/post-view', component: PostViewComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
-                    { path: 'post/post-view/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' },  canActivate: [AppRouteGuard] },
-                    { path: 'post/post-view-like', component: PostViewLikeComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
-                    { path: 'post/post-view-like/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' }, canActivate: [AppRouteGuard] },
+                    { path: 'post', component: PostComponent, data: { permission: 'Pages.Posts' } },
+                    { path: 'post/post-view', component: PostViewComponent, data: { permission: 'Pages.View.Posts' } },
+                    { path: 'post/post-view/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' } },
+                    { path: 'post/post-view-like', component: PostViewLikeComponent, data: { permission: 'Pages.View.Posts' } },
+                    { path: 'post/post-view-like/:id', component: PostViewDetailComponent, data: { permission: 'Pages.View.Posts' } },
 
 
                     { path: 'infor-user', component: InforUserComponent, data: { permission: 'Pages.Personal.Information' },  canActivate: [AppRouteGuard] },
@@ -47,18 +48,19 @@ import { AppPackagePostsPaymentSuccessComponent } from './app-package-posts/app-
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component: TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
                     { path: 'about', component: AboutComponent, canActivate: [AppRouteGuard] },
-                    { path: 'update-password', component: ChangePasswordComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
+                    { path: 'update-password', component: ChangePasswordComponent, data: { permission: 'Pages.Users' } },
 
-                    { path: 'app-schedule/app-schedule-wait', component: AppScheduleWaitComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' },  canActivate: [AppRouteGuard] },
-                    { path: 'app-schedule/app-schedule-success', component: AppScheduleSuccessComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' },  canActivate: [AppRouteGuard] },
+                    { path: 'app-schedule/app-schedule-wait', component: AppScheduleWaitComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' } },
+                    { path: 'app-schedule/app-schedule-success', component: AppScheduleSuccessComponent, data: { permission: 'Pages.Manage.Appointment.Schedules' } },
 
-                    { path: 'app-package-posts', component: AppPackagePostsComponent, data: { permission: '' },  canActivate: [AppRouteGuard] },
-                    { path: 'app-package-posts-payment-success', component: AppPackagePostsPaymentSuccessComponent, data: { permission: '' },  canActivate: [AppRouteGuard] },
+                    { path: 'app-package-posts', component: AppPackagePostsComponent, data: { permission: '' } },
+                    { path: 'app-package-posts-payment-success', component: AppPackagePostsPaymentSuccessComponent, data: { permission: '' } },
 
 
 
                 ]
-            }
+            },
+            { path: 'home-user', component: HomeUserComponent },
         ])
     ],
     exports: [RouterModule]
