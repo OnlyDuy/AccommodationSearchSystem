@@ -25,10 +25,11 @@ export class HomeComponent extends AppComponentBase {
   filteredData: GetPostForViewDto[] = [];
   filteredDataVip: GetPostForViewDto[] = [];
 
-  dataRoomPrice: string = 'all';
+  dataRoomPrice: number;
   dataPriceCategory: string = 'all';
   dataDistrict: string = 'all';
-  dataSquare: string = 'all';
+  dataSquare: number;
+
 
 
   // Địa chỉ có thể là một mảng chứa danh sách các quận/huyện
@@ -50,9 +51,6 @@ export class HomeComponent extends AppComponentBase {
 
   updateTable() {
     this.isLoading = true;
-    this.dataDistrict = 'all';
-    this.dataRoomPrice = 'all';
-    this.dataSquare = 'all';
 
     this.data = [];
     this.paginationParams = { pageNum: 1, pageSize: 4, totalCount: 0 };
@@ -77,6 +75,10 @@ export class HomeComponent extends AppComponentBase {
   getAll(paginationParams: PaginationParamsModel) {
     return this._postService.getAll(
       this.filterText,
+      this.dataPriceCategory,
+      this.dataSquare,
+      this.dataDistrict,
+      this.dataRoomPrice,
       this.sorting ?? null,
       (paginationParams.pageNum - 1) * paginationParams.pageSize,
       paginationParams.pageSize
@@ -86,6 +88,10 @@ export class HomeComponent extends AppComponentBase {
   getAllVip(paginationParams: PaginationParamsModel) {
     return this._postService.getAllForHostVIP(
       this.filterText,
+      this.dataPriceCategory,
+      this.dataSquare,
+      this.dataDistrict,
+      this.dataRoomPrice,
       this.sorting ?? null,
       (paginationParams.pageNum - 1) * paginationParams.pageSize,
       paginationParams.pageSize
@@ -99,7 +105,6 @@ export class HomeComponent extends AppComponentBase {
     this.paginationParams.pageSize = event.rows;
     this.getAll(this.paginationParams).subscribe((data) => {
       this.data = data.items;
-      this.filterData();
       this.paginationParams.totalCount = data.totalCount;
       this.paginationParams.totalPage = Math.ceil(data.totalCount / this.maxResultCount);
     });
@@ -110,83 +115,12 @@ export class HomeComponent extends AppComponentBase {
     this.paginationParamsVip.pageSize = event.rows;
     this.getAllVip(this.paginationParamsVip).subscribe((data) => {
       this.dataVip = data.items;
-      this.filterDataVip();
       this.paginationParamsVip.totalCount = data.totalCount;
       this.paginationParamsVip.totalPage = Math.ceil(data.totalCount / this.maxResultCount);
     });
   }
 
   // Xử lý tìm kiếm
-  search(): void {
-    if (this.dataRoomPrice === 'all' && this.dataDistrict === 'all' && this.dataSquare === 'all' && this.dataPriceCategory === 'all') {
-      // Nếu cả hai trường đều là 'all', sử dụng dữ liệu gốc
-      this.data = [];
-      this.dataVip = [];
-      this.updateTable();
-    } else {
-      // Nếu một trong hai trường không phải 'all', áp dụng bộ lọc
-      this.filterDataVip();
-      this.filterData();
-    }
-  }
-
-
-  filterDataVip(): void {
-    this.filteredDataVip = this.dataVip.filter(post => {
-      const pCMatch = this.dataPriceCategory === 'all' || post.priceCategory.toLowerCase().includes(this.dataPriceCategory.toLowerCase());
-      const addressMatch = this.dataDistrict === 'all' || post.district.toLowerCase().includes(this.dataDistrict.toLowerCase());
-
-      const priceCategory = this.getPriceCategory(post.roomPrice);
-      const priceMatch = this.dataRoomPrice === 'all' || priceCategory === parseInt(this.dataRoomPrice);
-
-      const squareCategory = this.getSquareCategory(post.square);
-      const squareMatch = this.dataSquare === 'all' || squareCategory === parseInt(this.dataSquare);
-
-      return pCMatch && addressMatch && priceMatch && squareMatch;
-    });
-  }
-
-  filterData(): void {
-    this.filteredData = this.data.filter(post => {
-      const pCMatch = this.dataPriceCategory === 'all' || post.priceCategory.toLowerCase().includes(this.dataPriceCategory.toLowerCase());
-      const addressMatch = this.dataDistrict === 'all' || post.district.toLowerCase().includes(this.dataDistrict.toLowerCase());
-
-      const priceCategory = this.getPriceCategory(post.roomPrice);
-      const priceMatch = this.dataRoomPrice === 'all' || priceCategory === parseInt(this.dataRoomPrice);
-
-      const squareCategory = this.getSquareCategory(post.square);
-      const squareMatch = this.dataSquare === 'all' || squareCategory === parseInt(this.dataSquare);
-
-      return pCMatch && addressMatch && priceMatch && squareMatch;
-    });
-  }
-
-  getPriceCategory(price: number): number {
-    if (price < 1) {
-      return 1;
-    } else if (price >= 1 && price < 2) {
-      return 2;
-    } else if (price >= 2 && price < 3) {
-      return 3;
-    } else if (price >= 3 && price < 4) {
-      return 4;
-    } else {
-      return 5;
-    }
-  }
-
-  getSquareCategory(square: number): number {
-    if (square < 20) {
-      return 1;
-    } else if (square >= 20 && square < 30) {
-      return 2;
-    } else if (square >= 30 && square < 40) {
-      return 3;
-    } else  {
-      return 4;
-    }
-  }
-
 
   hasMainPhoto(post: GetPostForViewDto): boolean {
     return post.photos && post.photos.some(photo => photo.isMain == true);

@@ -11,5 +11,10 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
     public class GetPostInputDto : PagedAndSortedResultRequestDto
     {
         public string filterText { get; set; }
+        public string PriceCategory { get; set; } // Loại phòng
+        public decimal Square { get; set; }
+        public string District { get; set; }
+        public decimal RoomPrice { get; set; } // Giá phòng
+
     }
 }

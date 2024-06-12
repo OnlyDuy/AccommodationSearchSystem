@@ -65,7 +65,7 @@
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
                 <a class="cat-item d-block bg-light text-center rounded p-3" href="">
                     <div class="rounded p-4">
-                        <div class="icon mb-3">
+                        <div class="icon-huser mb-3">
                             <img class="img-fluid" src="../assets/img/icon-apartment.png" alt="Icon">
                         </div>
                         <h6>Phòng đơn</h6>
@@ -76,7 +76,7 @@
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
                 <a class="cat-item d-block bg-light text-center rounded p-3" href="">
                     <div class="rounded p-4">
-                        <div class="icon mb-3">
+                        <div class="icon-huser mb-3">
                             <img class="img-fluid" src="../assets/img/icon-villa.png" alt="Icon">
                         </div>
                         <h6>Phòng đôi</h6>
@@ -87,7 +87,7 @@
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
                 <a class="cat-item d-block bg-light text-center rounded p-3" href="">
                     <div class="rounded p-4">
-                        <div class="icon mb-3">
+                        <div class="icon-huser mb-3">
                             <img class="img-fluid" src="../assets/img/icon-house.png" alt="Icon">
                         </div>
                         <h6>Chung cư mini</h6>
@@ -98,7 +98,7 @@
             <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
                 <a class="cat-item d-block bg-light text-center rounded p-3" href="">
                     <div class="rounded p-4">
-                        <div class="icon mb-3">
+                        <div class="icon-huser mb-3">
                             <img class="img-fluid" src="../assets/img/icon-housing.png" alt="Icon">
                         </div>
                         <h6>Căn hộ giá rẻ</h6>
@@ -141,7 +141,7 @@
                     <div class="row g-4">
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s" *ngFor="let post of dataVip">
                             <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden" [routerLink]="['./', post.id]">
+                                <div class="position-relative overflow-hidden" [routerLink]="['./home-user-posts-detail/', post.id]">
                                     <a>
                                         <img class="img-fluid__ele" *ngIf="hasMainPhoto(post)"
                                             [src]="getMainPhotoUrl(post)" />
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="p-4 pb-0">
                                     <h5 class="text-primary-huser mb-3">{{ post.roomPrice }} triệu/tháng</h5>
-                                    <a class="d-block h5 mb-2" [routerLink]="['./', post.id]">{{ post.title }}</a>
+                                    <a class="d-block h5 mb-2" [routerLink]="['./home-user-posts-detail/', post.id]">{{ post.title }}</a>
                                     <p><i class="fa fa-map-marker-alt text-primary-huser me-2"></i>{{
                                         post.district}},
                                         {{post.city}}</p>
@@ -565,7 +565,7 @@
                     <div class="row g-4">
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s" *ngFor="let post of data">
                             <div class="property-item rounded overflow-hidden">
-                                <div class="position-relative overflow-hidden" [routerLink]="['./home-user-posts-detail/', post.id]">
+                                <div class="position-relative overflow-hidden cursor-pointer" [routerLink]="['./home-user-posts-detail/', post.id]">
                                     <a>
                                         <img class="img-fluid__ele" *ngIf="hasMainPhoto(post)"
                                             [src]="getMainPhotoUrl(post)" />

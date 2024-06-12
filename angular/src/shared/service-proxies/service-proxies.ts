@@ -1889,17 +1889,37 @@ export class ManagePostsServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAll(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAll?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -2250,17 +2270,37 @@ export class ManagePostsServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllForHostVIP(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAllForHostVIP(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAllForHostVIP?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -2379,17 +2419,37 @@ export class ManagePostsServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllForHost(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAllForHost(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAllForHost?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -2450,17 +2510,37 @@ export class ManagePostsServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllForAdmin(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAllForAdmin(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetAllForAdmin?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -5923,17 +6003,37 @@ export class ViewPostServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAll(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ViewPost/GetAll?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -5994,17 +6094,37 @@ export class ViewPostServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllForHostVIP(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAllForHostVIP(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ViewPost/GetAllForHostVIP?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -6178,17 +6298,37 @@ export class ViewPostServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllForHost(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAllForHost(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ViewPost/GetAllForHost?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)
@@ -6249,17 +6389,37 @@ export class ViewPostServiceProxy {
 
     /**
      * @param filterText (optional) 
+     * @param priceCategory (optional) 
+     * @param square (optional) 
+     * @param district (optional) 
+     * @param roomPrice (optional) 
      * @param sorting (optional) 
      * @param skipCount (optional) 
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAllForAdmin(filterText: string | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
+    getAllForAdmin(filterText: string | undefined, priceCategory: string | undefined, square: number | undefined, district: string | undefined, roomPrice: number | undefined, sorting: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<GetPostForViewDtoPagedResultDto> {
         let url_ = this.baseUrl + "/api/services/app/ViewPost/GetAllForAdmin?";
         if (filterText === null)
             throw new Error("The parameter 'filterText' cannot be null.");
         else if (filterText !== undefined)
             url_ += "filterText=" + encodeURIComponent("" + filterText) + "&";
+        if (priceCategory === null)
+            throw new Error("The parameter 'priceCategory' cannot be null.");
+        else if (priceCategory !== undefined)
+            url_ += "PriceCategory=" + encodeURIComponent("" + priceCategory) + "&";
+        if (square === null)
+            throw new Error("The parameter 'square' cannot be null.");
+        else if (square !== undefined)
+            url_ += "Square=" + encodeURIComponent("" + square) + "&";
+        if (district === null)
+            throw new Error("The parameter 'district' cannot be null.");
+        else if (district !== undefined)
+            url_ += "District=" + encodeURIComponent("" + district) + "&";
+        if (roomPrice === null)
+            throw new Error("The parameter 'roomPrice' cannot be null.");
+        else if (roomPrice !== undefined)
+            url_ += "RoomPrice=" + encodeURIComponent("" + roomPrice) + "&";
         if (sorting === null)
             throw new Error("The parameter 'sorting' cannot be null.");
         else if (sorting !== undefined)

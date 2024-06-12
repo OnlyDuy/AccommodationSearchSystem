@@ -40,6 +40,12 @@ export class PostComponent extends AppComponentBase {
   active: boolean = false;
   tenantId: number;
 
+  dataRoomPrice: number;
+  dataPriceCategory: string = 'all';
+  dataDistrict: string = 'all';
+  dataSquare: number;
+
+
   constructor(
     injector: Injector,
     public _postService: ManagePostsServiceProxy
@@ -80,6 +86,10 @@ export class PostComponent extends AppComponentBase {
   getAll(paginationParams: PaginationParamsModel) {
     return this._postService.getAllForHost(
       this.filterText,
+      this.dataPriceCategory,
+      this.dataSquare,
+      this.dataDistrict,
+      this.dataRoomPrice,
       this.sorting ?? null,
       paginationParams ? paginationParams.skipCount : 0,
       paginationParams ? paginationParams.pageSize : 20,
@@ -90,6 +100,10 @@ export class PostComponent extends AppComponentBase {
   getAllForAdmin(paginationParams: PaginationParamsModel) {
     return this._postService.getAllForAdmin(
       this.filterText,
+      this.dataPriceCategory,
+      this.dataSquare,
+      this.dataDistrict,
+      this.dataRoomPrice,
       this.sorting ?? null,
       paginationParams ? paginationParams.skipCount : 0,
       paginationParams ? paginationParams.pageSize : 20,

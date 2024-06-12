@@ -13,3 +13,9 @@
     color: red;
     font-weight: 500;
 }
+
+::ng-deep .p-dropdown-label {
+    display: flex !important;
+    align-items: center !important;
+}
+

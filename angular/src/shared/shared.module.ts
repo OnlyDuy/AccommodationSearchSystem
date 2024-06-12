@@ -27,6 +27,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { DataViewModule } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
 import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
 
 import { FileUploadModule } from 'ng2-file-upload';
 
@@ -52,7 +53,8 @@ import { GoogleMapsModule  } from '@angular/google-maps';
         PaginatorModule,
         CalendarModule,
         GoogleMapsModule,
-        NgxGalleryModule
+        NgxGalleryModule,
+        DropdownModule
     ],
 
     declarations: [
@@ -85,7 +87,8 @@ import { GoogleMapsModule  } from '@angular/google-maps';
         CalendarModule,
         NgxPaginationModule,
         PaginatorModule,
-        NgxGalleryModule
+        NgxGalleryModule,
+        DropdownModule
     ]
 })
 export class SharedModule {
