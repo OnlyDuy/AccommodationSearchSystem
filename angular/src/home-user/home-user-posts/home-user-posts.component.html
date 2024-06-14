@@ -8,29 +8,29 @@
             <div class="col-md-10">
                 <div class="row g-2">
                     <div class="col-md-4">
-                        <input type="text" style="height: auto;" class="form-control border-0 py-3"
+                        <input type="text" style="height: auto;" class="form-control border-0 py-3" [(ngModel)]="filterText"
                             placeholder="Nhập từ khóa tìm kiếm">
                     </div>
                     <div class="col-md-2">
-                        <p-dropdown [options]="priceCategoris" [(ngModel)]="dataPriceCategory" optionLabel="label" optionValue="label"
-                            placeholder="Loại phòng" [style]="{width: '100%', height: '54px'}">
+                        <p-dropdown [options]="priceCategoris" [(ngModel)]="dataPriceCategory" (onChange)="search()"
+                            placeholder="{{priceCategoris[0].label}}" [style]="{width: '100%', height: '54px'}">
                         </p-dropdown>
                         <!-- <div class="form-control border-0 py-3">
                         </div> -->
                     </div>
                     <div class="col-md-2">
-                        <p-dropdown [options]="districts" [(ngModel)]="dataDistrict" optionLabel="label" optionValue="label"
-                            placeholder="Quận/Huyện" [style]="{width: '100%', height: '54px'}">
+                        <p-dropdown [options]="districts" [(ngModel)]="dataDistrict" (onChange)="search()"
+                            placeholder="{{districts[0].label}}" [style]="{width: '100%', height: '54px'}">
                         </p-dropdown>
                     </div>
                     <div class="col-md-2">
-                        <p-dropdown [options]="roomPrice" [(ngModel)]="dataRoomPrice" optionLabel="label" optionValue="label"
-                            placeholder="Giá phòng" [style]="{width: '100%', height: '54px'}">
+                        <p-dropdown [options]="roomPrice" [(ngModel)]="dataRoomPrice" (onChange)="search()"
+                            placeholder="{{roomPrice[0].label}}" [style]="{width: '100%', height: '54px'}">
                         </p-dropdown>
                     </div>
                     <div class="col-md-2">
-                        <p-dropdown [options]="square" [(ngModel)]="dataSquare" optionLabel="label" optionValue="label"
-                            placeholder="Diện tích" [style]="{width: '100%', height: '54px'}">
+                        <p-dropdown [options]="square" [(ngModel)]="dataSquare" (onChange)="search()"
+                            placeholder="{{square[0]?.label}}" [style]="{width: '100%', height: '54px'}">
                         </p-dropdown>
                     </div>
                 </div>
@@ -986,14 +986,11 @@
                     </div>
                     <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
                         <div class="mb-4">
-                            <h1 class="mb-3">Contact With Our Certified Agent</h1>
-                            <p>Eirmod sed ipsum dolor sit rebum magna erat. Tempor lorem kasd vero ipsum sit sit
-                                diam justo sed vero dolor duo.</p>
+                            <h1 class="mb-3">Liên hệ với đại lý được chứng nhận của chúng tôi</h1>
+                            <p>Liên hệ với chúng tôi để được biết thêm những thông tin chi tiết về các dịch vụ mà chúng tôi cung cấp.</p>
                         </div>
-                        <a href="" class="btn btn-info py-3 px-4 me-2"><i class="fa fa-phone-alt me-2"></i>Make A
-                            Call</a>
-                        <a href="" class="btn btn-dark py-3 px-4"><i class="fa fa-calendar-alt me-2"></i>Get
-                            Appoinment</a>
+                        <a href="" class="btn btn-info py-3 px-4 me-2"><i class="fa fa-phone-alt me-2"></i>Thực hiện cuộc gọi</a>
+                        <a href="" class="btn btn-dark py-3 px-4"><i class="fa fa-calendar-alt me-2"></i>Lên lịch hẹn</a>
                     </div>
                 </div>
             </div>
@@ -1007,9 +1004,8 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-            <h1 class="mb-3">Property Agents</h1>
-            <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod
-                sit. Ipsum diam justo sed rebum vero dolor duo.</p>
+            <h1 class="mb-3">Đội ngũ phát triển</h1>
+            <p>Chúng tôi có dội ngũ phát triển chuyên nghiệp có kinh nghiệm và tận tình giúp đỡ, giải quyết khách hàng trong mọi vấn đề.</p>
         </div>
         <div class="row g-4">
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -1086,11 +1082,11 @@
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-            <h1 class="mb-3">Our Clients Say!</h1>
+            <h1 class="mb-3">Phản hồi của khách hàng!</h1>
             <p>Eirmod sed ipsum dolor sit rebum labore magna erat. Tempor ut dolore lorem kasd vero ipsum sit eirmod
                 sit. Ipsum diam justo sed rebum vero dolor duo.</p>
         </div>
-        <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+        <div class="owl-carousel testimonial-carousel wow fadeInUp owl-loaded" data-wow-delay="0.1s">
             <div class="testimonial-item bg-light rounded p-3">
                 <div class="bg-white border rounded p-4">
                     <p>Tempor stet labore dolor clita stet diam amet ipsum dolor duo ipsum rebum stet dolor amet

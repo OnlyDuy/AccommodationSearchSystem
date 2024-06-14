@@ -143,11 +143,11 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
             .Where(e => tenantId == e.TenantId && e.ConfirmAdmin == true)
             .Where(e => e.PriceCategory == input.PriceCategory || input.PriceCategory == null)
             .Where(e => e.District == input.District || input.District == null)
-            //Check điều kiện diện tích
-            .Where(e => (input.Square == 1 && e.Square < 20) || (input.Square == 2 && (e.Square >= 20 && e.Square < 30))
+                        //Check điều kiện diện tích
+            .Where(e => (input.Square == 1 && e.Square < 20) || (input.Square == 2 && (e.Square >= 20 && e.Square < 30)) 
                 || (input.Square == 3 && (e.Square >= 30 && e.Square < 40)) || (input.Square == 4 && e.Square >= 40) || input.Square == 0)
             // Check điều kiện giá phòng
-            .Where(e => (input.RoomPrice == 1 && (e.RoomPrice < 1)) || (input.RoomPrice == 2 && (e.RoomPrice >= 1 && e.RoomPrice < 2))
+            .Where(e => (input.RoomPrice == 1 && (e.RoomPrice < 1)) || (input.RoomPrice == 2 && (e.RoomPrice >= 1 && e.RoomPrice < 2)) 
                 || (input.RoomPrice == 3 && (e.RoomPrice >= 2 && e.RoomPrice < 3)) || (input.RoomPrice == 4 && (e.RoomPrice >= 4)) || input.RoomPrice == 0)
             .Where(e => input.filterText == null || e.Title.Contains(input.filterText)
                                 || e.Address.Contains(input.filterText) || e.RoomPrice.Equals(input.filterText))

@@ -16,6 +16,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class HomeUserPostsDetailComponent extends AppComponentBase implements OnInit {
 
+  isLogin: boolean = false;
+  showLogin: number;
   postId: number;
   post: GetPostForViewDto = new GetPostForViewDto();
   schedule: CreateOrEditSchedulesDto = new CreateOrEditSchedulesDto();
@@ -93,7 +95,14 @@ export class HomeUserPostsDetailComponent extends AppComponentBase implements On
       },
     ];
     this.getCurrentLocation();
-    this.getStatus();
+
+    this.showLogin = this.appSession.getShownLoginId();
+    if (this.showLogin != null) {
+      this.isLogin = true;
+      this.getStatus();
+    } else {
+      this.isLogin = false;
+    }
     // this.getStatusRoom();
     this.getComments();
     this.getTotalComments();

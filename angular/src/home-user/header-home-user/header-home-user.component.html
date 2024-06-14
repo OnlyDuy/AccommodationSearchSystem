@@ -29,7 +29,7 @@
                 <a class="nav-item nav-link">
                     <b *ngIf="shownLogin">{{ 'Xin chào, ' + shownLoginName }}</b>
                 </a>
-                <a *ngIf="isLogin" href="/app/home" class="btn btn-info d-lg-flex mr-2">Quản lý tài khoản</a>
+                <a *ngIf="isLogin" href="/app/infor-user" class="btn btn-info d-lg-flex mr-2">Quản lý tài khoản</a>
                 <a *ngIf="!isLogin" href="/account/login" class="btn btn-light d-lg-flex mr-2">Đăng nhập</a>
                 <a *ngIf="!isLogin" href="/account/register" class="btn btn-secondary d-lg-flex">Đăng ký</a>
                 <a *ngIf="isLogin" (click)="logout()" class="btn btn-secondary d-lg-flex">Đăng xuất</a>

@@ -35,6 +35,7 @@ export class HomeUserPostsComponent extends AppComponentBase implements OnInit {
   dataSquare: number;
 
   districts: { value: string, label: string}[] = [
+    { value: "", label: "Quận/Huyện"},
     { value: "Ba Đình", label: "Ba Đình" },
     { value: "Bắc Từ Liêm", label: "Bắc Từ Liêm" },
     { value: "Cầu Giấy", label: "Cầu Giấy" },
@@ -49,17 +50,20 @@ export class HomeUserPostsComponent extends AppComponentBase implements OnInit {
     { value: "Thanh Xuân", label: "Thanh Xuân" }
   ];
   priceCategoris: { value: string, label: string}[] = [
+    { value: "", label: "Loại phòng"},
     { value: "Chung cư mini", label: "Chung cư mini"},
     { value: "Phòng đơn", label: "Phòng đơn"},
     { value: "Từ 2 người", label: "Từ 2 người"},
   ];
   square: { value: string, label: string}[] = [
+    { value: "0", label: "Diện tích" },
     { value: "1", label: "Dưới 20m2" },
     { value: "2", label: "Từ 20m2 đến 30m2" },
     { value: "3", label: "Từ 30m2 đến 40m2" },
     { value: "4", label: "Trên 40m2" }
   ];
   roomPrice: { value: string, label: string}[] = [
+    { value: "0", label: "Giá phòng" },
     { value: "1", label: "Dưới 1 triệu đồng" },
     { value: "2", label: "Từ 1 đến 2 triệu đồng" },
     { value: "3", label: "Từ 2 đến 3 triệu đồng" },
@@ -149,7 +153,7 @@ export class HomeUserPostsComponent extends AppComponentBase implements OnInit {
 
    // Xử lý tìm kiếm
    search() {
-
+    this.updateTable();
    }
 
   hasVipPro(post: GetPostForViewDto): boolean {

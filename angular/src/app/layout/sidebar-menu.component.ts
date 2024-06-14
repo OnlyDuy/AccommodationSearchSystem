@@ -44,7 +44,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
     getMenuItems(): MenuItem[] {
         return [
             // new MenuItem(this.l('About'), '/app/about', 'fas fa-info-circle'),
-            new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home', 'Pages.Posts'),
+            // new MenuItem(this.l('HomePage'), '/app/home', 'fas fa-home', 'Pages.Posts'),
             new MenuItem("Thống kê", '/app/statistical', 'fas fa-chart-line', 'Pages.Statistical'),
             new MenuItem(
                 this.l('Roles'),
@@ -69,7 +69,7 @@ export class SidebarMenuComponent extends AppComponentBase implements OnInit {
             new MenuItem("Quản lý gói đăng bài", "/app/app-package-posts", "fab fa-shopify", "Pages.Posting.Packages", [
             ]),
             new MenuItem("Bài đăng", "", "fas fa-book", "Pages.View.Posts", [
-                new MenuItem("Bài đăng", "/app/post/post-view", "fas fa-circle", "Pages.View.Posts" ),
+                // new MenuItem("Bài đăng", "/app/post/post-view", "fas fa-circle", "Pages.View.Posts" ),
                 new MenuItem("Bài đăng yêu thích", "/app/post/post-view-like", "fas fa-circle", "Pages.View.Posts"),
             ]),
             new MenuItem("Quản lý bài đăng", "", "fas fa-book-open", "Pages.Posts", [
