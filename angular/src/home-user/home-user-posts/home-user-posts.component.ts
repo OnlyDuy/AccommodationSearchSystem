@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { PaginationParamsModel } from '@shared/commom/models/base.model';
 import { GetPostForViewDto, ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ceil } from 'lodash-es';
+import { CarouselComponent } from 'ngx-bootstrap/carousel';
 
 @Component({
   selector: 'app-home-user-posts',
@@ -33,6 +34,11 @@ export class HomeUserPostsComponent extends AppComponentBase implements OnInit {
   dataPriceCategory: string;
   dataDistrict: string;
   dataSquare: number;
+
+  carousel: CarouselComponent;
+
+  currentSlideIndex: number = 0;
+  slideInterval: any;
 
   districts: { value: string, label: string}[] = [
     { value: "", label: "Quận/Huyện"},
@@ -79,6 +85,9 @@ export class HomeUserPostsComponent extends AppComponentBase implements OnInit {
     this.updateTable();
     this.onPageChange({ page: this.paginationParams.pageNum - 1, rows: this.paginationParams.pageSize });
     this.onPageChangeVip({ page: this.paginationParamsVip.pageNum - 1, rows: this.paginationParamsVip.pageSize });
+
+    // this.showSlide(this.currentSlideIndex);
+    // this.startSlideShow();
   }
 
   updateTable() {
@@ -176,4 +185,37 @@ export class HomeUserPostsComponent extends AppComponentBase implements OnInit {
       window.open('https://zalo.me/' + phoneNumber, '_blank');
     }
   }
+
+  // ngOnDestroy(): void {
+  //   this.stopSlideShow();
+  // }
+
+  // showSlide(index: number): void {
+  //   const slides: HTMLElement[] = Array.from(document.querySelectorAll('.slide'));
+  //   slides.forEach((slide, i) => {
+  //     slide.classList.remove('active');
+  //     if (i === index) {
+  //       slide.classList.add('active');
+  //     }
+  //   });
+  // }
+
+  // moveSlide(n: number): void {
+  //   const slides: HTMLElement[] = Array.from(document.querySelectorAll('.slide'));
+  //   this.currentSlideIndex = (this.currentSlideIndex + n + slides.length) % slides.length;
+  //   this.showSlide(this.currentSlideIndex);
+  // }
+
+  // // autoSlide
+  // startSlideShow(): void {
+  //   this.slideInterval = setInterval(() => {
+  //     this.moveSlide(1);
+  //   }, 5000);
+  // }
+
+  // stopSlideShow(): void {
+  //   if(this.slideInterval) {
+  //     clearInterval(this.slideInterval);
+  //   }
+  // }
 }

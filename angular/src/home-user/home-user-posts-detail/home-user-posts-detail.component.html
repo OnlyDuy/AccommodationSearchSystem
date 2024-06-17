@@ -37,7 +37,7 @@
         <tabset>
             <tab class="" [heading]="'Nội dung'">
                 <h4>{{l("ContentPost")}}</h4>
-                <p>{{post.contentPost}}</p>
+                <div class="preserve-line-breaks">{{post.contentPost}}</div>
             </tab>
             <tab class="" [heading]="'Thông tin hình ảnh'">
                 <ngx-gallery [options]="this.galleryOptions" [images]="this.galleryImages" class="ngx-gallery col-12 col-md-9"></ngx-gallery>

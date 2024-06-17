@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-slider-home-user',
   templateUrl: './slider-home-user.component.html',
   styleUrls: ['./slider-home-user.component.css']
 })
-export class SliderHomeUserComponent implements OnInit {
+export class SliderHomeUserComponent implements OnInit, OnDestroy {
   currentSlideIndex: number = 0;
   slideInterval: any;
 
@@ -33,6 +33,7 @@ export class SliderHomeUserComponent implements OnInit {
   moveSlide(n: number): void {
     const slides: HTMLElement[] = Array.from(document.querySelectorAll('.slide'));
     this.currentSlideIndex = (this.currentSlideIndex + n + slides.length) % slides.length;
+    console.log(`Current Slide Index: ${this.currentSlideIndex}`);
     this.showSlide(this.currentSlideIndex);
   }
 

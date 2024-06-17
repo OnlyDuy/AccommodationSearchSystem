@@ -9,6 +9,10 @@
   margin-bottom: 20px;
 }
 
+.preserve-line-breaks {
+  white-space: pre-line;
+}
+
 agm-map {
   height: 400px;
 }

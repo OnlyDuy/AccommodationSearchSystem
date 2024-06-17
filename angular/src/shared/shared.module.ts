@@ -34,6 +34,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { AgmCoreModule } from '@agm/core';
 import { GoogleMapsModule  } from '@angular/google-maps';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 @NgModule({
     imports: [
         CommonModule,
@@ -54,7 +55,8 @@ import { GoogleMapsModule  } from '@angular/google-maps';
         CalendarModule,
         GoogleMapsModule,
         NgxGalleryModule,
-        DropdownModule
+        DropdownModule,
+        CarouselModule.forRoot()
     ],
 
     declarations: [
@@ -88,7 +90,8 @@ import { GoogleMapsModule  } from '@angular/google-maps';
         NgxPaginationModule,
         PaginatorModule,
         NgxGalleryModule,
-        DropdownModule
+        DropdownModule,
+        CarouselModule
     ]
 })
 export class SharedModule {
