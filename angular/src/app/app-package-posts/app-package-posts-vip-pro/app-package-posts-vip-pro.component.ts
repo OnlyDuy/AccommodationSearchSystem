@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Injector, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AppComponentBase } from '@shared/app-component-base';
 import { PackagePostDto, PackagePostsServiceProxy, SessionServiceProxy } from '@shared/service-proxies/service-proxies';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -21,17 +22,23 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
   packages: PackagePostDto = new PackagePostDto();
   statusPackage: boolean = false;
   showQR: boolean = false;
+  vnp_TransactionStatus: string = "";
 
   constructor(
     injector: Injector,
     public _packageService: PackagePostsServiceProxy,
-    private _sessionService: SessionServiceProxy
+    private _sessionService: SessionServiceProxy,
+    private route: ActivatedRoute,
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
     this.getStatus(); // Kiểm tra trạng thái khi tải trang
+    this.route.queryParamMap.subscribe(params => {
+      this.vnp_TransactionStatus = params.get('vnp_TransactionStatus') || '';
+      console.log(this.vnp_TransactionStatus);
+    });
   }
 
   getStatus(): void {
@@ -55,7 +62,32 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
     this.modal.show();
   }
 
+  // save(): void {
+  //   this.saving = true;
+  //   this.packages.tenantId = this.tenantId;
+  //   this.packages.amount = 399000;
+  //   this.packages.description = "XNGVIP" + this.packages.hostPhoneNumber;
+  //   this.getStatus();
+  //   this.message.confirm('', 'Bạn muốn đăng ký gói đăng bài này ?', (isConfirme) => {
+  //     if (isConfirme) {
+  //       if (this.statusPackage) {
+  //         this.notify.warn("Bạn đã đăng ký gói đăng bài trước đó");
+  //         this.close();
+  //       } else {
+  //         this._packageService
+  //           .createPackage(this.packages)
+  //           .subscribe((response) => {
+  //             this.close();
+  //             window.open(response.paymentUrl, '_blank');
+  //             this.notify.info(this.l("SavedSuccessfully"));
+  //             this.modalSave.emit();
+  //             this.packages = null;
 
+  //           });
+  //       }
+  //     }
+  //   })
+  // }
 
   save(): void {
     this.saving = true;
@@ -63,25 +95,25 @@ export class AppPackagePostsVipProComponent extends AppComponentBase implements 
     this.packages.amount = 399000;
     this.packages.description = "XNGVIP" + this.packages.hostPhoneNumber;
     this.getStatus();
-    this.message.confirm('', 'Bạn muốn đăng ký gói đăng bài này ?', (isConfirme) => {
-      if (isConfirme) {
+    this.message.confirm('', 'Bạn muốn đăng ký gói đăng bài này ?', (isConfirmed) => {
+      if (isConfirmed) {
         if (this.statusPackage) {
           this.notify.warn("Bạn đã đăng ký gói đăng bài trước đó");
           this.close();
         } else {
           this._packageService
-            .createPackage(this.packages)
+            .paymentResult(this.packages)
             .subscribe((response) => {
-              this.close();
-              window.open(response.paymentUrl, '_blank');
-              this.notify.info(this.l("SavedSuccessfully"));
+              window.open(response, '_self');
+              // this.notify.info(this.l("SavedSuccessfully"));
               this.modalSave.emit();
-              this.packages = null;
-
             });
         }
+      } else {
+        // Xử lý trường hợp người dùng không xác nhận
+        this.saving = false; // Đặt lại trạng thái saving về false
       }
-    })
+    });
   }
 
   close(): void {

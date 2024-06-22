@@ -1,7 +1,14 @@
-
-<body>
+<body *ngIf="this.vnp_TransactionStatus == '00'">
     <div class="success-icon">✔</div>
     <div class="success-message">THANH TOÁN THÀNH CÔNG</div>
+    <div class="order-details">
+        Cảm ơn bạn đã dùng dịch vụ của chúng tôi
+    </div>
+    <button class="return-button" [routerLink]="['../app-package-posts']">Quay về</button>
+</body>
+<body *ngIf="this.vnp_TransactionStatus != '00'">
+    <div class="success-icon">❌</div>
+    <div class="success-message">THANH TOÁN KHÔNG THÀNH CÔNG</div>
     <div class="order-details">
         Cảm ơn bạn đã dùng dịch vụ của chúng tôi
     </div>

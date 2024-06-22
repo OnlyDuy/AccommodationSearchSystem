@@ -14,6 +14,7 @@ using AccommodationSearchSystem.Services;
 using AccommodationSearchSystem.VnPayment.Dto;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using System;
@@ -93,6 +94,64 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.PackagePosts
             }
         }
 
+        [HttpPost]
+        public string PaymentResult(PackagePostDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var hostId = AbpSession.UserId;
+
+            var user = _repositoryUser.GetAll().Where(e => e.TenantId == tenantId && e.Id == hostId).FirstOrDefault();
+
+            // Tạo thanh toán VNPay
+            var vnPayRequestModel = new VnPaymentRequestDto
+            {
+                OrderId = new Random().Next(1000, 100000),
+                FullName = user.FullName,
+                Description = input.Description,
+                Amount = input.Amount,
+                CreatedDate = DateTime.Now
+            };
+            // Lấy HttpContext từ IHttpContextAccessor
+            var httpContext = _httpContextAccessor.HttpContext;
+            return _vnPayService.CreatePaymentUrl(_httpContextAccessor.HttpContext, vnPayRequestModel);
+        }
+
+        public string CallBack(PackagePostDto input)
+        {
+            var tenantId = AbpSession.TenantId;
+            var hostId = AbpSession.UserId;
+
+            var user = _repositoryUser.GetAll().Where(e => e.TenantId == tenantId && e.Id == hostId).FirstOrDefault();
+            var package = new PackagePost   
+            {
+                TenantId = tenantId,
+                HostId = (int)hostId,
+                Confirm = false,
+                HostName = user.FullName,
+                PackageType = input.PackageType,
+                HostPhoneNumber = user.PhoneNumber,
+                ExpirationDate = DateTime.Now.Date
+            };
+            if (package.PackageType == "Gói VIP pro")
+            {
+                package.ExpirationDate = package.ExpirationDate.AddMonths(3);
+            }
+            else if (package.PackageType == "Gói VIP")
+            {
+                package.ExpirationDate = package.ExpirationDate.AddMonths(6);
+            }
+
+            _repositoryPackagePost.InsertAsync(package);
+
+              var  PaymentUrl = input.PaymentUrl;
+            //return new ObjectResult(new PackagePostDto { PaymentUrl = input.PaymentUrl })
+            //{
+            //    StatusCode = 200 // OK status
+            //};
+            return PaymentUrl;
+        }
+
+        // Phương thức cũ
         public async Task<PackagePostDto> CreatePackage(PackagePostDto input)
         {
             var tenantId = AbpSession.TenantId;

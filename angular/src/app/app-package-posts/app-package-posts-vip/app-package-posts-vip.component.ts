@@ -72,17 +72,16 @@ export class AppPackagePostsVipComponent extends AppComponentBase implements OnI
           this.close();
         } else {
           this._packageService
-            .createPackage(this.packages)
+            .paymentResult(this.packages)
             .subscribe((response) => {
-              this.close();
-              window.open(response.paymentUrl, '_blank');
-              this.notify.info(this.l("SavedSuccessfully"));
-              console.log(response.paymentUrl);
+              window.open(response, '_self');
+              // this.notify.info(this.l("SavedSuccessfully"));
               this.modalSave.emit();
-              this.packages = null;
-
             });
         }
+      } else {
+        // Xử lý trường hợp người dùng không xác nhận
+        this.saving = false; // Đặt lại trạng thái saving về false
       }
     })
   }
@@ -96,11 +95,4 @@ export class AppPackagePostsVipComponent extends AppComponentBase implements OnI
   showQRCode(): void {
     this.showQR = !this.showQR; // Khi nhấn nút, đảo ngược trạng thái hiển thị QR code
   }
-
-    // Hàm tạo mã đơn hàng duy nhất
-    // generateOrderId(): string {
-    //   // Logic tạo mã đơn hàng ở đây, ví dụ: sử dụng timestamp kết hợp với một số ngẫu nhiên
-    //   return 'ORDER_' + Date.now() + Math.floor(Math.random() * 1000);
-    // }
-
 }

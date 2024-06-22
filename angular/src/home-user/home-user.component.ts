@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Injector, OnInit, ViewChild } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
 
@@ -8,14 +8,14 @@ import { ViewPostServiceProxy } from '@shared/service-proxies/service-proxies';
   styleUrls: ['./home-user.component.css'],
   providers: [ViewPostServiceProxy]
 })
-export class HomeUserComponent extends AppComponentBase implements OnInit {
+export class HomeUserComponent extends AppComponentBase implements OnInit  {
 
   constructor(injector: Injector, public _postService: ViewPostServiceProxy) {
     super(injector);
   }
 
   ngOnInit() {
-  }
 
+  }
 
 }

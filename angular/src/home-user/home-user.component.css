@@ -17,5 +17,11 @@
     font-weight: 500;
 }
 
-/* @import "../assets/css/style.css";
- */
+/* CSS chatbot */
+
+/* styles.css */
+/* ::ng-deep df-messenger button#widgetIcon {
+    width: 50px !important;
+    height: 50px !important;
+    background-color: black;
+} */
