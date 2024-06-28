@@ -175,9 +175,9 @@
                       {{ "RoomPrice" | localize }}
                     </label>
                     <div class="">
-                      <input type="text" class="form-control" name="roomPrice" id="roomPrice" required
-                        [(ngModel)]="posts.roomPrice" #roomPriceModel="ngModel" #roomPriceEl />
-                      <abp-validation-summary [control]="roomPriceModel" [controlEl]="roomPriceEl"></abp-validation-summary>
+                      <input type="number" class="form-control" name="roomPrice" id="roomPrice" required
+                        [(ngModel)]="posts.roomPrice" #roomPriceModel="ngModel" #roomPriceEl min="0" step="0.01" />
+                      <abp-validation-summary [control]="roomPriceModel" [controlEl]="roomPriceEl" ></abp-validation-summary>
                     </div>
                   </div>
                 </div>

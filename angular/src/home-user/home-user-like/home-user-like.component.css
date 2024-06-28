@@ -1,0 +1,19 @@
+.img-fluid__ele {
+    height: 264px;
+    width: 366px;
+}
+
+.room-status.available {
+    color: #febb02;
+    font-weight: 500;
+}
+
+.room-status.not-available {
+    color: red;
+    font-weight: 500;
+}
+
+/* .icon__delete {
+    display: flex;
+    margin-top: -18px;
+} */

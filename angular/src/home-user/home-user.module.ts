@@ -19,6 +19,7 @@ import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { CollapseModule } from "ngx-bootstrap/collapse";
 import { NgxPaginationModule } from "ngx-pagination";
 import { HomeUserAboutUsComponent } from './home-user-about-us/home-user-about-us.component';
+import { HomeUserLikeComponent } from './home-user-like/home-user-like.component';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { HomeUserAboutUsComponent } from './home-user-about-us/home-user-about-u
     HomeViewPostsComponent,
     HomeUserContactComponent,
     HomeUserAboutUsComponent,
+    HomeUserLikeComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

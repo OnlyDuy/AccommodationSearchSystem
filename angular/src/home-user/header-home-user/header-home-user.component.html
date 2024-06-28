@@ -11,25 +11,32 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-                <a routerLink="/home-user" routerLinkActive="active" class="nav-item nav-link"><b>Trang chủ</b></a>
-                <a routerLink="/home-user/home-view-posts" routerLinkActive="active" class="nav-item nav-link"><b>Nhà cho thuê</b></a>
-                <!-- <div class="nav-item dropdown">
-                    <a routerLink="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Liên hệ</a>
-                    <div class="dropdown-menu rounded-0 m-0">
-                        <a routerLink="property-list.html" class="dropdown-item">Property List</a>
-                        <a routerLink="property-type.html" class="dropdown-item">Property Type</a>
-                        <a routerLink="property-agent.html" class="dropdown-item">Property Agent</a>
-                    </div>
-                </div> -->
-                <a routerLink="/home-user/home-user-contact" routerLinkActive="active" class="nav-item nav-link"><b>Liên hệ</b></a>
-                <a routerLink="/home-user/home-user-about-us" routerLinkActive="active" class="nav-item nav-link"><b>Về chúng tôi</b></a>
+                <a routerLink="/home-user" routerLinkActive="active" class="nav-item nav-link" style="padding-right: 0;"><b>Trang chủ</b></a>
+                <a routerLink="/home-user/home-view-posts" routerLinkActive="active" class="nav-item nav-link" style="padding-right: 0;"><b>Nhà cho thuê</b></a>
+                <a routerLink="/home-user/home-user-contact" routerLinkActive="active" class="nav-item nav-link" style="padding-right: 0;"><b>Liên hệ</b></a>
+                <a routerLink="/home-user/home-user-about-us" routerLinkActive="active" class="nav-item nav-link" style="padding-right: 0;"><b>Về chúng tôi</b></a>
 
             </div>
             <div class="ms-auto d-flex">
                 <a class="nav-item nav-link">
                     <b *ngIf="shownLogin">{{ 'Xin chào, ' + shownLoginName }}</b>
                 </a>
-                <a *ngIf="isLogin" href="/app/infor-user" class="btn btn-info d-lg-flex mr-2">Quản lý tài khoản</a>
+                <div class="nav-item dropdown">
+                    <a routerLink="#" class="btn dropdown-toggle" style="color: #00A99D;" data-bs-toggle="dropdown"> <i class="fa fa-bell"></i></a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a routerLink="#" class="dropdown-item">Property List Property List Property List</a>
+                        <a routerLink="#" class="dropdown-item">Property Type</a>
+                        <a routerLink="#" class="dropdown-item">Property Agent</a>
+                    </div>
+                </div>
+                <!-- <a *ngIf="isLogin" href="/app/infor-user" class="btn btn-info d-lg-flex mr-2">Quản lý tài khoản</a> -->
+                <div class="nav-item dropdown">
+                    <a *ngIf="isLogin" href="#" class="btn btn-info d-lg-flex mr-2 dropdown-toggle" data-bs-toggle="dropdown">Quản lý ài khoản</a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                        <a href="/app/infor-user" class="dropdown-item">Quản lý tin đăng</a>
+                        <a routerLink="/home-user/home-user-like" class="dropdown-item">Tin đăng yêu thích</a>
+                    </div>
+                </div>
                 <a *ngIf="!isLogin" href="/account/login" class="btn btn-light d-lg-flex mr-2">Đăng nhập</a>
                 <a *ngIf="!isLogin" href="/account/register" class="btn btn-secondary d-lg-flex">Đăng ký</a>
                 <a *ngIf="isLogin" (click)="logout()" class="btn btn-secondary d-lg-flex">Đăng xuất</a>
