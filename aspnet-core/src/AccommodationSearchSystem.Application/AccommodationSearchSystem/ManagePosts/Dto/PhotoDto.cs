@@ -12,5 +12,6 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts.Dto
         public string Url { get; set; }
         public bool IsMain { get; set; }
         public int PostId { get; set; }
+        public bool Selected { get; set; }
     }
 }

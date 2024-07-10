@@ -55,8 +55,8 @@ var abp = abp || {};
     options = options || {};
     options.title = title ? title : abp.localization.abpWeb("AreYouSure");
     options.icon = "warning";
-    options.confirmButtonText = options.confirmButtonText || abp.localization.abpWeb("Yes");
-    options.cancelButtonText = options.cancelButtonText || abp.localization.abpWeb("Cancel");
+    options.confirmButtonText = options.confirmButtonText || abp.localization.abpWeb("Có");
+    options.cancelButtonText = options.cancelButtonText || abp.localization.abpWeb("Không");
     options.showCancelButton = true;
 
     if (isHtml) {

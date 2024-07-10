@@ -65,6 +65,7 @@ import { PostViewLikeComponent } from './post/post-view-like/post-view-like.comp
 import { StatisticalComponent } from './statistical/statistical.component';
 import { AppScheduleWaitCancelComponent } from './app-schedule/app-schedule-wait/app-schedule-wait-cancel/app-schedule-wait-cancel.component';
 import { AppPackagePostsPaymentSuccessComponent } from './app-package-posts/app-package-posts-payment-success/app-package-posts-payment-success.component';
+import { CreatePostAndAddPhotoComponent } from './post/create-post-and-add-photo/create-post-and-add-photo.component';
 
 @NgModule({
   declarations: [
@@ -127,7 +128,8 @@ import { AppPackagePostsPaymentSuccessComponent } from './app-package-posts/app-
 
     // statistics
     StatisticalComponent,
-      AppPackagePostsPaymentSuccessComponent
+      AppPackagePostsPaymentSuccessComponent,
+      CreatePostAndAddPhotoComponent
    ],
   imports: [
     CommonModule,

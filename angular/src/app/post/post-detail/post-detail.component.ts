@@ -363,7 +363,7 @@ export class PostDetailComponent extends AppComponentBase implements OnInit {
   }
 
   getPostDetails(postId: number): void {
-    this._postService.getLoyaltyGiftItemForEdit(postId).subscribe((result) => {
+    this._postService.getPostForEdit(postId).subscribe((result) => {
       this.post = result.createOrEditPost;
       this.postUser = result;
       // this.postP.photos = result.photos;

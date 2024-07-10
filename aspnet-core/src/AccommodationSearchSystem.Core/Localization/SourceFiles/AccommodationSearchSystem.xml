@@ -92,7 +92,7 @@
     <text name="Version">Version</text>
     <text name="On">On</text>
     <text name="Off">Off</text>
-    <text name="AreYouSureWantToDelete">Are you sure want to delete {0}?</text>
+    <text name="AreYouSureWantToDelete">Are you sure want to delete ?</text>
     <text name="AreYouSureToCancelYourAppointment">Are you sure to cancel your appointment?</text>
     <text name="AppointmentHasBeenCancelled">The appointment has been cancelled</text>
     <text name="SuccessfullyDeleted">Successfully deleted</text>

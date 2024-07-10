@@ -6,6 +6,7 @@ import { ceil } from 'lodash-es';
 import { Table } from 'primeng/table';
 import { CreateOrEditPostComponent } from './create-or-edit-post/create-or-edit-post.component';
 import { PostAdminViewComponent } from './post-admin-view/post-admin-view.component';
+import { CreatePostAndAddPhotoComponent } from './create-post-and-add-photo/create-post-and-add-photo.component';
 
 @Component({
   selector: 'app-post',
@@ -19,6 +20,7 @@ export class PostComponent extends AppComponentBase {
 
   @ViewChild('CreateOrEditPost') CreateOrEditPost: CreateOrEditPostComponent;
   @ViewChild('PostAdminView') PostAdminView: PostAdminViewComponent;
+  @ViewChild('CreatePostAndAddPhoto') CreatePostAndAddPhoto: CreatePostAndAddPhotoComponent;
 
   filterText;
   sorting: string = "";
@@ -113,6 +115,7 @@ export class PostComponent extends AppComponentBase {
 
   createPost() {
     this.CreateOrEditPost.show();
+    //this.CreatePostAndAddPhoto.show();
 
   }
   editPost() {
@@ -127,7 +130,7 @@ export class PostComponent extends AppComponentBase {
   getPostRepost(PostId?: number): void {
 
     this._postService
-        .getLoyaltyGiftItemForEdit(PostId)
+        .getPostForEdit(PostId)
         .subscribe((result) => {
           this.postRepost = result.createOrEditPost;
           this.active = true;
@@ -193,7 +196,7 @@ export class PostComponent extends AppComponentBase {
 
   getPostConfirm(ScheduleId?: number): void {
     this._postService
-        .getLoyaltyGiftItemForEdit(ScheduleId)
+        .getPostForEdit(ScheduleId)
         .subscribe((result) => {
           this.postConfirmAdmin = result.confirmPostByAdmins;
           this.active = true;

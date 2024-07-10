@@ -63,7 +63,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
 
         }
 
-        public Task CreateOrEdit(CreateOrEditIPostDto input)
+        public Task<long> CreateOrEdit(CreateOrEditIPostDto input)
         {
             throw new NotImplementedException();
         }
@@ -310,7 +310,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ViewPost
             else return false;
         }
 
-        public Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
+        public Task<GetPostForEditOutput> GetPostForEdit(EntityDto<long> input)
         {
             throw new NotImplementedException();
         }

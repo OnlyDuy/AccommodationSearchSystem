@@ -1678,7 +1678,7 @@ export class ManagePostsServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createOrEdit(body: CreateOrEditIPostDto | undefined): Observable<void> {
+    createOrEdit(body: CreateOrEditIPostDto | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/ManagePosts/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1690,6 +1690,7 @@ export class ManagePostsServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -1700,6 +1701,70 @@ export class ManagePostsServiceProxy {
                 try {
                     return this.processCreateOrEdit(response_ as any);
                 } catch (e) {
+                    return _observableThrow(e) as any as Observable<number>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<number>;
+        }));
+    }
+
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<number> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<number>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param formFile (optional) 
+     * @return Success
+     */
+    createAndAddPhoto(id: number | undefined, formFile: FileParameter[] | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/CreateAndAddPhoto?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (formFile === null || formFile === undefined)
+            throw new Error("The parameter 'formFile' cannot be null.");
+        else
+            formFile.forEach(item_ => content_.append("formFile", item_.data, item_.fileName ? item_.fileName : "formFile") );
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateAndAddPhoto(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateAndAddPhoto(response_ as any);
+                } catch (e) {
                     return _observableThrow(e) as any as Observable<void>;
                 }
             } else
@@ -1707,7 +1772,7 @@ export class ManagePostsServiceProxy {
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processCreateAndAddPhoto(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1982,8 +2047,8 @@ export class ManagePostsServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getLoyaltyGiftItemForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
-        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetLoyaltyGiftItemForEdit?";
+    getPostForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/GetPostForEdit?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -1999,11 +2064,11 @@ export class ManagePostsServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetLoyaltyGiftItemForEdit(response_);
+            return this.processGetPostForEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetLoyaltyGiftItemForEdit(response_ as any);
+                    return this.processGetPostForEdit(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<GetPostForEditOutput>;
                 }
@@ -2012,7 +2077,7 @@ export class ManagePostsServiceProxy {
         }));
     }
 
-    protected processGetLoyaltyGiftItemForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
+    protected processGetPostForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -2194,6 +2259,63 @@ export class ManagePostsServiceProxy {
     }
 
     protected processDeletePhoto(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(null as any);
+    }
+
+    /**
+     * @param id (optional) 
+     * @param photoIds (optional) 
+     * @return Success
+     */
+    deletePhotos(id: number | undefined, photoIds: number[] | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/services/app/ManagePosts/DeletePhotos?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        if (photoIds === null)
+            throw new Error("The parameter 'photoIds' cannot be null.");
+        else if (photoIds !== undefined)
+            photoIds && photoIds.forEach(item => { url_ += "photoIds=" + encodeURIComponent("" + item) + "&"; });
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeletePhotos(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeletePhotos(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processDeletePhotos(response: HttpResponseBase): Observable<void> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5959,7 +6081,7 @@ export class ViewPostServiceProxy {
      * @param body (optional) 
      * @return Success
      */
-    createOrEdit(body: CreateOrEditIPostDto | undefined): Observable<void> {
+    createOrEdit(body: CreateOrEditIPostDto | undefined): Observable<number> {
         let url_ = this.baseUrl + "/api/services/app/ViewPost/CreateOrEdit";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -5971,6 +6093,7 @@ export class ViewPostServiceProxy {
             responseType: "blob",
             headers: new HttpHeaders({
                 "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
             })
         };
 
@@ -5981,14 +6104,14 @@ export class ViewPostServiceProxy {
                 try {
                     return this.processCreateOrEdit(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<number>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<number>;
         }));
     }
 
-    protected processCreateOrEdit(response: HttpResponseBase): Observable<void> {
+    protected processCreateOrEdit(response: HttpResponseBase): Observable<number> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5997,14 +6120,18 @@ export class ViewPostServiceProxy {
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<void>(null as any);
+        return _observableOf<number>(null as any);
     }
 
     /**
@@ -6358,8 +6485,8 @@ export class ViewPostServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    getLoyaltyGiftItemForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
-        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetLoyaltyGiftItemForEdit?";
+    getPostForEdit(id: number | undefined): Observable<GetPostForEditOutput> {
+        let url_ = this.baseUrl + "/api/services/app/ViewPost/GetPostForEdit?";
         if (id === null)
             throw new Error("The parameter 'id' cannot be null.");
         else if (id !== undefined)
@@ -6375,11 +6502,11 @@ export class ViewPostServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetLoyaltyGiftItemForEdit(response_);
+            return this.processGetPostForEdit(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetLoyaltyGiftItemForEdit(response_ as any);
+                    return this.processGetPostForEdit(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<GetPostForEditOutput>;
                 }
@@ -6388,7 +6515,7 @@ export class ViewPostServiceProxy {
         }));
     }
 
-    protected processGetLoyaltyGiftItemForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
+    protected processGetPostForEdit(response: HttpResponseBase): Observable<GetPostForEditOutput> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -9674,6 +9801,7 @@ export class PhotoDto implements IPhotoDto {
     url: string | undefined;
     isMain: boolean;
     postId: number;
+    selected: boolean;
 
     constructor(data?: IPhotoDto) {
         if (data) {
@@ -9690,6 +9818,7 @@ export class PhotoDto implements IPhotoDto {
             this.url = _data["url"];
             this.isMain = _data["isMain"];
             this.postId = _data["postId"];
+            this.selected = _data["selected"];
         }
     }
 
@@ -9706,6 +9835,7 @@ export class PhotoDto implements IPhotoDto {
         data["url"] = this.url;
         data["isMain"] = this.isMain;
         data["postId"] = this.postId;
+        data["selected"] = this.selected;
         return data;
     }
 
@@ -9722,6 +9852,7 @@ export interface IPhotoDto {
     url: string | undefined;
     isMain: boolean;
     postId: number;
+    selected: boolean;
 }
 
 export class PostCategoryDto implements IPostCategoryDto {

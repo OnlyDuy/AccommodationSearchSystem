@@ -12,6 +12,7 @@ using AccommodationSearchSystem.Entity;
 using AccommodationSearchSystem.EntityFrameworkCore;
 using AccommodationSearchSystem.Interfaces;
 using AccommodationSearchSystem.MultiTenancy;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -58,19 +59,19 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             _repositoryUserLikePost = repositoryUserLikePost;
 
         }
-        public async Task CreateOrEdit(CreateOrEditIPostDto input)
+        public async Task<long> CreateOrEdit(CreateOrEditIPostDto input)
         {
             if (input.Id == null)
             {
-                await Create(input);
-            } 
+                return await Create(input);
+            }
             else
             {
-                await Update(input);
+                return await Update(input);
             }
         }
 
-        protected virtual async Task Create(CreateOrEditIPostDto input)
+        protected virtual async Task<long> Create(CreateOrEditIPostDto input)
         {
             var tenantId = AbpSession.TenantId;
             // Kiểm tra xem bài đăng đã tồn tại hay chưa
@@ -84,18 +85,110 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 post.TenantId = tenantId;
                 post.ConfirmAdmin = false;
                 await _repositoryPost.InsertAsync(post);
+
+                // insert Post and get Id of Post
+                var postId = await _repositoryPost.InsertAndGetIdAsync(post);
+
+                return postId;
             }
         }
 
-        protected virtual async Task Update(CreateOrEditIPostDto input)
+        protected virtual async Task<long> Update(CreateOrEditIPostDto input)
         {
             var post = await _repositoryPost.FirstOrDefaultAsync((long)input.Id);
                 // Cập nhật các trường dữ liệu của bài đăng từ input
                 ObjectMapper.Map(input, post);
+
+            return post.Id;
          
         }
 
-        public async Task DeletePost(EntityDto<long> input)
+        public async Task CreateAndAddPhoto(long Id, ICollection<IFormFile> formFile)
+        {
+            var tenantId = AbpSession.TenantId;
+            var query = from p in _repositoryPost.GetAll()
+                        .Where(e => tenantId == e.TenantId && e.Id == Id)
+                        select new
+                        {
+                            Post = p
+                        };
+
+            var posts = await query.FirstOrDefaultAsync();
+
+            if (posts == null)
+            {
+                throw new UserFriendlyException("Bài đăng không tồn tại hoặc bạn không có quyền truy cập.");
+            }
+
+            var post = posts.Post;
+
+            var photoData = await _repositoryPhotoPost.GetAllListAsync(e => e.PostId == Id);
+
+            var output = new GetPostForViewDto
+            {
+                Id = post.Id,
+                PostCode = post.PostCode,
+                Title = post.Title,
+                ContentPost = post.ContentPost,
+                Photo = post.Photo,
+                RoomPrice = post.RoomPrice,
+                Address = post.Address,
+                Area = post.Area,
+                Square = post.Square,
+                PriceCategory = post.PriceCategory,
+                Ward = post.Ward,
+                Wifi = post.Wifi,
+                Parking = post.Parking,
+                Conditioner = post.Conditioner,
+                RoomStatus = post.RoomStatus,
+                TenantId = tenantId,
+                Photos = photoData.Select(photo => new PhotoDto
+                {
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId,
+                    Id = photo.Id,
+                }).ToList()
+            };
+
+            foreach (var file in formFile)
+            {
+                var result = await _photoService.AddPhotoAsync(file);
+                // Kiểm tra lỗi
+                if (result.Error != null)
+                {
+                    throw new UserFriendlyException(result.Error.Message);
+                }
+
+                //up anh len 
+                if (post.PhotoPosts == null)
+                {
+                    post.PhotoPosts = new List<PhotoPost>();
+                }
+
+                var photo = new PhotoPost
+                {
+                    Url = result.SecureUrl.AbsoluteUri,
+                    PublicId = result.PublicId,
+                    PostId = (int)post.Id
+                };
+
+                if (post.PhotoPosts != null && post.PhotoPosts.Any())
+                {
+                    photo.IsMain = false;
+                }
+                else
+                {
+                    photo.IsMain = true;
+                }
+                post.PhotoPosts.Add(photo);
+
+                await _repositoryPost.UpdateAsync(post); // Lưu thay đổi vào CSDL
+            }
+        }
+
+
+    public async Task DeletePost(EntityDto<long> input)
         {
             var postId = (long)input.Id;
             var post = await _repositoryPost.FirstOrDefaultAsync(e => e.Id == (long)input.Id);
@@ -163,7 +256,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
                 Address = item.Post.Address,
                 District = item.Post.District,
                 City = item.Post.City,
-                Ward= item.Post.Ward,
+                Ward = item.Post.Ward,
                 Area = item.Post.Area,
                 Square = item.Post.Square,
                 PriceCategory = item.Post.PriceCategory,
@@ -198,7 +291,7 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
 
         }
 
-        public async Task<GetPostForEditOutput> GetLoyaltyGiftItemForEdit(EntityDto<long> input)
+        public async Task<GetPostForEditOutput> GetPostForEdit(EntityDto<long> input)
         {
             var tenantId = AbpSession.TenantId;
             var datapost = await _repositoryPost.FirstOrDefaultAsync(input.Id);
@@ -475,6 +568,82 @@ namespace AccommodationSearchSystem.AccommodationSearchSystem.ManagePosts
             photo.DeletionTime = DateTime.Now;
 
             return new CreatedAtRouteResult(new { id = post.Id }, ObjectMapper.Map<PhotoDto>(photo));
+        }
+
+        public async Task<ActionResult> DeletePhotos(long Id, List<int> photoIds)
+        {
+            var tenantId = AbpSession.TenantId;
+            var query = from p in _repositoryPost.GetAll()
+                        .Where(e => tenantId == e.TenantId && e.Id == Id)
+                        select new
+                        {
+                            Post = p
+                        };
+
+            var posts = await query.FirstOrDefaultAsync();
+
+            if (posts == null)
+            {
+                throw new UserFriendlyException("Bài đăng không tồn tại hoặc bạn không có quyền truy cập.");
+            }
+
+            var post = posts.Post;
+            var photoData = await _repositoryPhotoPost.GetAllListAsync(e => e.PostId == Id);
+            var photosToDelete = photoData.Where(photo => photoIds.Contains((int)photo.Id)).ToList();
+
+            if (!photosToDelete.Any())
+            {
+                throw new UserFriendlyException("Không tìm thấy hình ảnh nào để xóa.");
+            }
+
+            var mainPhotoExists = photosToDelete.Any(photo => photo.IsMain);
+            if (mainPhotoExists)
+            {
+                throw new UserFriendlyException("Bạn không thể xóa hình ảnh chính.");
+            }
+
+            foreach (var photo in photosToDelete)
+            {
+                if (photo.PublicId != null)
+                {
+                    var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+                }
+
+                post.PhotoPosts.Remove(photo);
+                photo.IsDeleted = true;
+                photo.DeleterUserId = post.CreatorUserId;
+                photo.DeletionTime = DateTime.Now;
+            }
+
+            await _repositoryPost.UpdateAsync(post);
+
+            var output = new GetPostForViewDto
+            {
+                Id = post.Id,
+                PostCode = post.PostCode,
+                Title = post.Title,
+                ContentPost = post.ContentPost,
+                Photo = post.Photo,
+                RoomPrice = post.RoomPrice,
+                Address = post.Address,
+                Area = post.Area,
+                Square = post.Square,
+                PriceCategory = post.PriceCategory,
+                Wifi = post.Wifi,
+                Parking = post.Parking,
+                Conditioner = post.Conditioner,
+                RoomStatus = post.RoomStatus,
+                TenantId = tenantId,
+                Photos = photoData.Where(photo => !photoIds.Contains((int)photo.Id)).Select(photo => new PhotoDto
+                {
+                    Url = photo.Url,
+                    IsMain = photo.IsMain,
+                    PostId = photo.PostId,
+                    Id = photo.Id,
+                }).ToList()
+            };
+
+            return new CreatedAtRouteResult(new { id = post.Id }, output);
         }
 
         public async Task<GetPostForViewDto> GetForEdit(EntityDto<long> input)

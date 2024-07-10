@@ -93,7 +93,7 @@
     <text name="Version">Phiên bản</text>
     <text name="On">Bật</text>
     <text name="Off">Tắt</text>
-    <text name="AreYouSureWantToDelete">Bạn có chắc chắn muốn xóa {0} không?</text>
+    <text name="AreYouSureWantToDelete">Bạn có chắc chắn muốn xóa không?</text>
     <text name="AreYouSureToCancelYourAppointment">Bạn có chắc chắn hủy lịch hẹn không?</text>
     <text name="AppointmentHasBeenCancelled">Lịch hẹn đã được hủy</text>
 	    <text name="AreYouSureToConfirmYourAppointment">Bạn có chắc chắn đặt lịch hẹn không?</text>

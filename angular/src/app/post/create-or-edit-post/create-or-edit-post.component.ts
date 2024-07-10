@@ -59,7 +59,7 @@ export class CreateOrEditPostComponent extends AppComponentBase {
       this.modal.show();
     } else {
       this._postService
-        .getLoyaltyGiftItemForEdit(PostId)
+        .getPostForEdit(PostId)
         .subscribe((result) => {
           this.posts = result.createOrEditPost;
           this.postPhotos = result.photos;
